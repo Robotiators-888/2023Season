@@ -42,6 +42,6 @@ private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRig
   }
 
   public void setMotorsArcade(double xSpeed,double zRotation){
-    driveTrain.arcadeDrive(xSpeed, zRotation*-1);
+    driveTrain.arcadeDrive(xSpeed*-0.5, zRotation*-.4);
   }
 }

@@ -47,13 +47,13 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(1),
-                                () -> controller.getRawAxis(4)));
+        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(5),
+                                () -> controller.getRawAxis(0)));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
   }
-  
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
