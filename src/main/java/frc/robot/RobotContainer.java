@@ -32,8 +32,8 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drivetrain drivetrain = new Drivetrain();
   private final SUB_Intake intake = new SUB_Intake();
-  private final Joystick controller = new Joystick(4);
-  private final JoystickButton yButton = new JoystickButton(controller, 0);
+  private final Joystick controller = new Joystick(0);
+  private final JoystickButton yButton = new JoystickButton(controller, 4);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -62,7 +62,8 @@ public class RobotContainer {
     // cancelling on release.
 
     //intakeDown.whileActiveContinuous(new CMD_AutoIntake(canal, intake, index));
-    yButton.toggleOnTrue((new InstantCommand(intake::pistonToggle, intake)));
+    yButton.onTrue((new InstantCommand(intake::pistonToggle, intake)));
+    
   }
 
 

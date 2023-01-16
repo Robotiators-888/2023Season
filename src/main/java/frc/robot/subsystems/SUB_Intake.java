@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -16,11 +17,13 @@ import frc.robot.Constants;
  * motor speed in percent and set pistons to on or off
  */
 public class SUB_Intake extends SubsystemBase {
+    Compressor phCompressor = new Compressor(1, PneumaticsModuleType.REVPH);
     TalonSRX Intake = new TalonSRX(Constants.MOTOR_ID);
     DoubleSolenoid solenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH, 10, 11);
 
     public SUB_Intake(){
         solenoid.set(Value.kReverse);
+        //phCompressor.
     }
 
     /**
