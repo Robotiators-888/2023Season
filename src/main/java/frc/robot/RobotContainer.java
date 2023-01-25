@@ -3,10 +3,12 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -19,6 +21,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private Joystick controller = new Joystick(Constants.JoystickPort);
+  private Limelight limelight = new Limelight();
+  private Drivetrain drivetrain = new Drivetrain();
+
+  
+  JoystickButton C_aButton = new JoystickButton(controller, 1);
+
+
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
@@ -30,6 +40,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
+    limelight.setLed(0);
+    C_aButton.whileTrue(new LimeAlign(limelight, drivetrain));
   }
 
   /**
@@ -42,6 +54,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    new Trigger(m_exampleSubsystem::exampleCondition)
+        .onTrue(new ExampleCommand(m_exampleSubsystem));
+        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(5),
+                                () -> controller.getRawAxis(0)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
