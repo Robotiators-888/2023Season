@@ -3,13 +3,13 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.VideoMode;
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.networktables.NetworkTable;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Autos;
+import frc.robot.commands.*;
+import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
@@ -28,7 +28,14 @@ import edu.wpi.first.wpilibj.DataLogManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private Joystick controller = new Joystick(Constants.JoystickPort);
+  private Limelight limelight = new Limelight();
+  private Drivetrain drivetrain = new Drivetrain();
+
   
+  JoystickButton C_aButton = new JoystickButton(controller, 1);
+
+
   // The robot's subsystems and commands are defined here...
   private final SUB_Gripper gripper = new SUB_Gripper();
   private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
@@ -53,6 +60,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     
     configureBindings();
+    limelight.setLed(0);
+    C_aButton.whileTrue(new LimeAlign(limelight, drivetrain));
   }
 
   /**
@@ -65,53 +74,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
-
-
-    // Curvature Drive
-   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
-    //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
-
-    //Creates a default command for runing the tower up using the left trigger
-    c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
-    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
-    
-    /* 
-    c_rBumper
-    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
-    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
-    */
-    c_rBumper
-    .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
-    .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
-    // default case, balances arm without changing position.
-    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
-    // buttons, move arm forward and backward
-    //set up arm preset positions
-    c_aButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
-    c_bButton      
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, gripper)));
-   c_yButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, gripper)));
-    c_xButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, gripper)));
-    //Creates a default command for runing the tower down using the right trigger
-    tower.setDefaultCommand(new RunCommand(
-      () ->
-      tower.runAutomatic()
-      , tower)
-    );
-    new Trigger(() -> 
-      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
-      ).whileTrue(new RunCommand(
-        () ->
-        tower.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
-          )) * Constants.OperatorConstants.kArmManualScale)
-        , tower));
-
+    new Trigger(m_exampleSubsystem::exampleCondition)
+        .onTrue(new ExampleCommand(m_exampleSubsystem));
+        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(5),
+                                () -> controller.getRawAxis(0)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
 
