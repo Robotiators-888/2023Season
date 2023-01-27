@@ -3,11 +3,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class LimeAlign extends CommandBase {
+public class LimeDrive extends CommandBase {
     Limelight limelight;
     Drivetrain drive;
 
-    public LimeAlign(Limelight ll, Drivetrain dt) {
+    public LimeDrive(Limelight ll, Drivetrain dt) {
         limelight = ll;
         drive = dt;
     } 
@@ -23,17 +23,24 @@ public class LimeAlign extends CommandBase {
     public void execute() {
         double distance = limelight.getDistance();
         if(limelight.getTv()){
-            if ((Math.abs(limelight.getX()) > 2)) {
-                drive.setMotorsArcade(0, 0.3);
+            if (distance > 5) {
+                drive.setMotorsArcade(0.5, 0);
           
               } else {
-                drive.setMotorsArcade(0, -0.3);
+                drive.setMotorsArcade(0, 0);
             }
         }
         SmartDashboard.putBoolean("LimeHasTarget", limelight.getTv());
         SmartDashboard.putNumber("LimelightX", limelight.getX());
         SmartDashboard.putNumber("LimelightY", limelight.getY());
         SmartDashboard.putNumber("Distance", distance);
+    }
+    public boolean isFinished(){
+        if(limelight.getDistance() > 5){
+            return true;
+        }else{
+            return false;
+        }
     }
     @Override
     public void end(boolean interrupted) {
