@@ -11,12 +11,8 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-
-import frc.robot.subsystems.*;
-import frc.robot.commands.*;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.DataLogManager;
 
@@ -60,8 +56,8 @@ public class RobotContainer {
     // Configure the trigger bindings
     
     configureBindings();
-    limelight.setLed(0);
-    C_aButton.whileTrue(new LimeAlign(limelight, drivetrain));
+    limelight.setLed(1);
+    C_aButton.whileTrue(new LimeSequential(drivetrain, limelight));
   }
 
   /**
@@ -74,10 +70,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+     limelight.setLed(0);
+
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(5),
-                                () -> controller.getRawAxis(0)));
+        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
+                                () -> -controller.getRawAxis(4)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
 
@@ -101,6 +99,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return new LimeSequential(drivetrain, limelight);
   }
 }

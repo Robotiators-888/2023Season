@@ -10,13 +10,14 @@ public class LimeDrive extends CommandBase {
     public LimeDrive(Limelight ll, Drivetrain dt) {
         limelight = ll;
         drive = dt;
+        addRequirements(ll,dt);
     } 
     //  in inches
     
 
     @Override
     public void initialize() {
-        limelight.setLed(3);
+        //limelight.setLed(3);
     }
     
     @Override
@@ -24,10 +25,10 @@ public class LimeDrive extends CommandBase {
         double distance = limelight.getDistance();
         if(limelight.getTv()){
             if (distance > 5) {
-                drive.setMotorsArcade(0.5, 0);
+                drive.setMotorsArcade(0.3, 0.0);
           
               } else {
-                drive.setMotorsArcade(0, 0);
+                drive.setMotorsArcade(0.0, 0.0);
             }
         }
         SmartDashboard.putBoolean("LimeHasTarget", limelight.getTv());
@@ -45,7 +46,6 @@ public class LimeDrive extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         drive.setMotorsArcade(0, 0);
-        limelight.setLed(0);
     }
 
 }
