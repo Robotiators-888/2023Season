@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
@@ -32,12 +33,26 @@ private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRig
 
   }
 
+  public void setBrakeMode(boolean brake){
+    if(brake){
+        leftPrimary.setIdleMode(IdleMode.kBrake);
+        leftSecondary.setIdleMode(IdleMode.kBrake);
+        rightPrimary.setIdleMode(IdleMode.kBrake);
+        rightSecondary.setIdleMode(IdleMode.kBrake);
+    }else{
+        leftPrimary.setIdleMode(IdleMode.kCoast);
+        leftSecondary.setIdleMode(IdleMode.kCoast);
+        rightPrimary.setIdleMode(IdleMode.kCoast);
+        rightSecondary.setIdleMode(IdleMode.kCoast);
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
 
   public void setMotorsArcade(double xSpeed,double zRotation){
-    driveTrain.arcadeDrive(xSpeed*0.5, zRotation*0.4);
+    driveTrain.arcadeDrive(xSpeed, zRotation);
   }
 }

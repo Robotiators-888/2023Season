@@ -50,6 +50,10 @@ public class Limelight extends SubsystemBase{
         table.getEntry("ledMode").setNumber(value);
     }
     
+    public double getLed() {
+        return table.getEntry("ledMode").getDouble(0);
+    }
+    
     // static methods
 
     public double getX() {

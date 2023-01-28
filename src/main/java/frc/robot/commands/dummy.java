@@ -8,7 +8,7 @@ import frc.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class TeleDrive extends CommandBase {
+public class dummy extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private Drivetrain drive;
   private Supplier<Double> Left, Right;
@@ -18,10 +18,8 @@ public class TeleDrive extends CommandBase {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public TeleDrive(Drivetrain drivetrain, Supplier<Double> L, Supplier<Double> R) {
+  public dummy(Drivetrain drivetrain) {
     this.drive = drivetrain;
-    this.Left = L;
-    this.Right = R;
     addRequirements(drive);
   }
 
@@ -34,7 +32,7 @@ public class TeleDrive extends CommandBase {
   @Override
   public void execute() {
     
-      drive.setMotorsArcade(Left.get()*0.5,Right.get()*0.5);
+      drive.setMotorsArcade(0,0.2);
 
   }
 
