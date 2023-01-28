@@ -22,13 +22,11 @@ public class LimeDrive extends CommandBase {
     
     @Override
     public void execute() {
-        double distance = limelight.getDistance();
+        double distance = limelight.getY();
         if(limelight.getTv()){
-            if (distance > 5) {
-                drive.setMotorsArcade(0.3, 0.0);
-          
-              } else {
-                drive.setMotorsArcade(0.0, 0.0);
+            if (distance > -14) {
+                drive.setMotorsArcade(0.5, 0.0);
+                System.out.println(distance);
             }
         }
         SmartDashboard.putBoolean("LimeHasTarget", limelight.getTv());
@@ -37,7 +35,7 @@ public class LimeDrive extends CommandBase {
         SmartDashboard.putNumber("Distance", distance);
     }
     public boolean isFinished(){
-        if(limelight.getDistance() > 5){
+        if(limelight.getY() <= -14){
             return true;
         }else{
             return false;
@@ -45,7 +43,7 @@ public class LimeDrive extends CommandBase {
     }
     @Override
     public void end(boolean interrupted) {
-        drive.setMotorsArcade(0, 0);
+        drive.setBrakeMode(true);
     }
 
 }

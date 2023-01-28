@@ -16,5 +16,6 @@ public class LimeSequential extends SequentialCommandGroup {
     addCommands(new WaitCommand(2));
     addCommands(new LimeAlign(Limelight, Drivetrain));
     addCommands(new LimeDrive(Limelight,Drivetrain));
+    addCommands(new LimeAlign(Limelight, Drivetrain));
   }
 } 

@@ -23,15 +23,15 @@ public class LimeAlign extends CommandBase {
     @Override
     public void execute() {
         double distance = limelight.getDistance();    
-            if (limelight.getX() > 0.2) {
-                drive.setMotorsArcade(0, Math.min(limelight.getX() * -0.02, -0.3));
-                System.out.println("X-offset" + limelight.getX());
-                System.out.println("SpeedZ " + Math.min(limelight.getX() * -0.02, -0.3));
-            } else if (limelight.getX() < -0.2){
-                drive.setMotorsArcade(0, Math.max(limelight.getX() * 0.02, 0.3));
-                System.out.println("X-offset" + limelight.getX());
-                System.out.println("SpeedZ " + Math.max(limelight.getX() * 0.02, 0.3));
-            }
+        if (limelight.getX() > 0.2) {
+            drive.setMotorsArcade(0, Math.min(limelight.getX() * -0.02, -0.3));
+            System.out.println("X-offset" + limelight.getX());
+            System.out.println("SpeedZ " + Math.min(limelight.getX() * -0.02, -0.3));
+        } else if (limelight.getX() < -0.2){
+            drive.setMotorsArcade(0, Math.max(limelight.getX() * 0.02, 0.3));
+            System.out.println("X-offset" + limelight.getX());
+            System.out.println("SpeedZ " + Math.max(limelight.getX() * 0.02, 0.3));
+        }
         SmartDashboard.putBoolean("LimeHasTarget", limelight.getTv());
         SmartDashboard.putNumber("LimelightX", limelight.getX());
         SmartDashboard.putNumber("LimelightY", limelight.getY());

@@ -41,7 +41,7 @@ public class TeleDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drive.setMotorsArcade(0, 0);
+    drive.setBrakeMode(true);
   }
 
   // Returns true when the command should end.
