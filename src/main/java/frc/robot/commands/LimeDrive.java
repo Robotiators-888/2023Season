@@ -17,15 +17,18 @@ public class LimeDrive extends CommandBase {
 
     @Override
     public void initialize() {
-        //limelight.setLed(3);
     }
     
     @Override
     public void execute() {
+        // We are using the Y value, because the Y value will change as you get closer or further
+        // We got a pretty accurate value for what the y value should be in order for us to get as close as we can
         double distance = limelight.getY();
+        // We check if we can even find one to begin with, or it will be impossible to turn to something tha tdoesn't exist
         if(limelight.getTv()){
+            // We found that -14 is the correct number for Y, so as long as we don't reach it, we will drive forward
             if (distance > -14) {
-                drive.setMotorsArcade(0.5, 0.0);
+                drive.setMotorsArcade(Math.min(1-Math.abs(limelight.getY() * 0.02), 0.3), 0.0); // If we are further away, we drive faster 
                 System.out.println(distance);
             }
         }
@@ -35,6 +38,7 @@ public class LimeDrive extends CommandBase {
         SmartDashboard.putNumber("Distance", distance);
     }
     public boolean isFinished(){
+        // If we reach the place, then we stop
         if(limelight.getY() <= -14){
             return true;
         }else{
