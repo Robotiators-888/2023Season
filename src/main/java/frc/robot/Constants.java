@@ -22,8 +22,17 @@ public final class Constants {
   public final static int ID_RIGHT_PRIMARY_DRIVE = 22;
   public final static int ID_RIGHT_SECONDARY_DRIVE = 23;
 
+  public static final int JOYSTICK_PORT = 0;
 
+  public static final int LEFT_AXIS = 1;
+  public static final int RIGHT_AXIS = 5;
+  public static final double DEAD_ZONE = 0.3;
 
+  public static final double WHEEL_RADIUS = 3; // wheel radius in inches
+  public static final double GEARRATIO = 15.5; //gear ratio from output shaft of motor to wheel axle
+ 
+  public static final int DRIVER_CONTROLLER = 0;
 
-
+  public static final double AUTO_SPEED = 0.2; 
+  public static final double AUTO_TIME_SECS = 5;
 }

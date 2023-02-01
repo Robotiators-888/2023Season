@@ -1,32 +1,43 @@
+package frc.robot.commands;
+
+import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.SUB_Drivetrain;
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
-
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
 public class CMD_TeleopDrive extends CommandBase {
-  /** Creates a new CMD_TeleopDrive. */
-  public CMD_TeleopDrive() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private final SUB_Drivetrain drivetrain;
+  private Supplier<Double> speedLeft, speedRight;
+
+  public CMD_TeleopDrive(SUB_Drivetrain drive, Supplier<Double> L, Supplier<Double> R){
+    this.drivetrain = drive;
+    this.speedLeft = L;
+    this.speedRight = R;
+
+    addRequirements(drive);
   }
 
-  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    
+  }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    //move the robot with the arcade drive
+    drivetrain.setMotorsArcade(speedLeft.get(), -speedRight.get());
+  }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+  }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+      return false;
   }
 }
