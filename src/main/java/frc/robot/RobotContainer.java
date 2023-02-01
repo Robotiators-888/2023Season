@@ -27,8 +27,8 @@ public class RobotContainer {
   private Joystick controller = new Joystick(Constants.JoystickPort);
   public manipSub manip;
   
-  Trigger leftTrigger = new Trigger(() -> (controller.getRawAxis(2) > 0.5));
-  Trigger rightTrigger = new Trigger(() -> (controller.getRawAxis(3) > 0.5));
+  JoystickButton C_aButton = new JoystickButton(controller, 3);
+  JoystickButton C_bButton = new JoystickButton(controller, 4);
 
 
 
@@ -39,8 +39,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    rightTrigger.whileTrue(new towerup(manip));
-    leftTrigger.whileTrue(new towerdown(manip));
+    C_aButton.whileTrue(new towerup(manip));
+    C_bButton.whileTrue(new towerdown(manip));
   
     configureBindings();
   }
