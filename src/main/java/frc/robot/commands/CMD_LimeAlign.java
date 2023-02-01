@@ -3,11 +3,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class LimeAlign extends CommandBase {
-    Limelight limelight;
-    Drivetrain drive;
+public class CMD_LimeAlign extends CommandBase {
+    SUB_Limelight limelight;
+    SUB_Drivetrain drive;
 
-    public LimeAlign(Limelight ll, Drivetrain dt) {
+    public CMD_LimeAlign(SUB_Limelight ll, SUB_Drivetrain dt) {
         limelight = ll;
         drive = dt;
         addRequirements(ll, dt);
