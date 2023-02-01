@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMax.IdleMode;
 
-public class Drivetrain extends SubsystemBase {
+public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   private CANSparkMax leftPrimary = new CANSparkMax(Constants.ID_LEFT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
   private CANSparkMax leftSecondary = new CANSparkMax(Constants.ID_LEFT_SECONDARY, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -25,7 +25,7 @@ private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary,
 
 // create a drive train group with the speed controller groups
 private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
-  public Drivetrain() {
+  public SUB_Drivetrain() {
     rightPrimary.setInverted(false);
     rightSecondary.setInverted(false);
     leftPrimary.setInverted(true);

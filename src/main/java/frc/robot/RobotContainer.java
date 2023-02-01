@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   private Joystick controller = new Joystick(Constants.JoystickPort);
-  private Limelight limelight = new Limelight();
-  private Drivetrain drivetrain = new Drivetrain();
+  private SUB_Limelight limelight = new SUB_Limelight();
+  private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
 
   
   JoystickButton C_aButton = new JoystickButton(controller, 1);
@@ -42,7 +42,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     limelight.setLed(1);
-    C_aButton.whileTrue(new LimeSequential(drivetrain, limelight));
+    C_aButton.whileTrue(new CMD_LimeSequential(drivetrain, limelight));
   }
 
   /**
@@ -59,7 +59,7 @@ public class RobotContainer {
 
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
+        drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
                                 () -> -controller.getRawAxis(4)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
@@ -77,6 +77,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new LimeSequential(drivetrain, limelight);
+    return new CMD_LimeSequential(drivetrain, limelight);
   }
 }

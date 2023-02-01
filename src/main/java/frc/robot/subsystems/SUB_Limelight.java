@@ -6,10 +6,10 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class Limelight extends SubsystemBase{
+public class SUB_Limelight extends SubsystemBase{
     NetworkTable table;
 
-    public Limelight() {
+    public SUB_Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
     }
     
@@ -45,21 +45,17 @@ public class Limelight extends SubsystemBase{
         return Math.abs((double) ((h2 - h1) / (Math.tan(a1 + a2))));
     }
 
-    // turns off limelight (force off)
+    // turns on limelight(mainly used for) (force on)
     public void setLed(int value) {
         table.getEntry("ledMode").setNumber(value);
     }
-    
-    public double getLed() {
-        return table.getEntry("ledMode").getDouble(0);
-    }
-    
-    // static methods
 
+    // Gets the angle offset on the x plane to know how far to align
     public double getX() {
         return table.getEntry("tx").getDouble(0.0);
     }
 
+    // Gets the angle offset on the y plane to know how close you have to get
     public double getY() {
         return table.getEntry("ty").getDouble(0.0);
     }
