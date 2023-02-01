@@ -7,7 +7,6 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,9 +24,11 @@ public class RobotContainer {
   private Joystick controller = new Joystick(Constants.JoystickPort);
   private SUB_Limelight limelight = new SUB_Limelight();
   private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight);
 
   
   JoystickButton C_aButton = new JoystickButton(controller, 1);
+  JoystickButton Button = new JoystickButton(controller, 4);
 
 
   // The robot's subsystems and commands are defined here...
@@ -42,7 +43,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
     limelight.setLed(1);
-    C_aButton.whileTrue(new CMD_LimeSequential(drivetrain, limelight));
+    
   }
 
   /**
@@ -64,6 +65,9 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
+
+      // When the button is pressed, initiate the aligning and drive towards commands
+      Button.onTrue(LimeSequential); 
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
