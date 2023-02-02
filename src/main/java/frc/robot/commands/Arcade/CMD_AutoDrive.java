@@ -1,6 +1,5 @@
-package frc.robot.commands;
+package frc.robot.commands.Arcade;
 import frc.robot.subsystems.SUB_Drivetrain;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 

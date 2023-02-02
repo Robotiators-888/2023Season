@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.Arcade;
 
 import java.util.function.Supplier;
 
@@ -29,7 +29,7 @@ public class CMD_TeleopDrive extends CommandBase {
   @Override
   public void execute() {
     //move the robot with the arcade drive
-    drivetrain.setMotorsArcade(speedLeft.get(), -speedRight.get());
+    drivetrain.setMotorsArcade(speedLeft.get()*0.5, speedRight.get()*0.5);
   }
 
   @Override

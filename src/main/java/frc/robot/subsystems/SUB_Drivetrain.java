@@ -4,33 +4,31 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import com.revrobotics.CANSparkMax.IdleMode;
-
+import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
+import com.revrobotics.CANSparkMax.IdleMode;
+//navx
+import com.kauailabs.navx.frc.AHRS;
 public class SUB_Drivetrain extends SubsystemBase {
-  /** Creates a new SUB_Drivetrain. */
-  private CANSparkMax leftPrimary = new CANSparkMax(Constants.ID_LEFT_PRIMARY_DRIVE, MotorType.kBrushless);
-  private CANSparkMax leftSecondary = new CANSparkMax(Constants.ID_LEFT_SECONDARY_DRIVE, MotorType.kBrushless);
-  private CANSparkMax rightPrimary = new CANSparkMax(Constants.ID_RIGHT_PRIMARY_DRIVE, MotorType.kBrushless);
-  private CANSparkMax rightSecondary = new CANSparkMax(Constants.ID_RIGHT_SECONDARY_DRIVE, MotorType.kBrushless);
+  /** Creates a new Drivetrain. */
+  private CANSparkMax leftPrimary = new CANSparkMax(Constants.ID_LEFT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax leftSecondary = new CANSparkMax(Constants.ID_LEFT_SECONDARY, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax rightPrimary = new CANSparkMax(Constants.ID_RIGHT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax rightSecondary = new CANSparkMax(Constants.ID_RIGHT_SECONDARY, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-  MotorControllerGroup leftGroup = new MotorControllerGroup(leftPrimary, leftSecondary);
-  MotorControllerGroup righGroup = new MotorControllerGroup(rightPrimary, rightSecondary);
-  private DifferentialDrive driveTrain = new DifferentialDrive(leftGroup, righGroup);
-  
-  AHRS navx = new AHRS(SerialPort.Port.kMXP);
+  // create a speed controller group for each side
+  private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
+  private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
 
-  private RelativeEncoder leftEncoder = leftPrimary.getEncoder();
-  private RelativeEncoder righEncoder = rightPrimary.getEncoder();
+  // create a drive train group with the speed controller groups
+  private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
+
+  //navx
+  private AHRS navx = new AHRS();
 
   public SUB_Drivetrain() {
     rightPrimary.setInverted(false);
@@ -72,16 +70,24 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public double getLeftEncoder(){
-    return leftEncoder.getPosition();
+    return leftPrimary.getEncoder().getPosition();
   }
 
   public double getRightEncoder(){
-    return righEncoder.getPosition();
+    return rightPrimary.getEncoder().getPosition();
   }
 
   public void resetEncoders(){
     leftPrimary.getEncoder().setPosition(0);
     rightPrimary.getEncoder().setPosition(0);
+  }
+
+  public double getAngle(){
+    return navx.getAngle();
+  }
+
+  public void resetAngle(){
+    navx.reset();
   }
 
   public double getYaw(){

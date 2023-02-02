@@ -17,10 +17,10 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public final static int ID_LEFT_PRIMARY_DRIVE = 20;
-  public final static int ID_LEFT_SECONDARY_DRIVE = 21;
-  public final static int ID_RIGHT_PRIMARY_DRIVE = 22;
-  public final static int ID_RIGHT_SECONDARY_DRIVE = 23;
+  public static final int ID_LEFT_PRIMARY = 20;
+  public static final int ID_LEFT_SECONDARY = 22;
+  public static final int ID_RIGHT_PRIMARY = 23;
+  public static final int ID_RIGHT_SECONDARY = 25;
 
   public static final int JOYSTICK_PORT = 0;
 
