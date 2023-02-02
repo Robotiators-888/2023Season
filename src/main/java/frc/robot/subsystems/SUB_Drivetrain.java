@@ -65,8 +65,12 @@ public class SUB_Drivetrain extends SubsystemBase {
     driveTrain.arcadeDrive(xSpeed, zRotation);
   }
 
-  public void setMotorsTank(double leftSpeed, double rightSpeed, double Speed) {
-    driveTrain.tankDrive(leftSpeed * Speed, rightSpeed * Speed);
+  public void setMotorsTank(double leftSpeed, double rightSpeed) {
+    driveTrain.tankDrive(leftSpeed, rightSpeed);
+  }
+
+  public void setMotorsCurvature(double xSpeed, double zRotation, boolean isQuickTurn){
+    driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
   public double getLeftEncoder(){

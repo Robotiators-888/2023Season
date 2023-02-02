@@ -6,10 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CMD_AutoDrive;
-import frc.robot.commands.Arcade.CMD_TeleopDrive;
 import frc.robot.subsystems.SUB_Drivetrain;
 
 /**
@@ -38,9 +38,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-      m_drivetrain.setDefaultCommand(new CMD_TeleopDrive(m_drivetrain, () -> controller1.getRawAxis(Constants.RIGHT_AXIS),
-      () -> controller1.getRawAxis(Constants.LEFT_AXIS)));
- }
+    //create a lambda function to run the drive command when the joystick is moved without the CMd_TeleopDrive class
+      Command tankTeleopDrive = new RunCommand(() -> m_drivetrain.setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), m_drivetrain);
+      m_drivetrain.setDefaultCommand(tankTeleopDrive);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
