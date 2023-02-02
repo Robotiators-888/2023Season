@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.Arcade.CMD_AutoDrive;
+import frc.robot.commands.CMD_AutoDrive;
 import frc.robot.commands.Arcade.CMD_TeleopDrive;
 import frc.robot.subsystems.SUB_Drivetrain;
 
