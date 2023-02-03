@@ -20,6 +20,15 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
     // Starts to align towards it
     addCommands(new CMD_LimeAlign(Limelight, Drivetrain));
     // Starts to drive towards it
-    addCommands(new CMD_LimeDrive(Limelight,Drivetrain));
+    addCommands(new CMD_LimeDrive(Limelight, Drivetrain));
+    // In case any errors occur during drive
+    addCommands(new CMD_LimeAlign(Limelight, Drivetrain));
+    // Drive the final distance
+    addCommands(new CMD_LimeDrive(Limelight, Drivetrain));
+    // Turns off the light
+    addCommands(Commands.runOnce(
+      () -> {
+        Limelight.setLed(1);
+      }, Limelight));
   }
 } 

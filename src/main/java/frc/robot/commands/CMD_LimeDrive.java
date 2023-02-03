@@ -10,7 +10,7 @@ public class CMD_LimeDrive extends CommandBase {
     public CMD_LimeDrive(SUB_Limelight ll, SUB_Drivetrain dt) {
         limelight = ll;
         drive = dt;
-        addRequirements(ll,dt);
+        addRequirements(ll);
     } 
     //  in inches
     
@@ -26,9 +26,14 @@ public class CMD_LimeDrive extends CommandBase {
         double distance = limelight.getY();
         // We check if we can even find one to begin with, or it will be impossible to turn to something tha tdoesn't exist
         if(limelight.getTv()){
-            // We found that -14 is the correct number for Y, so as long as we don't reach it, we will drive forward
-            if (distance > -14) {
-                drive.setMotorsArcade(Math.min(1-Math.abs(limelight.getY() * 0.02), 0.3), 0.0); // If we are further away, we drive faster 
+            // We found that -5.1 is the correct number for Y, so as long as we don't reach it, we will drive forward
+            if (distance >= -5.1) {
+                drive.setMotorsArcade(Math.min(1-Math.abs(limelight.getY() * 0.05), 0.2), 0.0); // If we are further away, we drive faster 
+                System.out.println(distance);
+            }
+            // -6.02 is the correct value for Y, so as long as we don't reach it, we will drive forward
+            if (distance >= -6.02) {
+                drive.setMotorsArcade( 0.075, 0.0); // If we are further away, we drive faster 
                 System.out.println(distance);
             }
         }
@@ -39,7 +44,7 @@ public class CMD_LimeDrive extends CommandBase {
     }
     public boolean isFinished(){
         // If we reach the place, then we stop
-        if(limelight.getY() <= -14){
+        if(limelight.getY() <= -5.1 || limelight.getY() <= -6.02){ // First part of the statement is for the first run and the second part is for the second run
             return true;
         }else{
             return false;

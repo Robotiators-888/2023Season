@@ -29,8 +29,7 @@ public class RobotContainer {
   private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight);
 
   
-  JoystickButton C_aButton = new JoystickButton(controller, 1);
-  JoystickButton Button = new JoystickButton(controller, 4);
+  JoystickButton Ybutton = new JoystickButton(controller, 4);
 
 
   // The robot's subsystems and commands are defined here...
@@ -71,32 +70,24 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-     limelight.setLed(0);
 
+    // Press the Y button once, then we will start the sequence and press it again we stop
+    Ybutton.toggleOnTrue(LimeSequential); 
+
+    // this is all for the teleop drive
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
         drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
                                 () -> -controller.getRawAxis(4)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-
-
-    drivetrain.setDefaultCommand(new RunCommand(
-      () -> 
-        drivetrain.driveArcade(
-          MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
-          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
-  , drivetrain)
-    );
-
-      // When the button is pressed, initiate the aligning and drive towards commands
-      Button.onTrue(LimeSequential); 
-
+    new Trigger(m_exampleSubsystem::exampleCondition)
+        .onTrue(new ExampleCommand(m_exampleSubsystem));
+    
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
     m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
+
+    
   }
 
   /**
@@ -105,7 +96,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return new CMD_LimeSequential(drivetrain, limelight);
+    // The auto code
+    return null;
   }
 }
