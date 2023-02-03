@@ -41,6 +41,11 @@ public class RobotContainer {
     //create a lambda function to run the drive command when the joystick is moved without the CMd_TeleopDrive class
       Command tankTeleopDrive = new RunCommand(() -> m_drivetrain.setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), m_drivetrain);
       m_drivetrain.setDefaultCommand(tankTeleopDrive);
+
+    /*
+     * Command arcadeTeleopDrive = new RunCommand(() -> m_drivetrain.setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_ROTOATION_AXIS)), m_drivetrain);
+     * m_drivetrain.setDefaultCommand(arcadeTeleopDrive);
+     */
   }
 
   /**
