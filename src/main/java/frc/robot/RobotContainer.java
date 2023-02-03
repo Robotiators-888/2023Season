@@ -24,8 +24,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private Joystick controller = new Joystick(Constants.JoystickPort);
-  public manipSub manip;
+  private Joystick controller = new Joystick(Constants.JOYSTICKPORT);
+  public SUB_Tower manip;
   
   JoystickButton C_aButton = new JoystickButton(controller, 3);
   JoystickButton C_bButton = new JoystickButton(controller, 4);

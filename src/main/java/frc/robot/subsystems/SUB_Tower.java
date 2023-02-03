@@ -8,8 +8,8 @@ import frc.robot.Constants;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-public class manipSub extends SubsystemBase {
-    public CANSparkMax towerMotor = new CANSparkMax(Constants.towerCAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+public class SUB_Tower extends SubsystemBase {
+    public CANSparkMax towerMotor = new CANSparkMax(Constants.TOWER_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
     public RelativeEncoder m_encoder;
 
     public void setLimits(){
