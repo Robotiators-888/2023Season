@@ -21,19 +21,19 @@ public class CMD_GripperRun extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    sub_Gripper.toggle();
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    sub_Gripper.toggleSpin();
+    sub_Gripper.setMotors(0.6);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    sub_Gripper.toggle();
+    sub_Gripper.setMotors(0.0);
   }
 
   // Returns true when the command should end.

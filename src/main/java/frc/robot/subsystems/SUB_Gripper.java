@@ -12,7 +12,6 @@ import frc.robot.Constants;
 
 public class SUB_Gripper extends SubsystemBase {
 
-  private boolean shouldSpin = false;
   CANSparkMax GripperSparkMax = new CANSparkMax(Constants.GRIPPER_SPARKMAX_CANID, MotorType.kBrushless);
 
   /** Creates a new GripperSubsystem. */
@@ -25,26 +24,8 @@ public class SUB_Gripper extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void toggleSpin(){
-    if(shouldSpin){
-      GripperSparkMax.set(0.6);
-    }
-  }
-
-  public boolean getToggle(){
-    return shouldSpin;
-  }
-
-  public void setToggle(boolean status){
-    shouldSpin = status;
-  }
-
-  public void toggle(){
-    if(shouldSpin){
-      shouldSpin = false;
-    }else{
-      shouldSpin = true;
-    }
+  public void setMotors(double speed){
+    GripperSparkMax.set(speed);
   }
 
 
