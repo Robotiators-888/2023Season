@@ -30,7 +30,7 @@ public final class Constants {
   public static final double DEAD_ZONE = 0.3;
 
   public static final double WHEEL_RADIUS = 3; // wheel radius in inches
-  public static final double GEARRATIO = 15.5; //gear ratio from output shaft of motor to wheel axle
+  public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
  
   public static final int DRIVER_CONTROLLER = 0;
 
