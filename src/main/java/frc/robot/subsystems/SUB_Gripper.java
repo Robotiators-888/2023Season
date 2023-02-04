@@ -32,4 +32,8 @@ public class SUB_Gripper extends SubsystemBase {
   public void speedSet(double speed) {
     GripperSparkMax.set(speed);
   }
+
+  public void setMotors(double speed){
+    GripperSparkMax.set(speed);
+  }
 }
