@@ -5,6 +5,7 @@
 package frc.robot;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.*;
@@ -28,6 +29,7 @@ public class RobotContainer {
 
   
   JoystickButton Ybutton = new JoystickButton(controller, 4);
+  JoystickButton Abutton = new JoystickButton(controller, 2);
 
 
   // The robot's subsystems and commands are defined here...
@@ -41,7 +43,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
     configureBindings();
-    limelight.setLed(1);
+    limelight.setLed(3);
     
   }
 
