@@ -12,6 +12,7 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -39,8 +40,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    //C_aButton.whileTrue(new towerup(manip));
-    //C_bButton.whileTrue(new towerdown(manip));
+    C_aButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(0.5);}, manip));
+    C_bButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(-0.5);}, manip));
   
     configureBindings();
   }

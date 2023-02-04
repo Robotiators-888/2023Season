@@ -16,7 +16,8 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
-
-  public static final int TOWER_CAN_ID = 10;
   public static final int JOYSTICKPORT = 0;
+  public static final int TOWER_SPARKMAX_CAN_ID = 10;
+
+  
 }
