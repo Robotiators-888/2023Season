@@ -12,7 +12,7 @@ import edu.wpi.first.math.controller.ElevatorFeedforward;
 public class SUB_Tower extends SubsystemBase {
     public CANSparkMax towerMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
     public RelativeEncoder m_encoder;
-    
+
     //setpoint is arbitrary
     PIDController pid = new PIDController(Constants.PID_kP, Constants.PID_kI, Constants.PID_kD);
     double setpoint = 42.0;
@@ -32,11 +32,7 @@ public class SUB_Tower extends SubsystemBase {
     }
 
     public void towerMove(double speed) {
-        //towerMotor.set(pid.calculate(getRotations(), setpoint));
-        towerMotor.set(speed); 
-    }   
-
-    public void towerStop() {
+        //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
         towerMotor.setIdleMode(IdleMode.kBrake);
     }
 

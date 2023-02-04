@@ -28,6 +28,8 @@ public final class Constants {
   public static final double FF_kA = 0.0;
   public static final double FF_kG = 20.0;
   public static final double FF_kS = 19.0;
-  public static final double FF_kV = 1.0;
+  public static final double FF_kV = 1.0; 
+  public static final double FF_Velocity = 1.0;
+  public static final double FF_Accel = 1.0;
   
 }
