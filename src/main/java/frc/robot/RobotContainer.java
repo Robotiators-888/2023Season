@@ -58,7 +58,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-   aButton.onTrue(new CMD_GripperRun(gripper));
+   aButton.whileTrue(new CMD_GripperRun(gripper));
 
    
   }
