@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SUB_Limelight extends SubsystemBase{
     NetworkTable table;
@@ -32,17 +33,18 @@ public class SUB_Limelight extends SubsystemBase{
    * 
    * @return double of offset of target y-value
    */
-    public double getTy() {
-        return table.getEntry("ty").getDouble(0);
-    }
+
     // Finds distance from robot to target and returns distance
     public double getDistance() {
         double h1 = 35.625;
-        double h2 = 23.0625;
-        double a1 = 0;
-        double a2 = Math.toRadians(Math.abs(this.getTy()));
+        double h2 = 24.25;
+        // was -3.47935054
+        double a1 = Math.toRadians(-2); //mounting angle, radians
+        double a2 = Math.toRadians(this.getY());
 
-        return Math.abs((double) ((h2 - h1) / (Math.tan(a1 + a2))));
+        double distance = (h2 - h1)/Math.tan(a1 + a2);
+
+        return distance;
     }
 
     // turns on limelight(mainly used for) (force on)
@@ -58,6 +60,16 @@ public class SUB_Limelight extends SubsystemBase{
     // Gets the angle offset on the y plane to know how close you have to get
     public double getY() {
         return table.getEntry("ty").getDouble(0.0);
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("LimelightY", this.getY());
+        SmartDashboard.putBoolean("LimeHasTarget", this.getTv());
+        SmartDashboard.putNumber("LimelightX", this.getX());
+        SmartDashboard.putNumber("Distance", this.getDistance());
+        SmartDashboard.putNumber("a1", 1.4);
+        SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
+
     }
 }
 

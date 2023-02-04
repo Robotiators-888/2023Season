@@ -22,6 +22,7 @@ public class CMD_TeleDrive extends CommandBase {
     this.drive = drivetrain;
     this.Left = L;
     this.Right = R;
+  
     addRequirements(drive);
   }
 
@@ -35,6 +36,7 @@ public class CMD_TeleDrive extends CommandBase {
   public void execute() {
     
       drive.setMotorsArcade(Left.get()*0.5,Right.get()*0.5);
+      
 
   }
 
