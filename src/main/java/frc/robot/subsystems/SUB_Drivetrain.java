@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj.Joystick;
 
 //navx
-import com.kauailabs.navx.frc.AHRS;
+// import com.kauailabs.navx.frc.AHRS;
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   private CANSparkMax leftPrimary = new CANSparkMax(Constants.ID_LEFT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -32,7 +32,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
 
   //navx
-  private AHRS navx = new AHRS();
+  // private AHRS navx = new AHRS();
 
   private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT);
 
@@ -92,36 +92,38 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightPrimary.getEncoder().setPosition(0);
   }
 
-  public double getAngle(){
-    return navx.getAngle();
-  }
+  // public double getAngle(){
+  //   return navx.getAngle();
+  // }
 
-  public void resetAngle(){
-    navx.reset();
-  }
+  // public void resetAngle(){
+  //   navx.reset();
+  // }
 
-  public double getYaw(){
-    return navx.getYaw();
-  }
+  // public double getYaw(){
+  //   return navx.getYaw();
+  // }
 
-  public double getPitch(){
-    return navx.getPitch();
-  }
+  // public double getPitch(){
+  //   return navx.getPitch();
+  // }
 
-  public double getRoll(){
-    return navx.getRoll();
-  }
+  // public double getRoll(){
+  //   return navx.getRoll();
+  // }
 
   public Command getDrivetrain(int drive){
+    double speed = Constants.TELESPEED;
     switch(drive){
       case 0:
-        return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), this);
+    
+    return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
       case 1:
-        return new RunCommand(() -> setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), this);
+        return new RunCommand(() -> setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
       case 2:
-        return new RunCommand(() -> setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS), controller1.getRawButton(Constants.LEFT_TRIGGER)), this);
+        return new RunCommand(() -> setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed, controller1.getRawButton(Constants.LEFT_TRIGGER)), this);
       default:
-        return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), this);
+        return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
     }
   }
 }
