@@ -17,7 +17,17 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
   public static final int JOYSTICKPORT = 0;
+
+  //Manip Sub
   public static final int TOWER_SPARKMAX_CAN_ID = 10;
 
+  //Arbitrary PID and FF values, will tune later
+  public static final double PID_kP = 0.2;
+  public static final int PID_kI = 0;
+  public static final double PID_kD = 0.1;
+  public static final double FF_kA = 0.0;
+  public static final double FF_kG = 20.0;
+  public static final double FF_kS = 19.0;
+  public static final double FF_kV = 1.0;
   
 }
