@@ -11,6 +11,10 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMax.IdleMode;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj.Joystick;
+
 //navx
 import com.kauailabs.navx.frc.AHRS;
 public class SUB_Drivetrain extends SubsystemBase {
@@ -29,6 +33,8 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   //navx
   private AHRS navx = new AHRS();
+
+  private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Drivetrain() {
     rightPrimary.setInverted(false);
@@ -104,5 +110,18 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public double getRoll(){
     return navx.getRoll();
+  }
+
+  public Command getDrivetrain(int drive){
+    switch(drive){
+      case 0:
+        return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), this);
+      case 1:
+        return new RunCommand(() -> setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), this);
+      case 2:
+        return new RunCommand(() -> setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS), controller1.getRawButton(Constants.LEFT_TRIGGER)), this);
+      default:
+        return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), this);
+    }
   }
 }

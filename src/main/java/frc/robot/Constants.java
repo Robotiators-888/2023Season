@@ -26,7 +26,7 @@ public final class Constants {
 
   public static final int LEFT_AXIS = 1;
   public static final int RIGHT_AXIS = 5;
-  public static final int RIGHT_ROTATION_AXIS = 4;
+  public static final int LEFT_TRIGGER = 2;
   public static final double DEAD_ZONE = 0.3;
 
   public static final double WHEEL_RADIUS = 3; // wheel radius in inches

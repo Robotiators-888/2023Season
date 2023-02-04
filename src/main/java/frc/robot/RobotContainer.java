@@ -6,11 +6,12 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CMD_AutoDrive;
 import frc.robot.subsystems.SUB_Drivetrain;
+import frc.robot.Constants;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,14 +39,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //create a lambda function to run the drive command when the joystick is moved without the CMd_TeleopDrive class
-      Command tankTeleopDrive = new RunCommand(() -> m_drivetrain.setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_AXIS)), m_drivetrain);
-      m_drivetrain.setDefaultCommand(tankTeleopDrive);
-
-    /*
-     * Command arcadeTeleopDrive = new RunCommand(() -> m_drivetrain.setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), controller1.getRawAxis(Constants.RIGHT_ROTOATION_AXIS)), m_drivetrain);
-     * m_drivetrain.setDefaultCommand(arcadeTeleopDrive);
-     */
+    // gives users the option to choose which drive mode they want to use from the SmartDashboard
+    int driveMode = (int) SmartDashboard.getNumber("Drive Mode", 0);
+    m_drivetrain.setDefaultCommand(m_drivetrain.getDrivetrain(driveMode));
   }
 
   /**
