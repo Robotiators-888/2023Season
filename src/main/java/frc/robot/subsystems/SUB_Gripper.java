@@ -23,7 +23,17 @@ public class SUB_Gripper extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
-  public void setMotors(double speed){
+  }
+
+  /**
+   * Sets speed of GripperSparkMax
+   * 
+   * @param speed double speed of motor [-1.0 to 1.0]
+   */
+  public void setMotors(double speed) {
     GripperSparkMax.set(speed);
   }
+
+
+
 }
