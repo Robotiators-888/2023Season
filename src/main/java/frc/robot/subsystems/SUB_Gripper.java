@@ -29,11 +29,10 @@ public class SUB_Gripper extends SubsystemBase {
    * 
    * @param speed double speed of motor [-1.0 to 1.0]
    */
-  public void speedSet(double speed) {
+  public void setMotors(double speed) {
     GripperSparkMax.set(speed);
   }
 
-  public void setMotors(double speed){
-    GripperSparkMax.set(speed);
-  }
+
+
 }
