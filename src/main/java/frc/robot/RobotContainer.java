@@ -40,7 +40,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // gives users the option to choose which drive mode they want to use from the SmartDashboard
-    int driveMode = (int) SmartDashboard.getNumber("Drive Mode", 0);
+    int driveMode = (int) SmartDashboard.getNumber("Drive Mode", 1);
     m_drivetrain.setDefaultCommand(m_drivetrain.getDrivetrain(driveMode));
   }
 

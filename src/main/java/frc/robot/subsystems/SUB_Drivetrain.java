@@ -49,6 +49,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setBrakeMode(boolean brake){
+    /* 
     if(brake){
         leftPrimary.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
@@ -60,6 +61,7 @@ public class SUB_Drivetrain extends SubsystemBase {
         rightPrimary.setIdleMode(IdleMode.kCoast);
         rightSecondary.setIdleMode(IdleMode.kCoast);
     }
+    */
   }
 
   @Override
