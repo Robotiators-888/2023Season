@@ -1,17 +1,19 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 
 public class SUB_Tower extends SubsystemBase {
     public CANSparkMax towerMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
-    public RelativeEncoder m_encoder;
+    public SparkMaxAbsoluteEncoder.Type m_encoder = SparkMaxAbsoluteEncoder.Type.kDutyCycle;
+    public AbsoluteEncoder throughBoreEncoder = towerMotor.getAbsoluteEncoder(m_encoder);
 
     //setpoint is arbitrary
     PIDController pid = new PIDController(Constants.PID_kP, Constants.PID_kI, Constants.PID_kD);
@@ -37,7 +39,6 @@ public class SUB_Tower extends SubsystemBase {
     }
 
     public double getRotations(){
-        m_encoder = towerMotor.getEncoder();
-        return m_encoder.getPosition();
+        return throughBoreEncoder.getPosition();
     }
 }
