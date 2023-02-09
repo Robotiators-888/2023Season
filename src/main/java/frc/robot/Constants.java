@@ -17,6 +17,6 @@ public final class Constants {
     public static final int kDriverControllerPort = 0;
   }
 
-  public static final int GRIPPER_SPARKMAX_CANID = 12; 
+  public static final int GRIPPER_SPARKMAX_CANID = 11; 
 
 }
