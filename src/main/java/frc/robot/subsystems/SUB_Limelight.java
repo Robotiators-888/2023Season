@@ -63,6 +63,7 @@ public class SUB_Limelight extends SubsystemBase{
     }
 
     public void periodic() {
+        //Sets all the method calls to the SmartDashboard
         SmartDashboard.putNumber("LimelightY", this.getY());
         SmartDashboard.putBoolean("LimeHasTarget", this.getTv());
         SmartDashboard.putNumber("LimelightX", this.getX());
