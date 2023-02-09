@@ -29,6 +29,7 @@ public class SUB_Tower extends SubsystemBase {
     ArmFeedforward feedforward = new ArmFeedforward(Constants.FF_kS, Constants.FF_kG, Constants.FF_kV, Constants.FF_kA);
     
     public SUB_Tower(){
+        m_encoder.setPosition(0);
         setLimits();
     }
 
@@ -43,7 +44,7 @@ public class SUB_Tower extends SubsystemBase {
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     }
 
-    public void towerMove(double speed) {
+    public void armMove(double speed) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
         armMotor.set(speed);
     }

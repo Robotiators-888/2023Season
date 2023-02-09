@@ -26,7 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Joystick controller = new Joystick(Constants.JOYSTICKPORT);
-  public SUB_Tower manip;
+  public SUB_Tower manip = new SUB_Tower();
   
   JoystickButton C_aButton = new JoystickButton(controller, 3);
   JoystickButton C_bButton = new JoystickButton(controller, 4);
@@ -40,10 +40,10 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    C_aButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(0.1);}, manip));
-    C_bButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(-0.1);}, manip));
-  
-    configureBindings();
+    //C_aButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(0.1);}, manip));
+    //C_bButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(-0.1);}, manip));
+
+    manip.setDefaultCommand(new RunCommand(() -> {manip.armMove(controller.getRawAxis(1)*0.5);}, manip));
   }
 
   /**
