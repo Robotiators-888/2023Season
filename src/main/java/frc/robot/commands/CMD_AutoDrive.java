@@ -29,7 +29,8 @@ public class CMD_AutoDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.setBrakeMode(true);
+    // Change drivetrain as needed
+    drivetrain.setMotorsCurvature(0,0,false);
   }
 
   // Make this return true when this Command no longer needs to run execute()
