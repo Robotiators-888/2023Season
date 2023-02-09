@@ -6,19 +6,21 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
-import com.revrobotics.CANSparkMax.IdleMode;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 //navx
 // import com.kauailabs.navx.frc.AHRS;
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
+  // Gets the motors
   private CANSparkMax leftPrimary = new CANSparkMax(Constants.ID_LEFT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
   private CANSparkMax leftSecondary = new CANSparkMax(Constants.ID_LEFT_SECONDARY, CANSparkMaxLowLevel.MotorType.kBrushless);
   private CANSparkMax rightPrimary = new CANSparkMax(Constants.ID_RIGHT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -64,11 +66,12 @@ public class SUB_Drivetrain extends SubsystemBase {
     */
   }
 
-  @Override
-  public void periodic() {
+  public void putNumber(int num) {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Drive Mode", num); 
   }
 
+  // The different drivetrains
   public void setMotorsArcade(double xSpeed,double zRotation){
     driveTrain.arcadeDrive(xSpeed, zRotation);
   }
@@ -81,17 +84,13 @@ public class SUB_Drivetrain extends SubsystemBase {
     driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
+  // Encoders getting position
   public double getLeftEncoder(){
     return leftPrimary.getEncoder().getPosition();
   }
 
   public double getRightEncoder(){
     return rightPrimary.getEncoder().getPosition();
-  }
-
-  public void resetEncoders(){
-    leftPrimary.getEncoder().setPosition(0);
-    rightPrimary.getEncoder().setPosition(0);
   }
 
   // public double getAngle(){
@@ -114,18 +113,10 @@ public class SUB_Drivetrain extends SubsystemBase {
   //   return navx.getRoll();
   // }
 
-  public Command getDrivetrain(int drive){
-    double speed = Constants.TELESPEED;
-    switch(drive){
-      case 0:
-    
-    return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS)*speed*-1, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed*-1), this);
-      case 1:
-        return new RunCommand(() -> setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
-      case 2:
-        return new RunCommand(() -> setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed, controller1.getRawButton(Constants.LEFT_TRIGGER)), this);
-      default:
-        return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
-    }
+  // Gets the number from the smart dashboard to change drive
+  public int driveMode(){
+    return (int) SmartDashboard.getNumber("Drive Mode", 0);
   }
+
+  // Switches it?
 }

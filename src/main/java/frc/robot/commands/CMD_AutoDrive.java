@@ -22,7 +22,7 @@ public class CMD_AutoDrive extends CommandBase {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    //Gets speeds of the left and right sides plus the overall speed
+    // Go forward at 0.45 speed
     drivetrain.setMotorsArcade(Constants.AUTO_SPEED, 0);
   }
 

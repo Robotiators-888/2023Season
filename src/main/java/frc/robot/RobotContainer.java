@@ -5,13 +5,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.CMD_AutoDrive;
 import frc.robot.subsystems.SUB_Drivetrain;
-import frc.robot.Constants;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -21,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT);
+  private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT); // 
   private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -39,9 +40,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // gives users the option to choose which drive mode they want to use from the SmartDashboard
-    int driveMode = (int) SmartDashboard.getNumber("Drive Mode", 1);
-    m_drivetrain.setDefaultCommand(m_drivetrain.getDrivetrain(driveMode));
+    // Drive
+    double speed = Constants.TELESPEED;
+    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed, controller1.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
   }
 
   /**

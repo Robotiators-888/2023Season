@@ -34,8 +34,8 @@ public final class Constants {
  
   public static final int DRIVER_CONTROLLER = 0;
 
-  public static final double AUTO_SPEED = 0.2; 
-  public static final double AUTO_TIME_SECS = 5;
+  public static final double AUTO_SPEED = 0.45; 
+  public static final double AUTO_TIME_SECS = 15;
 
   public static final double TELESPEED = 0.45;
 }
