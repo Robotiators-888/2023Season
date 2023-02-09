@@ -24,9 +24,14 @@ public final class Constants {
     public static final double kArmManualScale = 0.5;
   }
   public static final int ID_LEFT_PRIMARY = 20;
-  public static final int ID_LEFT_SECONDARY = 21;
-  public static final int ID_RIGHT_PRIMARY = 22;
-  public static final int ID_RIGHT_SECONDARY = 23;
+  public static final int ID_LEFT_SECONDARY = 22;
+  public static final int ID_RIGHT_PRIMARY = 23;
+  public static final int ID_RIGHT_SECONDARY = 25;
 
   public static final int JoystickPort = 0;
+
+  public static double xDistance = 0;
+  public static double yDistance = 0;
+  public static double offset = 0;
+  public static double distancedistance = 0;
 }
