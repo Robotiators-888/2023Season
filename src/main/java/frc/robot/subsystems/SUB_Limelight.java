@@ -39,7 +39,7 @@ public class SUB_Limelight extends SubsystemBase{
         double h1 = 35.625;
         double h2 = 24.25;
         // was -3.47935054
-        double a1 = Math.toRadians(-2); //mounting angle, radians
+        double a1 = Math.toRadians(0); //mounting angle, radians
         double a2 = Math.toRadians(this.getY());
 
         double distance = (h2 - h1)/Math.tan(a1 + a2);
