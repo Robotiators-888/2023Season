@@ -40,8 +40,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    C_aButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(0.5);}, manip));
-    C_bButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(-0.5);}, manip));
+    C_aButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(0.1);}, manip));
+    C_bButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(-0.1);}, manip));
   
     configureBindings();
   }

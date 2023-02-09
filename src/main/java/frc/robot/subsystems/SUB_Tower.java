@@ -40,7 +40,7 @@ public class SUB_Tower extends SubsystemBase {
 
     public void towerMove(double speed) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
-        towerMotor.setIdleMode(IdleMode.kBrake);
+        towerMotor.set(speed);
     }
 
     public double getRotations(){
