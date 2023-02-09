@@ -1,21 +1,23 @@
 package frc.robot.subsystems;
 
+import java.time.Period;
+
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.ArmFeedforward;
 
 public class SUB_Tower extends SubsystemBase {
     //set motors
-    public CANSparkMax towerMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
     //declare encoders
-    public SparkMaxAbsoluteEncoder.Type m_encoder = SparkMaxAbsoluteEncoder.Type.kDutyCycle;
-    public AbsoluteEncoder throughBoreEncoder = towerMotor.getAbsoluteEncoder(m_encoder);
+    public RelativeEncoder m_encoder = armMotor.getEncoder();
 
     //declares and sets PID, setpoint is arbitrary
     PIDController pid = new PIDController(Constants.PID_kP, Constants.PID_kI, Constants.PID_kD);
@@ -26,25 +28,32 @@ public class SUB_Tower extends SubsystemBase {
     // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
     ArmFeedforward feedforward = new ArmFeedforward(Constants.FF_kS, Constants.FF_kG, Constants.FF_kV, Constants.FF_kA);
     
+    public SUB_Tower(){
+        setLimits();
+    }
 
     public void setLimits(){
         //set soft limits and current limits for how far the manip can move
-        towerMotor.setSmartCurrentLimit(0, 20);
+        armMotor.setSmartCurrentLimit(60, 20);
         
-        towerMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-        towerMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+        armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+        armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
 
-        towerMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 25);
-        towerMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+        armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 100);
+        armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     }
 
     public void towerMove(double speed) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
-        towerMotor.set(speed);
+        armMotor.set(speed);
     }
 
     public double getRotations(){
         //gets position
-        return throughBoreEncoder.getPosition();
+        return m_encoder.getPosition();
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("Current Rotations: ", getRotations());
     }
 }
