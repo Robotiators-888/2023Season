@@ -43,7 +43,8 @@ public class RobotContainer {
     //C_aButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(0.1);}, manip));
     //C_bButton.toggleOnTrue(new RunCommand(() -> {manip.towerMove(-0.1);}, manip));
 
-    manip.setDefaultCommand(new RunCommand(() -> {manip.armMove(controller.getRawAxis(1)*0.5);}, manip));
+    //right joystick moves arm, max 0.5 speed
+    manip.setDefaultCommand(new RunCommand(() -> {manip.armMove(controller.getRawAxis(5)*0.5);}, manip));
   }
 
   /**
