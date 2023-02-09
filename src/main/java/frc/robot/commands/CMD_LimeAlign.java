@@ -30,6 +30,7 @@ public class CMD_LimeAlign extends CommandBase {
         }
         SmartDashboard.putBoolean("limeAlign", true);
         System.out.println("limealign: true");
+        System.out.println("x-offset: " + limelight.getX());
     }
        
         
@@ -37,7 +38,6 @@ public class CMD_LimeAlign extends CommandBase {
     public boolean isFinished(){
         // If we are within 0.0085 degrees of the target, we will stop
         if (Math.abs(limelight.getX()) <= 0.009){//  if no target found: limelight.getX() = 0.0
-            drive.setBrakeMode(true);
             return true;
         }else{
             return false;

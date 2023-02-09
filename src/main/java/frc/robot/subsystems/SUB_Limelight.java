@@ -67,7 +67,7 @@ public class SUB_Limelight extends SubsystemBase{
         SmartDashboard.putBoolean("LimeHasTarget", this.getTv());
         SmartDashboard.putNumber("LimelightX", this.getX());
         SmartDashboard.putNumber("Distance", this.getDistance());
-        SmartDashboard.putNumber("a1", 1.4);
+        SmartDashboard.putNumber("a1", Math.toRadians(-2));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
     }
