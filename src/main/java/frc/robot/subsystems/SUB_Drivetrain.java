@@ -119,7 +119,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     switch(drive){
       case 0:
     
-    return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
+    return new RunCommand(() -> setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS)*speed*-1, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed*-1), this);
       case 1:
         return new RunCommand(() -> setMotorsTank(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed), this);
       case 2:
