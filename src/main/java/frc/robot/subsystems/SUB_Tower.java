@@ -30,7 +30,7 @@ public class SUB_Tower extends SubsystemBase {
     public void setLimits(){
         //set soft limits and current limits for how far the manip can move
         towerMotor.setSmartCurrentLimit(0, 20);
-
+        
         towerMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
         towerMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
 
