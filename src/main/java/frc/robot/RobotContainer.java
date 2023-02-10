@@ -28,9 +28,8 @@ public class RobotContainer {
   private final SUB_Gripper gripper = new SUB_Gripper();
 
   private Joystick controller1 = new Joystick(0);
-  JoystickButton aButton = new JoystickButton(controller1, 0);
-  JoystickButton rBumper = new JoystickButton(controller1, 7);
-  JoystickButton lBumper = new JoystickButton(controller1, 8);
+  JoystickButton rBumper = new JoystickButton(controller1, 5);
+  JoystickButton lBumper = new JoystickButton(controller1, 6);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
