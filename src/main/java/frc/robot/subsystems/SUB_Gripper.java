@@ -15,13 +15,11 @@ public class SUB_Gripper extends SubsystemBase {
 
   /** Creates a new GripperSubsystem. */
   public SUB_Gripper() {
-
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
   }
 
   /**

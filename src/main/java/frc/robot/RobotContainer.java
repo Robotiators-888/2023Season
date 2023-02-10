@@ -51,8 +51,10 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-   // White held down, run
+   //While held this will open the gripper using a run command that executes the mehtod manually
    lBumper.toggleOnTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+
+   //While held this will close the gripper using a run command that executes the mehtod manually
    rBumper.toggleOnTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
    
   }
