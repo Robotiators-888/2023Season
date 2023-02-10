@@ -31,7 +31,6 @@ public class RobotContainer {
 
   
   JoystickButton Ybutton = new JoystickButton(controller, 4);
-  JoystickButton Abutton = new JoystickButton(controller, 2);
 
 
   // The robot's subsystems and commands are defined here...
