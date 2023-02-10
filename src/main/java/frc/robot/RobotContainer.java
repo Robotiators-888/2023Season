@@ -6,12 +6,12 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.CMD_GripperRun;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SUB_Gripper;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -29,6 +29,9 @@ public class RobotContainer {
 
   private Joystick controller1 = new Joystick(0);
   JoystickButton aButton = new JoystickButton(controller1, 0);
+  JoystickButton rBumper = new JoystickButton(controller1, 7);
+  JoystickButton lBumper = new JoystickButton(controller1, 8);
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
@@ -49,8 +52,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
    // White held down, run
-   aButton.whileTrue(new CMD_GripperRun(gripper));
-
+   lBumper.toggleOnTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+   rBumper.toggleOnTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
    
   }
 
