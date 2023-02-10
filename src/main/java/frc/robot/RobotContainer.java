@@ -54,8 +54,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    //tower
+    //Creates a default command for runing the tower up using the left trigger
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(5)*0.5);}, tower));
+
+    //Creates a default command for runing the tower down using the right trigger
+
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
