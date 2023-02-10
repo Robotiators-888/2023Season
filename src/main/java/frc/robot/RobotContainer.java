@@ -52,7 +52,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //Creates a default command for runing the tower up using the left trigger
-    tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(5)*0.5);}, tower));
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(4)*0.5);}, tower));
+     tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(3)*-0.5);}, tower));
 
     //Creates a default command for runing the tower down using the right trigger
 
