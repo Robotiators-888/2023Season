@@ -20,6 +20,7 @@ public final class Constants {
 
   //Manip Sub
   public static final int TOWER_SPARKMAX_CAN_ID = 10;
+  public static final int GRIPPER_SPARKMAX_CAN_ID = 11;
 
   //Arbitrary PID and FF values, will tune later
   public static final double PID_kP = 0.2;
