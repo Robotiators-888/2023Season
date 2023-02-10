@@ -29,8 +29,8 @@ public class RobotContainer {
   
   public SUB_Tower tower = new SUB_Tower();
   
-  JoystickButton C_aButton = new JoystickButton(controller, 3);
-  JoystickButton C_bButton = new JoystickButton(controller, 4);
+  JoystickButton C_aButton = new JoystickButton(controller, 1);
+  JoystickButton C_bButton = new JoystickButton(controller, 2);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
