@@ -26,13 +26,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Joystick controller = new Joystick(Constants.JOYSTICKPORT);
-  public SUB_Grabber grabber;
-  public SUB_Tower tower;
+  
+  public SUB_Grabber grabber = new SUB_Grabber();
+  public SUB_Tower tower = new SUB_Tower();
   
   JoystickButton C_aButton = new JoystickButton(controller, 3);
   JoystickButton C_bButton = new JoystickButton(controller, 4);
-
-
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -41,12 +40,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    grabber.setDefaultCommand(new RunCommand(() -> {grabber.grabberMove(0);},grabber));
-    C_aButton.onTrue(new RunCommand(() -> {grabber.grabberMove(0.2);}, grabber));
-    C_bButton.onTrue(new RunCommand(() -> {grabber.grabberMove(-0.2);}, grabber));
     
-    tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(5)*0.5);}, tower));
-
   
     configureBindings();
   }
@@ -61,6 +55,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    //grabber
+    grabber.setDefaultCommand(new RunCommand(() -> {grabber.grabberMove(0);},grabber));
+    C_aButton.onTrue(new RunCommand(() -> {grabber.grabberMove(0.2);}, grabber));
+    C_bButton.onTrue(new RunCommand(() -> {grabber.grabberMove(-0.2);}, grabber));
+    
+    //tower
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(5)*0.5);}, tower));
+
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     
 
