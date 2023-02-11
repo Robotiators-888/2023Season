@@ -29,6 +29,12 @@ public class RobotContainer {
   
   public SUB_Tower tower = new SUB_Tower();
   
+  private Joystick controller1 = new Joystick(0);
+  JoystickButton rBumper = new JoystickButton(controller1, 5);
+  JoystickButton lBumper = new JoystickButton(controller1, 6);
+  JoystickButton xButton = new JoystickButton(controller1, 3);
+  
+
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -52,8 +58,20 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //Creates a default command for runing the tower up using the left trigger
-    tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(4)*0.5);}, tower));
-     tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(3)*-0.5);}, tower));
+    //tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(5)*-0.5);}, tower));
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
+
+    //tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(0);},tower));
+
+   //While held this will open the gripper using a run command that executes the mehtod manually
+   lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);}, tower));
+
+   //While held this will close the gripper using a run command that executes the mehtod manually
+   rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
+    
+   // reset encoder
+   xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
+    //tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(3)*0.5;}, tower));
 
     //Creates a default command for runing the tower down using the right trigger
 
