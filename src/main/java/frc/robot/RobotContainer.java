@@ -23,6 +23,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.DataLogManager;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -31,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SUB_Gripper gripper = new SUB_Gripper();
@@ -44,6 +47,7 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the trigger bindings
 
 
@@ -60,11 +64,13 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
+
    //While held this will open the gripper using a run command that executes the mehtod manually
-   lBumper.toggleOnTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+   lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
 
    //While held this will close the gripper using a run command that executes the mehtod manually
-   rBumper.toggleOnTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
+   rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
    
   }
 

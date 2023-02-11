@@ -7,12 +7,19 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class SUB_Gripper extends SubsystemBase {
 
   CANSparkMax GripperSparkMax = new CANSparkMax(Constants.GRIPPER_SPARKMAX_CANID, MotorType.kBrushless);
+
+  DataLog log = DataLogManager.getLog();
+  DoubleLogEntry gripperMotorOutput = new DoubleLogEntry(log, "/gripper/motorOutput");
 
   /** Creates a new GripperSubsystem. */
   public SUB_Gripper() {
@@ -21,6 +28,8 @@ public class SUB_Gripper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    gripperMotorOutput.append(GripperSparkMax.get());
+
   }
 
   /**
@@ -30,7 +39,10 @@ public class SUB_Gripper extends SubsystemBase {
    */
   public void setMotors(double speed) {
     GripperSparkMax.set(speed);
+    
   }
+
+
 
 
 
