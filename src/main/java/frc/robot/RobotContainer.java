@@ -41,8 +41,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Drive
-    double speed = Constants.TELESPEED;
-    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS)*speed, controller1.getRawAxis(Constants.RIGHT_AXIS)*speed, controller1.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS), 
+        controller1.getRawAxis(Constants.RIGHT_AXIS), controller1.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
   }
 
   /**
