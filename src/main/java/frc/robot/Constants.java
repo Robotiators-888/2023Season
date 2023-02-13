@@ -23,11 +23,11 @@ public final class Constants {
   public static final int GRIPPER_SPARKMAX_CAN_ID = 11;
 
   //Arbitrary PID and FF values, will tune later
-  public static final double PID_kP = 0.2;
+  public static final double PID_kP = 0.227;//0.227 0-4v
   public static final int PID_kI = 0;
   public static final double PID_kD = 0.1;
   public static final double FF_kA = 0.0;
-  public static final double FF_kG = .75; // was 1
+  public static final double FF_kG = .73; // was 1
   public static final double FF_kS = 19.0;
   public static final double FF_kV = 1.0; 
   public static final double FF_Velocity = 1.0;

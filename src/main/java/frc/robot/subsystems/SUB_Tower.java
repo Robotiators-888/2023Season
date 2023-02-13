@@ -34,7 +34,7 @@ public class SUB_Tower extends SubsystemBase {
     double lbsArm = 30;
     double gravitional_force_in_Kg = (lbsArm*4.44822162)/9.8;
     // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
-    ArmFeedforward feedforward = new ArmFeedforward(Constants.FF_kS, Constants.FF_kG, Constants.FF_kV, Constants.FF_kA);
+    //ArmFeedforward feedforward = new ArmFeedforward(Constants.FF_kS, Constants.FF_kG, Constants.FF_kV, Constants.FF_kA);
     
     public SUB_Tower(){
         resetEncoder();
@@ -50,7 +50,7 @@ public class SUB_Tower extends SubsystemBase {
         armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
         armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
 
-        armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 100);
+        armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 130);
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     }
 
@@ -85,7 +85,7 @@ public class SUB_Tower extends SubsystemBase {
     }
 
     public double  calculateDegreesRotation(){
-        double horizontalDegrees = 33.75-2;
+        double horizontalDegrees = 31.75;
         double encoderClicksToDegrees = 1.875;
         return (encoderClicksToDegrees*getRotations())-horizontalDegrees;
     }
