@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 
 /**
@@ -34,6 +36,16 @@ public class RobotContainer {
   private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem();
 
   private XboxController m_driveController = new XboxController(Constants.OIConstants.kDriverController); 
+  private Joystick controller = new Joystick(0);
+
+  JoystickButton c_aButton = new JoystickButton(controller, 1);
+  JoystickButton c_bButton = new JoystickButton(controller, 2);
+  JoystickButton c_xButton = new JoystickButton(controller, 4);
+  JoystickButton c_yButton = new JoystickButton(controller, 3);
+  JoystickButton c_lBumper = new JoystickButton(controller, 5);
+  JoystickButton c_rBumper = new JoystickButton(controller, 6);
+
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -52,24 +64,22 @@ public class RobotContainer {
     m_drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         m_drivetrain.driveArcade(
-          MathUtil.applyDeadband(- m_driveController.getLeftY(), Constants.OIConstants.kDriveDeadband),
-          MathUtil.applyDeadband(m_driveController.getRightX()*Constants.Drivetrain.kTurningScale, Constants.OIConstants.kDriveDeadband))
+          MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OIConstants.kDriveDeadband),
+          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OIConstants.kDriveDeadband))
       , m_drivetrain)
     );
 
     //set up gripper open/close
-    new JoystickButton(m_driveController, XboxController.Button.kRightBumper.value)
-      .onTrue(new InstantCommand(() -> m_gripper.openGripper()))
-      .onFalse(new InstantCommand(() -> m_gripper.closeGripper()));
+    c_rBumper.onTrue(new InstantCommand(() -> m_gripper.openGripper())).onFalse(new InstantCommand(() -> m_gripper.closeGripper()));
 
     //set up arm preset positions
-    new JoystickButton(m_driveController, XboxController.Button.kA.value)
+    c_aButton
       .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kHomePosition, m_gripper)));
-    new JoystickButton(m_driveController, XboxController.Button.kX.value)
+    c_bButton      
       .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kScoringPosition, m_gripper)));
-    new JoystickButton(m_driveController, XboxController.Button.kY.value)
+   c_yButton
       .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kIntakePosition, m_gripper)));
-    new JoystickButton(m_driveController, XboxController.Button.kB.value)
+    c_xButton
       .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kFeederPosition, m_gripper)));
 
     //set up arm manual and auto functions
@@ -79,10 +89,10 @@ public class RobotContainer {
       , m_arm)
     );
     new Trigger(() -> 
-      Math.abs(m_driveController.getRightTriggerAxis() - m_driveController.getLeftTriggerAxis()) > Constants.OIConstants.kArmManualDeadband
+      Math.abs(controller.getRawAxis(5) - controller.getRawAxis(2)) > Constants.OIConstants.kArmManualDeadband
       ).whileTrue(new RunCommand(
         () ->
-          m_arm.runManual((m_driveController.getRightTriggerAxis() - m_driveController.getLeftTriggerAxis()) * Constants.OIConstants.kArmManualScale)
+          m_arm.runManual((controller.getRawAxis(5) - controller.getRawAxis(2)) * Constants.OIConstants.kArmManualScale)
         , m_arm));
   }
 
