@@ -27,9 +27,10 @@ public final class Constants {
   public static final int LEFT_AXIS = 1;
   public static final int RIGHT_X_AXIS = 4;
   public static final int RIGHT_Y_AXIS = 5;
-
   public static final int LEFT_TRIGGER = 2;
+
   public static final double DEAD_ZONE = 0.3;
+  public static final double TURNING_SCALE = 0.5;
 
   public static final double WHEEL_RADIUS = 3; // wheel radius in inches
   public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
