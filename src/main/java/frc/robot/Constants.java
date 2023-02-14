@@ -27,7 +27,7 @@ public final class Constants {
   public static final int PID_kI = 0;
   public static final double PID_kD = 0.1;
   public static final double FF_kA = 0.0;
-  public static final double FF_kG = .73; // was 1
+  public static final double FF_kG = .73; //amount of volts to Overcome gravity on the arm, was 1
   public static final double FF_kS = 19.0;
   public static final double FF_kV = 1.0; 
   public static final double FF_Velocity = 1.0;

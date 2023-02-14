@@ -39,10 +39,11 @@ public class SUB_Tower extends SubsystemBase {
     public SUB_Tower(){
         resetEncoder();
         setLimits();
-        armMotor.setIdleMode(IdleMode.kBrake);
-        armMotor.setOpenLoopRampRate(0.6);
+        armMotor.setIdleMode(IdleMode.kBrake); // sets brake mode 
+        armMotor.setOpenLoopRampRate(0.6); // motor takes 0.6 secs to reach desired power
     }
 
+    // set power and position limits
     public void setLimits(){
         //set soft limits and current limits for how far the manip can move
         armMotor.setSmartCurrentLimit(40, 20);
@@ -50,10 +51,13 @@ public class SUB_Tower extends SubsystemBase {
         armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
         armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
 
+        // stops motor at 130 encoder clicks, (touching the ground)
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 130);
+        // stops motor at 0 encoder clicks when reversing, (touching the robot)
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     }
 
+    // not used
     public void armMove(double speed) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
         armMotor.set(speed);
@@ -63,33 +67,37 @@ public class SUB_Tower extends SubsystemBase {
     
 
     public void periodic() {
-        //SmartDashboard.putNumber("Current Rotations: ", getRotations());
         towerMotorOutput.append(armMotor.get());
         towerEncoderRotations.append(getRotations());
         towerDegreesRotations.append(calculateDegreesRotation());
-        SmartDashboard.putNumber("degreesRotation", calculateDegreesRotation());
-        SmartDashboard.putNumber("degreesRotationCosineAngle",Constants.FF_kG*Math.cos(Math.toRadians(calculateDegreesRotation())) );
-        SmartDashboard.putNumber("TowerMotorCurrent", armMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Arm Current Rotations: ", getRotations());
+        SmartDashboard.putNumber("Arm degreesRotation", calculateDegreesRotation());
+        SmartDashboard.putNumber("Arm degreesRotationCosineAngle",Constants.FF_kG*Math.cos(Math.toRadians(calculateDegreesRotation())) );
+        SmartDashboard.putNumber("Arm TowerMotorCurrent", armMotor.getOutputCurrent());
     }
 
+    // balances the arm using feedforward, then adds on volts to move the arm.
     public void armMoveVoltage(double volts) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
-        armMotor.setVoltage(volts+getAutoBalanceVolts());
+        armMotor.setVoltage(volts+getAutoBalanceVolts());// sets voltage of arm -12 to 12 volts
         SmartDashboard.putNumber("TowerMotorVolts", volts+getAutoBalanceVolts());
         //System.out.println("feedforward: "+feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
     }
 
+    // calculates volts to counteract gravity based on position of the arm
     public double getAutoBalanceVolts(){
-        
+        // Math.cos(theta) as more downward force increases near 0,180 degrees
        return (Constants.FF_kG*Math.cos(Math.toRadians(calculateDegreesRotation())));
     }
 
-    public double  calculateDegreesRotation(){
+    // converts encoder clicks of arm into arms rotation in degrees
+    public double calculateDegreesRotation(){
         double horizontalDegrees = 31.75;
         double encoderClicksToDegrees = 1.875;
         return (encoderClicksToDegrees*getRotations())-horizontalDegrees;
     }
 
+    // get arm encoder clicks
     public double getRotations(){
         //gets position
         return m_encoder.getPosition();

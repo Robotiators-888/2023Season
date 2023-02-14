@@ -26,14 +26,14 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private Joystick controller = new Joystick(Constants.JOYSTICKPORT);
-  
+
   public SUB_Tower tower = new SUB_Tower();
-  
+
   private Joystick controller1 = new Joystick(0);
   JoystickButton rBumper = new JoystickButton(controller1, 5);
   JoystickButton lBumper = new JoystickButton(controller1, 6);
   JoystickButton xButton = new JoystickButton(controller1, 3);
-  
+
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -42,8 +42,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
-    
-  
+
+
     configureBindings();
   }
 
@@ -58,26 +58,20 @@ public class RobotContainer {
    */
   private void configureBindings() {
     //Creates a default command for runing the tower up using the left trigger
-    //tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(5)*-0.5);}, tower));
+
+    // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
-
-    //tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(0);},tower));
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-   lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);}, tower));
-
-   //While held this will close the gripper using a run command that executes the mehtod manually
-   rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
-    
-   // reset encoder
-   xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
-    //tower.setDefaultCommand(new RunCommand(() -> {tower.armMove(controller.getRawAxis(3)*0.5;}, tower));
+    // buttons, move arm forward and backward
+    lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
+    rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
+    //resets arm encoder
+    xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
 
     //Creates a default command for runing the tower down using the right trigger
 
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
+
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
