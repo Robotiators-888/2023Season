@@ -35,7 +35,7 @@ public class RobotContainer {
   private final ArmSubsystem m_arm = new ArmSubsystem();
   private final DrivetrainSubsystem m_drivetrain = new DrivetrainSubsystem();
 
-  private XboxController m_driveController = new XboxController(Constants.OIConstants.kDriverController); 
+  //private XboxController m_driveController = new XboxController(Constants.OIConstants.kDriverController); 
   private Joystick controller = new Joystick(0);
 
   JoystickButton c_aButton = new JoystickButton(controller, 1);
