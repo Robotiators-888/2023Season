@@ -70,7 +70,9 @@ public class RobotContainer {
     );
 
     //set up gripper open/close
-    c_rBumper.onTrue(new InstantCommand(() -> m_gripper.openGripper())).onFalse(new InstantCommand(() -> m_gripper.closeGripper()));
+    c_rBumper
+    .onTrue(new InstantCommand(() -> m_gripper.openGripper()))
+    .onFalse(new InstantCommand(() -> m_gripper.closeGripper()));
 
     //set up arm preset positions
     c_aButton
