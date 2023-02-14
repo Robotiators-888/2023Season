@@ -25,7 +25,9 @@ public final class Constants {
   public static final int JOYSTICK_PORT = 0;
 
   public static final int LEFT_AXIS = 1;
-  public static final int RIGHT_AXIS = 5;
+  public static final int RIGHT_X_AXIS = 4;
+  public static final int RIGHT_Y_AXIS = 5;
+
   public static final int LEFT_TRIGGER = 2;
   public static final double DEAD_ZONE = 0.3;
 

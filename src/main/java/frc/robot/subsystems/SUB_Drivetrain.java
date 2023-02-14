@@ -44,10 +44,12 @@ public class SUB_Drivetrain extends SubsystemBase {
     leftPrimary.setInverted(true);
     leftSecondary.setInverted(true);
 
+
     leftPrimary.setSmartCurrentLimit(60);
     leftSecondary.setSmartCurrentLimit(60);
     rightPrimary.setSmartCurrentLimit(60);
     rightSecondary.setSmartCurrentLimit(60);
+    
   }
 
   public void setBrakeMode(boolean brake){

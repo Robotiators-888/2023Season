@@ -41,8 +41,11 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Drive
-    m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS), 
-        controller1.getRawAxis(Constants.RIGHT_AXIS), controller1.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
+   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS), 
+    //    controller1.getRawAxis(Constants.RIGHT_X_AXIS), controller1.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
+
+    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), 
+        controller1.getRawAxis(Constants.RIGHT_X_AXIS)), m_drivetrain));
   }
 
   /**
