@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   private CANSparkMax m_frontLeftMotor;
@@ -52,10 +53,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
     double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
     double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
 
+
     m_frontLeftMotor.set(left);
     m_frontRightMotor.set(right);
     m_rearLeftMotor.set(left);
     m_rearRightMotor.set(right);
+
   }
 
   @Override

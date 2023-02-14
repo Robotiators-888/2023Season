@@ -12,12 +12,14 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmSubsystem extends SubsystemBase {
   private CANSparkMax m_motor;
@@ -35,7 +37,10 @@ public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   public ArmSubsystem() {
     m_motor = new CANSparkMax(Constants.Arm.kArmCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+    m_motor.restoreFactoryDefaults();
     m_motor.setInverted(false);
+    m_motor.setIdleMode(IdleMode.kBrake);
+
     m_motor.setSmartCurrentLimit(Constants.Arm.kCurrentLimit);
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
     m_motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -100,7 +105,19 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() { // This method will be called once per scheduler run
-    
+    SmartDashboard.putNumber("setpoint", m_setpoint);
+    SmartDashboard.putNumber("time", m_timer.get());
+    SmartDashboard.putNumber("feedfoward", feedforward);
+    SmartDashboard.putNumber("manual value", manualValue);
+    SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition());
+    SmartDashboard.putNumber("encoder velocity", m_encoder.getVelocity());
+    SmartDashboard.putNumber("encoder counts/rev", m_encoder.getCountsPerRevolution());
+
+
+
+
+
+
   }
 
   @Override

@@ -8,6 +8,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
@@ -66,9 +67,9 @@ public class RobotContainer {
         m_drivetrain.driveArcade(
           MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OIConstants.kDriveDeadband),
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OIConstants.kDriveDeadband))
-      , m_drivetrain)
+  , m_drivetrain)
     );
-
+     
     //set up gripper open/close
     c_rBumper
     .onTrue(new InstantCommand(() -> m_gripper.openGripper()))
@@ -91,10 +92,11 @@ public class RobotContainer {
       , m_arm)
     );
     new Trigger(() -> 
-      Math.abs(controller.getRawAxis(5) - controller.getRawAxis(2)) > Constants.OIConstants.kArmManualDeadband
+      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OIConstants.kArmManualDeadband
       ).whileTrue(new RunCommand(
         () ->
-          m_arm.runManual((controller.getRawAxis(5) - controller.getRawAxis(2)) * Constants.OIConstants.kArmManualScale)
+          m_arm.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
+          )) * Constants.OIConstants.kArmManualScale)
         , m_arm));
   }
 
