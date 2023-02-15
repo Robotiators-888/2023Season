@@ -68,10 +68,10 @@ public class SUB_Drivetrain extends SubsystemBase {
     */
   }
 
-  public void putNumber(int num) {
-    // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Drive Mode", num); 
-  }
+  // public void putNumber(int num) {
+  //   // This method will be called once per scheduler run
+  //   SmartDashboard.putNumber("Drive Mode", num); 
+  // }
 
   // The different drivetrains
   public void setMotorsArcade(double xSpeed,double zRotation){
@@ -116,9 +116,9 @@ public class SUB_Drivetrain extends SubsystemBase {
   // }
 
   // Gets the number from the smart dashboard to change drive
-  public int driveMode(){
-    return (int) SmartDashboard.getNumber("Drive Mode", 0);
-  }
+  // public int driveMode(){
+  //   return (int) SmartDashboard.getNumber("Drive Mode", 0);
+  // }
 
   // Switches it?
 }
