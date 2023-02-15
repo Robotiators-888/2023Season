@@ -49,7 +49,7 @@ public final class Constants {
         public static final double kSoftLimitReverse = 0.0;
         public static final double kSoftLimitForward = 4.6;
 
-        public static final double kArmGearRatio = 1 / (48 * 4) * 2 * Math.PI; //multiply SM value by this number and get arm position in radians
+        public static final double kArmGearRatio = 1.0 / (48.0 * 4.0) * 2.0 * Math.PI; //multiply SM value by this number and get arm position in radians
         public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
         public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12/3.09577776, 0.0);
         public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
