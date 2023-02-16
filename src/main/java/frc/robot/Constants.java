@@ -16,4 +16,21 @@ public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
   }
+  public static final int JOYSTICKPORT = 0;
+
+  //Manip Sub
+  public static final int TOWER_SPARKMAX_CAN_ID = 10;
+  public static final int GRIPPER_SPARKMAX_CAN_ID = 11;
+
+  //Arbitrary PID and FF values, will tune later
+  public static final double PID_kP = 0.227;//0.227 0-4v
+  public static final int PID_kI = 0;
+  public static final double PID_kD = 0.1;
+  public static final double FF_kA = 0.0;
+  public static final double FF_kG = .73; //amount of volts to Overcome gravity on the arm, was 1
+  public static final double FF_kS = 19.0;
+  public static final double FF_kV = 1.0; 
+  public static final double FF_Velocity = 1.0;
+  public static final double FF_Accel = 1.0;
+  
 }
