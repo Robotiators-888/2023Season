@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
+import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants;
 import frc.robot.commands.Autos;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -29,9 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
-
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private Joystick controller = new Joystick(Constants.JOYSTICKPORT);
+  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Tower tower = new SUB_Tower();
 
@@ -41,8 +39,7 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
