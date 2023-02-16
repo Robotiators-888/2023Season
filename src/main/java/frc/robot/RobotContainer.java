@@ -29,10 +29,9 @@ public class RobotContainer {
 
   public SUB_Tower tower = new SUB_Tower();
 
-  private Joystick controller1 = new Joystick(0);
-  JoystickButton rBumper = new JoystickButton(controller1, 5);
-  JoystickButton lBumper = new JoystickButton(controller1, 6);
-  JoystickButton xButton = new JoystickButton(controller1, 3);
+  JoystickButton rBumper = new JoystickButton(controller, 5);
+  JoystickButton lBumper = new JoystickButton(controller, 6);
+  JoystickButton xButton = new JoystickButton(controller, 3);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
