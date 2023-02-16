@@ -9,10 +9,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.Autos;
+import frc.robot.commands.*;
+import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.CMD_AutoDrive;
-import frc.robot.subsystems.SUB_Drivetrain;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -22,11 +26,28 @@ import frc.robot.subsystems.SUB_Drivetrain;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT); // 
   private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
+
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private Joystick controller = new Joystick(Constants.JOYSTICKPORT);
+
+  public SUB_Tower tower = new SUB_Tower();
+
+  JoystickButton rBumper = new JoystickButton(controller, 5);
+  JoystickButton lBumper = new JoystickButton(controller, 6);
+  JoystickButton xButton = new JoystickButton(controller, 3);
+
+
+  // Replace with CommandPS4Controller or CommandJoystick if needed
+  private final CommandXboxController m_driverController =
+      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
+
+
     configureBindings();
   }
 
@@ -40,12 +61,29 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    // Drive
-   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller1.getRawAxis(Constants.LEFT_AXIS), 
-    //    controller1.getRawAxis(Constants.RIGHT_X_AXIS), controller1.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
 
-    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller1.getRawAxis(Constants.LEFT_AXIS), 
-        controller1.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), m_drivetrain));
+    // Drive
+   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
+    //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
+
+    //Creates a default command for runing the tower up using the left trigger
+
+    // default case, balances arm without changing position.
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
+    // buttons, move arm forward and backward
+    lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
+    rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
+    //resets arm encoder
+    xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
+
+    //Creates a default command for runing the tower down using the right trigger
+
+
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
+
+    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
+        controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), m_drivetrain));
   }
 
   /**
