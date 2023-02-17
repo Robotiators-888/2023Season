@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 
@@ -46,6 +47,8 @@ public class RobotContainer {
   JoystickButton c_lBumper = new JoystickButton(controller, 5);
   JoystickButton c_rBumper = new JoystickButton(controller, 6);
 
+  POVButton upPovButton = new POVButton(controller, 90);
+
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -71,10 +74,21 @@ public class RobotContainer {
     );
      
     //set up gripper open/close
+   
     c_rBumper
-    .onTrue(new InstantCommand(() -> m_gripper.openGripper()))
-    .onFalse(new InstantCommand(() -> m_gripper.closeGripper()));
-
+    .onTrue(new InstantCommand(() -> {m_gripper.openGripper();SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {m_gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
+    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
+    
+    /* 
+    c_rBumper
+    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
+    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
+    */
+    c_lBumper
+    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(-0.25);}, m_gripper))
+    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
+    
     //set up arm preset positions
     c_aButton
       .onTrue(new InstantCommand(() -> m_arm.setTargetPosition(Constants.Arm.kHomePosition, m_gripper)));

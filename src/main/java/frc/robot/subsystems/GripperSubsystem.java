@@ -17,6 +17,7 @@ import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GripperSubsystem extends SubsystemBase {
   private CANSparkMax m_motor;
@@ -50,11 +51,25 @@ public class GripperSubsystem extends SubsystemBase {
   }
 
   public void openGripper() {
+    SmartDashboard.putNumber("Gripper Status", getSetPosition());
     m_setpoint = Constants.Gripper.kOpenPosition;
   }
 
   public void closeGripper() {
+    SmartDashboard.putNumber("Gripper Status", getSetPosition());
     m_setpoint = Constants.Gripper.kClosePosition;
+  }
+
+  public double getSetPosition(){
+    return m_setpoint;
+  }
+
+  public void driveGripper(double speed){
+    if(m_encoder.getPosition() > -0.5){
+    m_motor.set(speed);
+    }else{
+      m_motor.set(0.0);
+    }
   }
 
   @Override
@@ -63,6 +78,11 @@ public class GripperSubsystem extends SubsystemBase {
       m_controller.setReference(m_setpoint, CANSparkMax.ControlType.kPosition);
     }
     m_prevSetpoint = m_setpoint;
+
+    SmartDashboard.putNumber("Gripper setpoint", m_setpoint);
+    SmartDashboard.putNumber("Gripper encoder positiion", m_encoder.getPosition());
+    SmartDashboard.putNumber("Gripper encoder velocity", m_encoder.getVelocity());
+    SmartDashboard.putNumber("Gripper encoder counts/rev", m_encoder.getCountsPerRevolution());
   }
 
   @Override
