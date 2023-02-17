@@ -65,7 +65,7 @@ public final class Constants {
         public static final int kGripperCanId = 11;
         public static final double kSoftLimitReverse = -5.0;
         public static final double kSoftLimitForward = 20.0;
-        public static final double kClosePosition = 0.0;
+        public static final double kClosePosition = 1.0;
         public static final double kOpenPosition = 34.0;
         public static final double kSafePosition = 29.0;
         public static final int kCurrentLimit = 10;
