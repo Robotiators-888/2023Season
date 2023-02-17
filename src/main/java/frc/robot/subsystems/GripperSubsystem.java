@@ -65,11 +65,8 @@ public class GripperSubsystem extends SubsystemBase {
   }
 
   public void driveGripper(double speed){
-    if(m_encoder.getPosition() > -0.5){
     m_motor.set(speed);
-    }else{
-      m_motor.set(0.0);
-    }
+
   }
 
   @Override
