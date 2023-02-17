@@ -41,8 +41,4 @@ public class SUB_Gripper extends SubsystemBase {
     
   }
 
-
-
-
-
 }
