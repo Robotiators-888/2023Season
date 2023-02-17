@@ -63,11 +63,11 @@ public final class Constants {
 
     public static final class Gripper {
         public static final int kGripperCanId = 11;
-        public static final double kSoftLimitReverse = -5.0;
+        public static final double kSoftLimitReverse = -20.0;
         public static final double kSoftLimitForward = 20.0;
-        public static final double kClosePosition = 1.0;
-        public static final double kOpenPosition = 34.0;
-        public static final double kSafePosition = 29.0;
+        public static final double kClosePosition = -1.0;
+        public static final double kOpenPosition = 18.0;
+        public static final double kSafePosition = 25.0;
         public static final int kCurrentLimit = 10;
         public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
     }

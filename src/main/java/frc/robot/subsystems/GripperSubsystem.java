@@ -29,6 +29,7 @@ public class GripperSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
   public GripperSubsystem() {
     m_motor = new CANSparkMax(Constants.Gripper.kGripperCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+    m_motor.restoreFactoryDefaults();
     m_motor.setInverted(false);
     m_motor.setSmartCurrentLimit(Constants.Gripper.kCurrentLimit);
     m_motor.enableSoftLimit(SoftLimitDirection.kForward, true);
@@ -75,11 +76,6 @@ public class GripperSubsystem extends SubsystemBase {
       m_controller.setReference(m_setpoint, CANSparkMax.ControlType.kPosition);
     }
     m_prevSetpoint = m_setpoint;
-
-    SmartDashboard.putNumber("Gripper setpoint", m_setpoint);
-    SmartDashboard.putNumber("Gripper encoder positiion", m_encoder.getPosition());
-    SmartDashboard.putNumber("Gripper encoder velocity", m_encoder.getVelocity());
-    SmartDashboard.putNumber("Gripper encoder counts/rev", m_encoder.getCountsPerRevolution());
   }
 
   @Override
