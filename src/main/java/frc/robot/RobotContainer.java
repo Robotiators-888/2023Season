@@ -14,11 +14,17 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.commands.Autos;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.SUB_Gripper;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.DataLogManager;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,23 +33,21 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  
   // The robot's subsystems and commands are defined here...
-  private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
-  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final SUB_Gripper gripper = new SUB_Gripper();
 
-  public SUB_Tower tower = new SUB_Tower();
-
-  JoystickButton rBumper = new JoystickButton(controller, 5);
-  JoystickButton lBumper = new JoystickButton(controller, 6);
-  JoystickButton xButton = new JoystickButton(controller, 3);
+  private Joystick controller1 = new Joystick(0);
+  JoystickButton rBumper = new JoystickButton(controller1, 5);
+  JoystickButton lBumper = new JoystickButton(controller1, 6);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-
-
-
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the trigger bindings
 
 
@@ -60,29 +64,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
 
-    // Drive
-   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
-    //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
+   //While held this will open the gripper using a run command that executes the mehtod manually
+   lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
 
-    //Creates a default command for runing the tower up using the left trigger
-
-    // default case, balances arm without changing position.
-    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
-    // buttons, move arm forward and backward
-    lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
-    rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
-    //resets arm encoder
-    xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
-
-    //Creates a default command for runing the tower down using the right trigger
-
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-
-    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
-        controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), m_drivetrain));
+   //While held this will close the gripper using a run command that executes the mehtod manually
+   rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
+   
   }
 
   /**
