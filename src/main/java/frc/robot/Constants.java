@@ -78,14 +78,15 @@ public final class Constants {
   public static final class Gripper {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
-    public static final double kSoftLimitForward = 20.0;
-    public static final double kClosePosition = -2.0;
-    public static final double kOpenPosition = 18.0;
-    public static final double kSafePosition = 25.0;
+    public static final double kSoftLimitForward = 22.0;
+    public static final double kClosePosition = 0.0;
+    public static final double kOpenPosition = 21.0;
+    public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 10;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
-}
-  public static final class Arm {
+  }
+  
+    public static final class Arm {
     public static final int kArmCanId = 10;
     public static final boolean kArmInverted = false;
     public static final int kCurrentLimit = 40;
@@ -100,8 +101,9 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
     public static final double kHomePosition = 0.0;
-    public static final double kScoringPosition = 2.95;
-    public static final double kIntakePosition = 4.52;
+    //public static final double kScoringPosition = 2.95;
+    public static final double kScoringPosition = 3.10;
+    public static final double kIntakePosition = 4.32;
     public static final double kFeederPosition = 2.55;
 }
 

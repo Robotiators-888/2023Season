@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,14 +32,14 @@ public class RobotContainer {
   private final SUB_Gripper gripper = new SUB_Gripper();
   private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private final SUB_Tower tower = new SUB_Tower();
-  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
-  JoystickButton c_rBumper = new JoystickButton(controller, 5);
-  JoystickButton c_lBumper = new JoystickButton(controller, 6);
-  JoystickButton c_aButton = new JoystickButton(controller, 1);
-  JoystickButton c_bButton = new JoystickButton(controller, 2);
-  JoystickButton c_yButton = new JoystickButton(controller, 3);
-  JoystickButton c_xButton = new JoystickButton(controller, 4);
+  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
+  private JoystickButton c_aButton = new JoystickButton(controller, 1);
+  private JoystickButton c_bButton = new JoystickButton(controller, 2);
+  private JoystickButton c_yButton = new JoystickButton(controller, 3);
+  private JoystickButton c_xButton = new JoystickButton(controller, 4);
 
 
 
@@ -45,7 +47,8 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+    CameraServer.startAutomaticCapture()
+    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 7));
     // Configure the trigger bindings
 
 
@@ -70,9 +73,9 @@ public class RobotContainer {
     //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
 
     //Creates a default command for runing the tower up using the left trigger
-    c_rBumper
-    .onTrue(new InstantCommand(() -> {gripper.openGripper();}))
-    .onFalse(new InstantCommand(() -> {gripper.closeGripper();}));
+    c_lBumper
+    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 
@@ -80,7 +83,7 @@ public class RobotContainer {
     .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
     .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
     */
-    c_lBumper
+    c_rBumper
     .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
     .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
     // default case, balances arm without changing position.

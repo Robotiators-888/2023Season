@@ -26,8 +26,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   
 
   // create a speed controller group for each side
-  private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
-  private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
+  //private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
+  //private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
 
   // create a drive train group with the speed controller groups
   //private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);

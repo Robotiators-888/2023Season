@@ -5,12 +5,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
-
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
@@ -22,7 +21,7 @@ import frc.robot.Constants;
 
 public class SUB_Gripper extends SubsystemBase {
 
-  CANSparkMax GripperSparkMax;
+  private CANSparkMax GripperSparkMax;
   private RelativeEncoder m_encoder;
   private SparkMaxPIDController m_controller;
   private double m_setpoint;
@@ -33,7 +32,7 @@ public class SUB_Gripper extends SubsystemBase {
 
   /** Creates a new GripperSubsystem. */
   public SUB_Gripper() {
-    GripperSparkMax = new CANSparkMax(Constants.Gripper.kGripperCanId, MotorType.kBrushless);
+    GripperSparkMax = new CANSparkMax(Constants.Gripper.kGripperCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
     GripperSparkMax.restoreFactoryDefaults();
     GripperSparkMax.setInverted(false);
     GripperSparkMax.setSmartCurrentLimit(Constants.Gripper.kCurrentLimit);
@@ -78,9 +77,7 @@ public class SUB_Gripper extends SubsystemBase {
    */
 
   public void driveGripper(double speed) {
-
     GripperSparkMax.set(speed);
-    
   }
 
   @Override
