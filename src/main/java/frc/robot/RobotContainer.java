@@ -6,9 +6,7 @@ package frc.robot;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.*;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -31,7 +29,6 @@ public class RobotContainer {
 
 
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
 
   public SUB_Tower tower = new SUB_Tower();
 
@@ -41,8 +38,7 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -67,15 +63,12 @@ public class RobotContainer {
 
     // Press the Y button once, then we will start the sequence and press it again we stop
     Ybutton.toggleOnTrue(LimeSequential); 
+    
 
     // this is all for the teleop drive
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-        drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
+    drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
                                 () -> -controller.getRawAxis(4)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
     
     //Creates a default command for runing the tower up using the left trigger
 
@@ -87,6 +80,7 @@ public class RobotContainer {
     //resets arm encoder
     xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
 
+
     //Creates a default command for runing the tower down using the right trigger
 
 
@@ -95,8 +89,6 @@ public class RobotContainer {
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
     
   }
 

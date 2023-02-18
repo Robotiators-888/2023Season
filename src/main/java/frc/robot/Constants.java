@@ -22,7 +22,7 @@ public final class Constants {
   public static final int ID_RIGHT_SECONDARY = 25;
 
   public static final int JoystickPort = 0;
-
+  
   public static double xDistance = 0;
   public static double yDistance = 0;
   public static double offset = 0;
