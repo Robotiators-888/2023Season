@@ -136,6 +136,13 @@ public class SUB_Tower extends SubsystemBase {
         SmartDashboard.putNumber("Arm degreesRotation", calculateDegreesRotation());
         SmartDashboard.putNumber("Arm degreesRotationCosineAngle",Constants.FF_kG*Math.cos(Math.toRadians(calculateDegreesRotation())) );
         SmartDashboard.putNumber("Arm TowerMotorCurrent", armMotor.getOutputCurrent());
+        SmartDashboard.putNumber("setpoint", m_setpoint);
+        SmartDashboard.putNumber("time", m_timer.get());
+        SmartDashboard.putNumber("feedfoward", feedforward);
+        SmartDashboard.putNumber("manual value", manualValue);
+        SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition());
+        SmartDashboard.putNumber("encoder velocity", m_encoder.getVelocity());
+        SmartDashboard.putNumber("encoder counts/rev", m_encoder.getCountsPerRevolution());
     }
 
     // balances the arm using feedforward, then adds on volts to move the arm.
