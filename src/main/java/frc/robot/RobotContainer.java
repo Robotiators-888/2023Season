@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.DataLogManager;
-
+import frc.robot.subsystems.blinkin;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -37,10 +37,16 @@ public class RobotContainer {
   private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private final SUB_Tower tower = new SUB_Tower();
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  public static final blinkin m_blinkin = new blinkin(Constants.KBLINKIN);
 
   JoystickButton rBumper = new JoystickButton(controller, 5);
   JoystickButton lBumper = new JoystickButton(controller, 6);
 
+  //TODO: Adjust buttons and button numbers as needed
+  final JoystickButton abutton = new JoystickButton(controller, 1);
+  final JoystickButton bbutton = new JoystickButton(controller, 2);
+  final JoystickButton xbutton = new JoystickButton(controller, 3);
+  final JoystickButton ybutton = new JoystickButton(controller, 4);
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
@@ -78,7 +84,12 @@ public class RobotContainer {
 
    //While held this will close the gripper using a run command that executes the mehtod manually
    rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
-   
+
+   // abutton.whileHeld(() -> m_addressableLED.rainbow(), m_addressableLED);
+   abutton.whileTrue(new RunCommand(() -> {m_blinkin.set(0.65);}, m_blinkin)); //Orange
+   bbutton.whileTrue(new RunCommand(()->{m_blinkin.set(-0.99);}, m_blinkin));  //Rainbow
+   xbutton.whileTrue(new RunCommand(() -> {m_blinkin.set(-0.35);}, m_blinkin)); //Red Scanner
+   ybutton.whileTrue(new RunCommand(() -> {m_blinkin.set(0.93);}, m_blinkin)); //White   
   }
 
   /**

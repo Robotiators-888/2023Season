@@ -59,4 +59,7 @@ public final class Constants {
 
   //Gripper CANIDS
   public static final int GRIPPER_SPARKMAX_CANID = 11;
+
+
+  public static final int KBLINKIN=1;
 }
