@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 
 public class SUB_Tower extends SubsystemBase {
     //set motors
-    public CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    public CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CANID, CANSparkMaxLowLevel.MotorType.kBrushless);
     //declare encoders
     public RelativeEncoder m_encoder = armMotor.getEncoder();
 

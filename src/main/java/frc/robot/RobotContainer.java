@@ -14,8 +14,6 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.SUB_Gripper;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,12 +33,13 @@ import edu.wpi.first.wpilibj.DataLogManager;
 public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final SUB_Gripper gripper = new SUB_Gripper();
+  private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
+  public SUB_Tower tower = new SUB_Tower();
+  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
-  private Joystick controller1 = new Joystick(0);
-  JoystickButton rBumper = new JoystickButton(controller1, 5);
-  JoystickButton lBumper = new JoystickButton(controller1, 6);
+  JoystickButton rBumper = new JoystickButton(controller, 5);
+  JoystickButton lBumper = new JoystickButton(controller, 6);
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -64,6 +63,14 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
+    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), m_drivetrain));
+
+    // Curvature Drive
+   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
+    //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
+
     gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
 
    //While held this will open the gripper using a run command that executes the mehtod manually
