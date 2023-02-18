@@ -32,9 +32,6 @@ public class RobotContainer {
   private final SUB_Tower tower = new SUB_Tower();
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
-  public SUB_Tower tower = new SUB_Tower();
-  private static final SUB_Gripper gripper = new SUB_Gripper();
-
   JoystickButton c_rBumper = new JoystickButton(controller, 5);
   JoystickButton c_lBumper = new JoystickButton(controller, 6);
   JoystickButton c_aButton = new JoystickButton(controller, 1);
@@ -66,8 +63,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    drivetrain.setDefaultCommand(new RunCommand( ()-> drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
-    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), drivetrain));
+
 
     // Curvature Drive
    // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
@@ -117,15 +113,14 @@ public class RobotContainer {
 
 
    //While held this will open the gripper using a run command that executes the mehtod manually
-   lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
 
 
-    m_drivetrain.setDefaultCommand(new RunCommand(
+    drivetrain.setDefaultCommand(new RunCommand(
       () -> 
-        m_drivetrain.driveArcade(
+        drivetrain.driveArcade(
           MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
-  , m_drivetrain)
+  , drivetrain)
     );
 
   }
