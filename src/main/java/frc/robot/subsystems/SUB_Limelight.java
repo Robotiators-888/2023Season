@@ -12,9 +12,12 @@ public class SUB_Limelight extends SubsystemBase{
 
     public SUB_Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
+        
     }
     
-    
+    public void switchapipeline(int pipelineNumber){
+        table.getEntry("pipeline").setNumber(pipelineNumber);
+    }
     /* Whether the limelight has any valid targets
    * 
    * @return boolean true if target is found false if not, return false
