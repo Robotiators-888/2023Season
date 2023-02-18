@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.SUB_Drivetrain;
+import frc.robot.subsystems.SUB_Tower;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
-import frc.robot.commands.Autos;
 import frc.robot.subsystems.SUB_Gripper;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,8 +34,8 @@ public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
   private final SUB_Gripper gripper = new SUB_Gripper();
-  private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
-  public SUB_Tower tower = new SUB_Tower();
+  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  private final SUB_Tower tower = new SUB_Tower();
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
   JoystickButton rBumper = new JoystickButton(controller, 5);
@@ -64,8 +64,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
-    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), m_drivetrain));
+    drivetrain.setDefaultCommand(new RunCommand( ()-> drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
+    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), drivetrain));
 
     // Curvature Drive
    // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
@@ -88,6 +88,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new CMD_AutoDrive(m_drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
+    return new CMD_AutoDrive(drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
   }
 }

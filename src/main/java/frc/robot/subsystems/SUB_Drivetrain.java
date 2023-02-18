@@ -7,12 +7,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -35,8 +31,6 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   //navx
   // private AHRS navx = new AHRS();
-
-  private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Drivetrain() {
     rightPrimary.setInverted(false);
