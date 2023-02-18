@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
+import frc.robot.commands.AprilTag.CMD_AprilSequential;
+import frc.robot.commands.Limelight.CMD_LimeSequential;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -25,11 +27,13 @@ public class RobotContainer {
   private Joystick controller = new Joystick(Constants.JoystickPort);
   private SUB_Limelight limelight = new SUB_Limelight();
   private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  private SUB_AprilTag apriltag = new SUB_AprilTag();
   private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight);
+  private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag);
 
   
-  JoystickButton Ybutton = new JoystickButton(controller, 4);
-
+  JoystickButton lTrigger = new JoystickButton(controller, 6);
+  JoystickButton rTrigger = new JoystickButton(controller, 7);
 
   // The robot's subsystems and commands are defined here...
 
@@ -68,7 +72,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     // Press the Y button once, then we will start the sequence and press it again we stop
-    Ybutton.toggleOnTrue(LimeSequential); 
+    lTrigger.toggleOnTrue(LimeSequential);
+    rTrigger.toggleOnTrue(AprilSequential);
     
 
     // this is all for the teleop drive

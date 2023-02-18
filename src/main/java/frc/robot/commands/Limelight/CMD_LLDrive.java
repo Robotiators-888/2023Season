@@ -1,13 +1,13 @@
-package frc.robot.commands;
+package frc.robot.commands.Limelight;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class CMD_LimeDrive extends CommandBase {
+public class CMD_LLDrive extends CommandBase {
     SUB_Limelight limelight;
     SUB_Drivetrain drive;
 
-    public CMD_LimeDrive(SUB_Limelight ll, SUB_Drivetrain dt) {
+    public CMD_LLDrive(SUB_Limelight ll, SUB_Drivetrain dt) {
         limelight = ll;
         drive = dt;
         addRequirements(ll);

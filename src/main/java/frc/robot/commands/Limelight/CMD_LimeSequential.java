@@ -1,10 +1,11 @@
-package frc.robot.commands;
+package frc.robot.commands.Limelight;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
-import frc.robot.Constants;
+import frc.robot.commands.Limelight.*;
+
 // We're doing sequential in order to algin then drive towards it
 public class CMD_LimeSequential extends SequentialCommandGroup {
   public CMD_LimeSequential(SUB_Drivetrain Drivetrain, SUB_Limelight Limelight) {  
@@ -16,11 +17,11 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
     // Waits for the limelight to turn on and also due to latency
     addCommands(new WaitCommand(2));
     // Starts to align towards it
-    addCommands(new CMD_LimeAlign(Limelight, Drivetrain));
+    addCommands(new CMD_LLAlign(Limelight, Drivetrain));
     // Starts to drive towards it
-    addCommands(new CMD_LimeDrive(Limelight, Drivetrain));
+    addCommands(new CMD_LLDrive(Limelight, Drivetrain));
 
-    addCommands(new CMD_LimeAlign(Limelight, Drivetrain));
+    addCommands(new CMD_LLAlign(Limelight, Drivetrain));
     // Turns off the light
     addCommands(Commands.runOnce(
       () -> {
