@@ -37,33 +37,34 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
 
+
     public static final double kTurningScale = 0.5;
 }
 //Joystick Constants
-  public static final int JOYSTICK_PORT = 0;
-  public static final int DRIVER_CONTROLLER = 0;
+ public static final int JOYSTICK_PORT = 0;
+ public static final int DRIVER_CONTROLLER = 0;
 
-  public static final int LEFT_AXIS = 1;
-  public static final int RIGHT_X_AXIS = 4;
-  public static final int RIGHT_Y_AXIS = 5;
-  public static final int LEFT_TRIGGER = 2;
+ public static final int LEFT_AXIS = 1;
+ public static final int RIGHT_X_AXIS = 4;
+ public static final int RIGHT_Y_AXIS = 5;
+ public static final int LEFT_TRIGGER = 2;
 
-  public static final double DEAD_ZONE = 0.3;
-  public static final double TURNING_SCALE = 0.5;
+ public static final double DEAD_ZONE = 0.3;
+ public static final double TURNING_SCALE = 0.5;
 
-  public static final double WHEEL_RADIUS = 3; // wheel radius in inches
-  public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
+ public static final double WHEEL_RADIUS = 3; // wheel radius in inches
+ public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
 
-  public static final double AUTO_SPEED = 0.45; 
-  public static final double AUTO_TIME_SECS = 15;
+ public static final double AUTO_SPEED = 0.45; 
+ public static final double AUTO_TIME_SECS = 15;
 
-  public static final double TELESPEED = 0.45;
+ public static final double TELESPEED = 0.45;
 
 //Manipulator CANIDS
-  public static final int TOWER_SPARKMAX_CAN_ID = 10;
+ public static final int TOWER_SPARKMAX_CANID = 10;
 
-  //Arbitrary PID and FF values, will tune later
-  public static final double PID_kP = 0.227;//0.227 0-4v
+ //Arbitrary PID and FF values, will tune later
+ public static final double PID_kP = 0.227;//0.227 0-4v
   public static final int PID_kI = 0;
   public static final double PID_kD = 0.1;
   public static final double FF_kA = 0.0;
@@ -72,6 +73,7 @@ public final class Constants {
   public static final double FF_kV = 1.0; 
   public static final double FF_Velocity = 1.0;
   public static final double FF_Accel = 1.0;
+
   
   public static final class Gripper {
     public static final int kGripperCanId = 11;
