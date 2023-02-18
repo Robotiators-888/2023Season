@@ -8,13 +8,14 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+
 import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
-
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.DataLogManager;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -23,8 +24,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  
   // The robot's subsystems and commands are defined here...
-  private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
+  private final SUB_Gripper gripper = new SUB_Gripper();
+  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  private final SUB_Tower tower = new SUB_Tower();
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Tower tower = new SUB_Tower();
@@ -36,15 +40,14 @@ public class RobotContainer {
   JoystickButton c_bButton = new JoystickButton(controller, 2);
   JoystickButton c_yButton = new JoystickButton(controller, 3);
   JoystickButton c_xButton = new JoystickButton(controller, 4);
- 
+
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-
-
-
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    
     // Configure the trigger bindings
 
 
@@ -62,7 +65,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // Drive
+    drivetrain.setDefaultCommand(new RunCommand( ()-> drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
+    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), drivetrain));
+
+    // Curvature Drive
    // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
     //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
 
@@ -99,6 +105,10 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
 
+   //While held this will open the gripper using a run command that executes the mehtod manually
+   lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+
+
     m_drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         m_drivetrain.driveArcade(
@@ -106,6 +116,7 @@ public class RobotContainer {
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
   , m_drivetrain)
     );
+
   }
 
   /**
@@ -115,6 +126,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new CMD_AutoDrive(m_drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
+    return new CMD_AutoDrive(drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
   }
 }

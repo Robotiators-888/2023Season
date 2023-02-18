@@ -9,6 +9,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -67,6 +68,7 @@ public class SUB_Gripper extends SubsystemBase {
 
   public double getSetPosition(){
     return m_setpoint;
+
   }
 
   /**
@@ -74,7 +76,9 @@ public class SUB_Gripper extends SubsystemBase {
    * 
    * @param speed double speed of motor [-1.0 to 1.0]
    */
+
   public void driveGripper(double speed) {
+
     GripperSparkMax.set(speed);
     
   }
@@ -93,3 +97,4 @@ public class SUB_Gripper extends SubsystemBase {
   
 
 }
+

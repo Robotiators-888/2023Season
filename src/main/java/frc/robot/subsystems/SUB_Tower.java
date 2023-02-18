@@ -20,10 +20,12 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class SUB_Tower extends SubsystemBase {
     //set motors
+
     private CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
     private TrapezoidProfile m_profile;
     private Timer m_timer;
+
     //declare encoders
     private SparkMaxPIDController m_controller;
     private double m_setpoint;
