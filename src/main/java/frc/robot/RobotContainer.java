@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,10 +33,15 @@ public class RobotContainer {
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Tower tower = new SUB_Tower();
+  private static final SUB_Gripper gripper = new SUB_Gripper();
 
   JoystickButton rBumper = new JoystickButton(controller, 5);
   JoystickButton lBumper = new JoystickButton(controller, 6);
-  JoystickButton xButton = new JoystickButton(controller, 3);
+  JoystickButton c_aButton = new JoystickButton(controller, 1);
+  JoystickButton c_bButton = new JoystickButton(controller, 2);
+  JoystickButton c_yButton = new JoystickButton(controller, 3);
+  JoystickButton c_xButton = new JoystickButton(controller, 4);
+ 
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -72,17 +78,39 @@ public class RobotContainer {
     // buttons, move arm forward and backward
     lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
     rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
-    //resets arm encoder
-    xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
-
+    //set up arm preset positions
+    c_aButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
+    c_bButton      
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, gripper)));
+   c_yButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, gripper)));
+    c_xButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, gripper)));
     //Creates a default command for runing the tower down using the right trigger
-
+    tower.setDefaultCommand(new RunCommand(
+      () ->
+      tower.runAutomatic()
+      , tower)
+    );
+    new Trigger(() -> 
+      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
+      ).whileTrue(new RunCommand(
+        () ->
+        tower.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
+          )) * Constants.OperatorConstants.kArmManualScale)
+        , tower));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 
 
-    m_drivetrain.setDefaultCommand(new RunCommand( ()-> m_drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
-        controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), m_drivetrain));
+    m_drivetrain.setDefaultCommand(new RunCommand(
+      () -> 
+        m_drivetrain.driveArcade(
+          MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
+          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
+  , m_drivetrain)
+    );
   }
 
   /**

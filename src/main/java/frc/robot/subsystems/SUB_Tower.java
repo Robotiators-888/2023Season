@@ -2,21 +2,36 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.Timer;
 
 public class SUB_Tower extends SubsystemBase {
     //set motors
-    public CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    private CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CAN_ID, CANSparkMaxLowLevel.MotorType.kBrushless);
+
+    private TrapezoidProfile m_profile;
+    private Timer m_timer;
     //declare encoders
-    public RelativeEncoder m_encoder = armMotor.getEncoder();
+    private SparkMaxPIDController m_controller;
+    private double m_setpoint;
+    private RelativeEncoder m_encoder;
+    private TrapezoidProfile.State targetState;
+    private double feedforward;
+    private double manualValue;
+    
 
     DataLog log = DataLogManager.getLog();
     DoubleLogEntry towerMotorOutput = new DoubleLogEntry(log, "/tower/motorOutput");
@@ -37,7 +52,65 @@ public class SUB_Tower extends SubsystemBase {
         setLimits();
         armMotor.setIdleMode(IdleMode.kBrake); // sets brake mode 
         armMotor.setOpenLoopRampRate(0.6); // motor takes 0.6 secs to reach desired power
+        armMotor.restoreFactoryDefaults();
+        armMotor.setInverted(false);
+        armMotor.setIdleMode(IdleMode.kBrake);
+
+        armMotor.setSmartCurrentLimit(Constants.Arm.kCurrentLimit);
+        armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+        armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+        armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Arm.kSoftLimitForward);
+        armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Arm.kSoftLimitReverse);
+        
+        m_encoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        m_encoder.setPositionConversionFactor(Constants.Arm.kArmGearRatio);
+        m_encoder.setVelocityConversionFactor(Constants.Arm.kArmGearRatio);
+
+        m_setpoint = Constants.Arm.kHomePosition;
+
+        m_timer = new Timer();
+    m_timer.start();
+    m_timer.reset();
+
+    updateMotionProfile();
     }
+
+    public void setTargetPosition(double _setpoint, SUB_Gripper _gripper) {
+        if (_setpoint != m_setpoint) {
+          m_setpoint = _setpoint;
+          updateMotionProfile();
+        }
+      }
+
+      private void updateMotionProfile() {
+        TrapezoidProfile.State state = new TrapezoidProfile.State(m_encoder.getPosition(), m_encoder.getVelocity());
+        TrapezoidProfile.State goal = new TrapezoidProfile.State(m_setpoint, 0.0);
+        m_profile = new TrapezoidProfile(Constants.Arm.kArmMotionConstraint, goal, state);
+        m_timer.reset();
+      }
+
+      public void runAutomatic() {
+        double elapsedTime = m_timer.get();
+        if (m_profile.isFinished(elapsedTime)) {
+          targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+        }
+        else {
+          targetState = m_profile.calculate(elapsedTime);
+        }
+    
+        feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
+        m_controller.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
+      }
+      public void runManual(double _power) {
+        //reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and passively
+        m_setpoint = m_encoder.getPosition();
+        targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+        m_profile = new TrapezoidProfile(Constants.Arm.kArmMotionConstraint, targetState, targetState);
+        //update the feedforward variable with the newly zero target velocity
+        feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
+        armMotor.set(_power + (feedforward / 12.0));
+        manualValue = _power;
+      }
 
     // set power and position limits
     public void setLimits(){
@@ -51,13 +124,6 @@ public class SUB_Tower extends SubsystemBase {
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 130);
         // stops motor at 0 encoder clicks when reversing, (touching the robot)
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
-    }
-
-    // not used
-    public void armMove(double speed) {
-        //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
-        armMotor.set(speed);
-        //System.out.println("feedforward: "+feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
     }
 
     

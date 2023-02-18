@@ -6,7 +6,9 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -21,10 +23,11 @@ import frc.robot.Constants;
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
-  private CANSparkMax leftPrimary = new CANSparkMax(Constants.ID_LEFT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax leftSecondary = new CANSparkMax(Constants.ID_LEFT_SECONDARY, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax rightPrimary = new CANSparkMax(Constants.ID_RIGHT_PRIMARY, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax rightSecondary = new CANSparkMax(Constants.ID_RIGHT_SECONDARY, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax leftPrimary;
+  private CANSparkMax leftSecondary;
+  private CANSparkMax rightPrimary;
+  private CANSparkMax rightSecondary;
+  
 
   // create a speed controller group for each side
   private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -39,12 +42,29 @@ public class SUB_Drivetrain extends SubsystemBase {
   private Joystick controller1 = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Drivetrain() {
-    rightPrimary.setInverted(false);
-    rightSecondary.setInverted(false);
-    leftPrimary.setInverted(true);
-    leftSecondary.setInverted(true);
-
-
+    leftPrimary  = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+    leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
+    leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    leftPrimary.setIdleMode(IdleMode.kCoast);
+    leftPrimary.burnFlash();
+  
+    rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+    rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
+    rightPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    rightPrimary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.burnFlash();
+  
+      leftSecondary   = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+      leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
+      leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+      leftSecondary.setIdleMode(IdleMode.kCoast);
+      leftSecondary.burnFlash();
+  
+      rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+      rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
+      rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+      rightSecondary.setIdleMode(IdleMode.kCoast);
+      rightSecondary.burnFlash();
     leftPrimary.setSmartCurrentLimit(60);
     leftSecondary.setSmartCurrentLimit(60);
     rightPrimary.setSmartCurrentLimit(60);
@@ -74,8 +94,20 @@ public class SUB_Drivetrain extends SubsystemBase {
   // }
 
   // The different drivetrains
-  public void setMotorsArcade(double xSpeed,double zRotation){
-    driveTrain.arcadeDrive(xSpeed, zRotation);
+  public void driveArcade(double _straight, double _turn) {
+    double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
+    double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
+
+
+    leftPrimary.set(left);
+    rightPrimary.set(right);
+    leftSecondary.set(left);
+    rightSecondary.set(right);
+
+  }
+
+  public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
+    driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed) {
@@ -94,6 +126,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   public double getRightEncoder(){
     return rightPrimary.getEncoder().getPosition();
   }
+
+  
 
   // public double getAngle(){
   //   return navx.getAngle();
