@@ -8,7 +8,11 @@ import frc.robot.commands.Limelight.*;
 
 // We're doing sequential in order to algin then drive towards it
 public class CMD_LimeSequential extends SequentialCommandGroup {
-  public CMD_LimeSequential(SUB_Drivetrain Drivetrain, SUB_Limelight Limelight) {  
+  public CMD_LimeSequential(SUB_Drivetrain Drivetrain, SUB_Limelight Limelight) {
+    addCommands(Commands.runOnce(
+      () -> {
+        Limelight.switchapipeline(1); 
+      }, Limelight));
     // Turns on the light
     addCommands(Commands.runOnce(
       () -> {
