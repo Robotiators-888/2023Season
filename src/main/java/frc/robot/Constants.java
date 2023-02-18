@@ -56,17 +56,17 @@ public final class Constants {
         public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
         public static final double kHomePosition = 0.0;
-        public static final double kScoringPosition = 3.05;
+        public static final double kScoringPosition = 2.95;
         public static final double kIntakePosition = 4.52;
-        public static final double kFeederPosition = 2.95;
+        public static final double kFeederPosition = 2.55;
     }
 
     public static final class Gripper {
         public static final int kGripperCanId = 11;
         public static final double kSoftLimitReverse = -20.0;
-        public static final double kSoftLimitForward = 20.0;
-        public static final double kClosePosition = -1.0;
-        public static final double kOpenPosition = 18.0;
+        public static final double kSoftLimitForward = 12.0;
+        public static final double kClosePosition = -2.0;
+        public static final double kOpenPosition = 9.0;
         public static final double kSafePosition = 25.0;
         public static final int kCurrentLimit = 10;
         public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
