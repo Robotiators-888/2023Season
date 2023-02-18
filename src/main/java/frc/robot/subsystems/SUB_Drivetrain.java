@@ -18,10 +18,10 @@ import frc.robot.Constants;
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
-  private CANSparkMax leftPrimary;
-  private CANSparkMax leftSecondary;
-  private CANSparkMax rightPrimary;
-  private CANSparkMax rightSecondary;
+  private CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  private CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   
 
   // create a speed controller group for each side
@@ -29,31 +29,31 @@ public class SUB_Drivetrain extends SubsystemBase {
   private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
 
   // create a drive train group with the speed controller groups
-  private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
+  //private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
 
   //navx
   // private AHRS navx = new AHRS();
 
   public SUB_Drivetrain() {
-    leftPrimary  = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+    
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     leftPrimary.setIdleMode(IdleMode.kCoast);
     leftPrimary.burnFlash();
   
-    rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+    
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
     rightPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     rightPrimary.setIdleMode(IdleMode.kCoast);
     rightPrimary.burnFlash();
   
-      leftSecondary   = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+      
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       leftSecondary.setIdleMode(IdleMode.kCoast);
       leftSecondary.burnFlash();
   
-      rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+      
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
@@ -100,18 +100,18 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
-    driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
+    //driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed) {
-    driveTrain.tankDrive(leftSpeed, rightSpeed);
+    //driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
 
   public void setMotorsCurvature(double xSpeed, double zRotation, boolean isQuickTurn){
-    driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
+    //driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
-  // Encoders getting position
+  /* Encoders getting position
   public double getLeftEncoder(){
     return leftPrimary.getEncoder().getPosition();
   }
@@ -119,7 +119,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   public double getRightEncoder(){
     return rightPrimary.getEncoder().getPosition();
   }
-
+*/
   
 
   // public double getAngle(){

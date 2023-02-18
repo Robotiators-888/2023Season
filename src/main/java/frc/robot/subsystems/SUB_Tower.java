@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.libs.PIDGains;
 import frc.robot.Constants;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -42,13 +43,13 @@ public class SUB_Tower extends SubsystemBase {
     PIDController pid = new PIDController(Constants.PID_kP, Constants.PID_kI, Constants.PID_kD);
     double setpoint = 42.0;
     //Counteract Gravity on Arm, Currently lbsArm is arbitrary (For kG of FF)
-    double lbsArm = 30;
+    double lbsArm = 30.0;
     double gravitional_force_in_Kg = (lbsArm*4.44822162)/9.8;
     // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
     //ArmFeedforward feedforward = new ArmFeedforward(Constants.FF_kS, Constants.FF_kG, Constants.FF_kV, Constants.FF_kA);
     
     public SUB_Tower(){
-        resetEncoder();
+        //resetEncoder();
         setLimits();
         armMotor.setIdleMode(IdleMode.kBrake); // sets brake mode 
         armMotor.setOpenLoopRampRate(0.6); // motor takes 0.6 secs to reach desired power
@@ -65,6 +66,9 @@ public class SUB_Tower extends SubsystemBase {
         m_encoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
         m_encoder.setPositionConversionFactor(Constants.Arm.kArmGearRatio);
         m_encoder.setVelocityConversionFactor(Constants.Arm.kArmGearRatio);
+
+        m_controller = armMotor.getPIDController();
+        PIDGains.setSparkMaxGains(m_controller, Constants.Arm.kArmPositionGains);
 
         m_setpoint = Constants.Arm.kHomePosition;
 

@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.subsystems.*;
@@ -24,14 +25,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
+  private SUB_Drivetrain m_drivetrain = new SUB_Drivetrain();
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
   public SUB_Tower tower = new SUB_Tower();
   private static final SUB_Gripper gripper = new SUB_Gripper();
 
-  JoystickButton rBumper = new JoystickButton(controller, 5);
-  JoystickButton lBumper = new JoystickButton(controller, 6);
+  JoystickButton c_rBumper = new JoystickButton(controller, 5);
+  JoystickButton c_lBumper = new JoystickButton(controller, 6);
   JoystickButton c_aButton = new JoystickButton(controller, 1);
   JoystickButton c_bButton = new JoystickButton(controller, 2);
   JoystickButton c_yButton = new JoystickButton(controller, 3);
@@ -67,12 +68,22 @@ public class RobotContainer {
     //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
 
     //Creates a default command for runing the tower up using the left trigger
-
+    c_rBumper
+    .onTrue(new InstantCommand(() -> {gripper.openGripper();}))
+    .onFalse(new InstantCommand(() -> {gripper.closeGripper();}));
+    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
+    
+    /* 
+    c_rBumper
+    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
+    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
+    */
+    c_lBumper
+    .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
+    .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
     // buttons, move arm forward and backward
-    lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
-    rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
     //set up arm preset positions
     c_aButton
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
@@ -115,6 +126,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new CMD_AutoDrive(m_drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
+    return null;
   }
 }
