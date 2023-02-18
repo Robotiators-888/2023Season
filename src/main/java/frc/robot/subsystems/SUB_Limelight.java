@@ -36,8 +36,8 @@ public class SUB_Limelight extends SubsystemBase{
 
     // Finds distance from robot to target and returns distance
     public double getDistance() {
-        double h1 = 22;
-        double h2 = 24.25;
+        double h1 = 26.5;  //limelight height
+        double h2 = 18;// 23.5,24.5// limelight:23.5
         // was -3.47935054
         double a1 = Math.toRadians(0); //mounting angle, radians
         double a2 = Math.toRadians(this.getY());
@@ -68,7 +68,7 @@ public class SUB_Limelight extends SubsystemBase{
         SmartDashboard.putBoolean("LimeHasTarget", this.getTv());
         SmartDashboard.putNumber("LimelightX", this.getX());
         SmartDashboard.putNumber("Distance", this.getDistance());
-        SmartDashboard.putNumber("a1", Math.toRadians(-2));
+        SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
     }

@@ -6,8 +6,12 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -25,12 +29,21 @@ private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary,
 
 // create a drive train group with the speed controller groups
 private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
-  public SUB_Drivetrain() {
+ 
+private double prevXAccel = 0;
+private double prevYAccel = 0;
+private double XAccel = 0;
+private double YAccel = 0;
+
+Accelerometer accelerometer = new BuiltInAccelerometer();
+
+public SUB_Drivetrain() {
     rightPrimary.setInverted(false);
     rightSecondary.setInverted(false);
     leftPrimary.setInverted(true);
     leftSecondary.setInverted(true);
 
+    
   }
 
   public void setBrakeMode(boolean brake){
@@ -50,9 +63,39 @@ private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRig
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    double xAccel = accelerometer.getX();
+    double yAccel = accelerometer.getY();
+
+    this.XAccel = xAccel;
+    this.YAccel = yAccel;
+    prevXAccel = xAccel;
+    prevYAccel = yAccel;
+
+    SmartDashboard.putNumber("XAccelJerk",getXAccelJerk() );
+    SmartDashboard.putNumber("YAccelJerk",getYAccelJerk() );
+
   }
 
   public void setMotorsArcade(double xSpeed,double zRotation){
     driveTrain.arcadeDrive(xSpeed, zRotation);
+    SmartDashboard.putNumber("drivetrain xspeed: ", xSpeed);
+    SmartDashboard.putNumber("drivetrain rotation: ", zRotation);
   }
+
+
+
+  public double getXAccelJerk(){
+    // Calculates the jerk in the X and Y directions
+      // Divides by .02 because default loop timing is 20ms
+      double xJerk = (XAccel - prevXAccel)/.02;
+     return xJerk;
+  }
+  
+  public double getYAccelJerk(){
+    // Calculates the jerk in the X and Y directions
+      // Divides by .02 because default loop timing is 20ms
+      double yJerk = (YAccel - prevYAccel)/.02;
+     return yJerk;
+  }
+  
 }

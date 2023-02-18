@@ -131,6 +131,12 @@ public class SUB_Tower extends SubsystemBase {
         // stops motor at 0 encoder clicks when reversing, (touching the robot)
         armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     }
+    // not used
+    public void armMove(double speed) {
+        //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
+        armMotor.set(speed);
+        //System.out.println("feedforward: "+feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
+    }
 
     
 

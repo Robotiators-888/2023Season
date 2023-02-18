@@ -7,9 +7,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.*;
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -34,10 +32,6 @@ public class RobotContainer {
 
 
   // The robot's subsystems and commands are defined here...
-  private final SUB_Gripper gripper = new SUB_Gripper();
-  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
-  private final SUB_Tower tower = new SUB_Tower();
-  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
   private JoystickButton c_rBumper = new JoystickButton(controller, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller, 6);
@@ -49,7 +43,8 @@ public class RobotContainer {
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CameraServer.startAutomaticCapture(0)
@@ -74,20 +69,32 @@ public class RobotContainer {
 
     // Press the Y button once, then we will start the sequence and press it again we stop
     Ybutton.toggleOnTrue(LimeSequential); 
+    
 
     // this is all for the teleop drive
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
-        drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
+    drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
                                 () -> -controller.getRawAxis(4)));
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new Trigger(m_exampleSubsystem::exampleCondition)
-        .onTrue(new ExampleCommand(m_exampleSubsystem));
     
+    //Creates a default command for runing the tower up using the left trigger
+
+    // default case, balances arm without changing position.
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
+    // buttons, move arm forward and backward
+    lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
+    rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
+    //resets arm encoder
+    xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
+
+
+    //Creates a default command for runing the tower down using the right trigger
+
+
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
+
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-    m_driverController.b().whileTrue(m_exampleSubsystem.exampleMethodCommand());
-
     
   }
 

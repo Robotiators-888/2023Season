@@ -3,8 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.SUB_Drivetrain;
-import frc.robot.subsystems.SUB_Limelight;
+import frc.robot.subsystems.*;
+import frc.robot.Constants;
 // We're doing sequential in order to algin then drive towards it
 public class CMD_LimeSequential extends SequentialCommandGroup {
   public CMD_LimeSequential(SUB_Drivetrain Drivetrain, SUB_Limelight Limelight) {  
@@ -19,7 +19,7 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
     addCommands(new CMD_LimeAlign(Limelight, Drivetrain));
     // Starts to drive towards it
     addCommands(new CMD_LimeDrive(Limelight, Drivetrain));
-    // In case any errors occur during drive, we turn towards the correct alignment
+
     addCommands(new CMD_LimeAlign(Limelight, Drivetrain));
     // Turns off the light
     addCommands(Commands.runOnce(

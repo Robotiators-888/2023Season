@@ -28,7 +28,7 @@ public class CMD_LimeDrive extends CommandBase {
         // We check if we can even find one to begin with, or it will be impossible to turn to something tha tdoesn't exist
         if(limelight.getTv()){
             // We found that -3.6 is the correct number for Y, so as long as we don't reach it, we will drive forward
-            if (distance > 40) {
+            if (distance > 24.5) {
                 drive.setMotorsArcade( 0.4, 0.0);
                 System.out.println(distance);
             }
@@ -39,7 +39,8 @@ public class CMD_LimeDrive extends CommandBase {
     }
     public boolean isFinished(){
         // If we reach the place, then we stop
-        if (limelight.getDistance() <= 40){
+        
+        if (limelight.getDistance() <= 24.5){
             return true;
         }else{
             return false;
