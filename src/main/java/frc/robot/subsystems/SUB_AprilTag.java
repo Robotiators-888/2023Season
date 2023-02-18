@@ -7,10 +7,10 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-public class SUB_Limelight extends SubsystemBase{
+public class SUB_AprilTag extends SubsystemBase{
     NetworkTable table;
 
-    public SUB_Limelight() {
+    public SUB_AprilTag() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
     }
     
@@ -37,7 +37,7 @@ public class SUB_Limelight extends SubsystemBase{
     // Finds distance from robot to target and returns distance
     public double getDistance() {
         double h1 = 22;
-        double h2 = 24.25;
+        double h2 = 18;
         // was -3.47935054
         double a1 = Math.toRadians(0); //mounting angle, radians
         double a2 = Math.toRadians(this.getY());
