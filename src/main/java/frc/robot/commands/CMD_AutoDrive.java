@@ -16,21 +16,21 @@ public class CMD_AutoDrive extends CommandBase {
   // Called just before this Command runs the first time
   @Override
   public void initialize() {
-    drivetrain.setBrakeMode(false);
+    //drivetrain.setBrakeMode(false);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
     // Go forward at 0.45 speed
-    drivetrain.setMotorsArcade(Constants.AUTO_SPEED, 0);
+   // drivetrain.setMotorsArcade(Constants.AUTO_SPEED, 0);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     // Change drivetrain as needed
-    drivetrain.setMotorsCurvature(0,0,false);
+    //drivetrain.setMotorsCurvature(0,0,false);
   }
 
   // Make this return true when this Command no longer needs to run execute()

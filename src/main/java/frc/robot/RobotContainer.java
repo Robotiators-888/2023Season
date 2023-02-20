@@ -4,22 +4,19 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoMode;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.subsystems.SUB_Drivetrain;
-import frc.robot.subsystems.SUB_Tower;
+
+import frc.robot.subsystems.*;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants;
-import frc.robot.subsystems.SUB_Gripper;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.DataLogManager;
 
@@ -36,20 +33,25 @@ public class RobotContainer {
   private final SUB_Gripper gripper = new SUB_Gripper();
   private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private final SUB_Tower tower = new SUB_Tower();
-  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 
-  JoystickButton rBumper = new JoystickButton(controller, 5);
-  JoystickButton lBumper = new JoystickButton(controller, 6);
+  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
+  private JoystickButton c_aButton = new JoystickButton(controller, 1);
+  private JoystickButton c_bButton = new JoystickButton(controller, 2);
+  private JoystickButton c_yButton = new JoystickButton(controller, 3);
+  private JoystickButton c_xButton = new JoystickButton(controller, 4);
+
 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+    CameraServer.startAutomaticCapture(0)
+    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
     // Configure the trigger bindings
-
-
+    
     configureBindings();
   }
 
@@ -64,21 +66,66 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    drivetrain.setDefaultCommand(new RunCommand( ()-> drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
-    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), drivetrain));
+
 
     // Curvature Drive
    // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
     //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
 
-    gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
+    //Creates a default command for runing the tower up using the left trigger
+    c_lBumper
+    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
+    
+    /* 
+    c_rBumper
+    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
+    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
+    */
+    c_rBumper
+    .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
+    .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
+    // default case, balances arm without changing position.
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
+    // buttons, move arm forward and backward
+    //set up arm preset positions
+    c_aButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
+    c_bButton      
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, gripper)));
+   c_yButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, gripper)));
+    c_xButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, gripper)));
+    //Creates a default command for runing the tower down using the right trigger
+    tower.setDefaultCommand(new RunCommand(
+      () ->
+      tower.runAutomatic()
+      , tower)
+    );
+    new Trigger(() -> 
+      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
+      ).whileTrue(new RunCommand(
+        () ->
+        tower.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
+          )) * Constants.OperatorConstants.kArmManualScale)
+        , tower));
+
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
 
    //While held this will open the gripper using a run command that executes the mehtod manually
-   lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
 
-   //While held this will close the gripper using a run command that executes the mehtod manually
-   rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
-   
+
+    drivetrain.setDefaultCommand(new RunCommand(
+      () -> 
+        drivetrain.driveArcade(
+          MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
+          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
+  , drivetrain)
+    );
+
   }
 
   /**
@@ -88,6 +135,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return new CMD_AutoDrive(drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
+    return null;
   }
 }
