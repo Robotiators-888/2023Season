@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -25,6 +26,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   private CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   private RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
   private RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
+  private RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
+  private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();
 
   // create a speed controller group for each side
   //private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -60,11 +63,12 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
-    leftPrimary.setSmartCurrentLimit(60);
-    leftSecondary.setSmartCurrentLimit(60);
-    rightPrimary.setSmartCurrentLimit(60);
-    rightSecondary.setSmartCurrentLimit(60);
-    
+    /* 
+      leftPrimary.setSmartCurrentLimit(40);
+    leftSecondary.setSmartCurrentLimit(40);
+    rightPrimary.setSmartCurrentLimit(40);
+    rightSecondary.setSmartCurrentLimit(40);
+    */
   }
 
   public void setBrakeMode(boolean brake){
@@ -150,4 +154,15 @@ public class SUB_Drivetrain extends SubsystemBase {
   // }
 
   // Switches it?
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Primary Encoder", leftPrimaryEncoder.getPosition());
+    SmartDashboard.putNumber("Left Secondary Encoder", leftSecondaryEncoder.getPosition());
+    SmartDashboard.putNumber("Right Primary Encoder", rightPrimaryEncoder.getPosition());
+    SmartDashboard.putNumber("Right Secondary Encoder", rightSecondaryEncoder.getPosition());
+
+
+  }
 }
