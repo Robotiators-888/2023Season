@@ -28,19 +28,21 @@ public class CMD_ATDrive extends CommandBase {
         // We check if we can even find one to begin with, or it will be impossible to turn to something tha tdoesn't exist
         if(aprilTag.getTv()){
             // We found that -3.6 is the correct number for Y, so as long as we don't reach it, we will drive forward
-            if (distance > 24.5) {
+            if(distance > 12){
                 drive.setMotorsArcade( 0.4, 0.0);
-                System.out.println(distance);
+                SmartDashboard.putNumber("ATDISTANCE", distance);
             }
+                
+            
         }
 
         SmartDashboard.putBoolean("LimeDriveStart", true);
         System.out.println("LimeDrive: True");
     }
     public boolean isFinished(){
-        // If we reach the place, then we stop
+        //If we reach the place, then we stop
         
-        if (aprilTag.getDistance() <= 24.5){
+        if (aprilTag.getDistance() <= 12){
             return true;
         }else{
             return false;
