@@ -29,7 +29,7 @@ public class CMD_ATDrive extends CommandBase {
         if(aprilTag.getTv()){
             // We found that -3.6 is the correct number for Y, so as long as we don't reach it, we will drive forward
             if(distance > 12){
-                drive.setMotorsArcade( 0.4, 0.0);
+                drive.driveArcade( 0.4, 0.0);
                 SmartDashboard.putNumber("ATDISTANCE", distance);
             }
                 

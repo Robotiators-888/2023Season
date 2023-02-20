@@ -28,12 +28,12 @@ public class CMD_ATAlign extends CommandBase {
         
         if (aprilTag.getX() > 0.009) { // turn left
             double turnSpeed = -Math.min(Math.max(aprilTag.getX() * -0.03, -0.5),-0.275);
-            drive.setMotorsArcade(0, turnSpeed); // If we are further away, we will turn faster
+            drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
             SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
             SmartDashboard.putBoolean("aligning", true);
         } else if (aprilTag.getX() < -0.009){ // turn right
             double turnSpeed = -Math.max(Math.min(aprilTag.getX() * -0.03, 0.5),0.275);
-            drive.setMotorsArcade(0, turnSpeed); // If we are further away, we will turn faster
+            drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
             SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
             SmartDashboard.putBoolean("aligning", true);
         }

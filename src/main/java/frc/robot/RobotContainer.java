@@ -12,8 +12,12 @@ import frc.robot.commands.AprilTag.CMD_AprilSequential;
 import frc.robot.commands.Limelight.CMD_LimeSequential;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoMode;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DataLogManager;
 
 
@@ -24,16 +28,25 @@ import edu.wpi.first.wpilibj.DataLogManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private Joystick controller2 = new Joystick(Constants.JoystickPort);
+  private Joystick controller = new Joystick(Constants.JoystickPort);
+  private Joystick controller2 = new Joystick(Constants.JoystickPort2);
   private SUB_Limelight limelight = new SUB_Limelight();
   private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private SUB_AprilTag apriltag = new SUB_AprilTag();
   private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight);
   private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag);
+  // The robot's subsystems and commands are defined here...
+  private final SUB_Gripper gripper = new SUB_Gripper();
+  private final SUB_Tower tower = new SUB_Tower();
+  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
+  private JoystickButton c_aButton = new JoystickButton(controller, 1);
+  private JoystickButton c_bButton = new JoystickButton(controller, 2);
+  private JoystickButton c_yButton = new JoystickButton(controller, 3);
+  private JoystickButton c_xButton = new JoystickButton(controller, 4);
 
-  
-  JoystickButton yButton = new JoystickButton(controller2, 4);
-  JoystickButton bButton = new JoystickButton(controller2, 2);
+  JoystickButton c2_yButton = new JoystickButton(controller2, 4);
+  JoystickButton c2_bButton = new JoystickButton(controller2, 2);
 
 
 
@@ -63,6 +76,58 @@ public class RobotContainer {
     yButton.toggleOnTrue(LimeSequential);
     bButton.toggleOnTrue(AprilSequential);
     
+    c_lBumper
+    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
+    
+    /* 
+    c_rBumper
+    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
+    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
+    */
+    c_rBumper
+    .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
+    .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
+    // default case, balances arm without changing position.
+    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
+    // buttons, move arm forward and backward
+    //set up arm preset positions
+    c_aButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
+    c_bButton      
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, gripper)));
+   c_yButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, gripper)));
+    c_xButton
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, gripper)));
+    //Creates a default command for runing the tower down using the right trigger
+    tower.setDefaultCommand(new RunCommand(
+      () ->
+      tower.runAutomatic()
+      , tower)
+    );
+    new Trigger(() -> 
+      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
+      ).whileTrue(new RunCommand(
+        () ->
+        tower.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
+          )) * Constants.OperatorConstants.kArmManualScale)
+        , tower));
+
+    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+
+
+   //While held this will open the gripper using a run command that executes the mehtod manually
+
+
+    drivetrain.setDefaultCommand(new RunCommand(
+      () -> 
+        drivetrain.driveArcade(
+          MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
+          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
+  , drivetrain)
+    );
   }
 
   /**

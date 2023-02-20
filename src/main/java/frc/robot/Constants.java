@@ -18,17 +18,78 @@ import frc.libs.PIDGains;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 1;
+    public static final int kDriverControllerPort = 0;
+    public static final double kDriveDeadband = 0.05;
+    public static final double kArmManualDeadband = 0.05;
+    public static final double kArmManualScale = 0.5;
   }
+
+  public static final class Drivetrain {
+    public static final int kFrontLeftCanId = 20;
+    public static final int kFrontRightCanId = 23;
+    public static final int kRearLeftCanId = 22;
+    public static final int kRearRightCanId = 25;
+
+    public static final boolean kFrontLeftInverted = true;
+    public static final boolean kFrontRightInverted = false;
+    public static final boolean kRearLeftInverted = true;
+    public static final boolean kRearRightInverted = false;
+
+    public static final int kCurrentLimit = 55;
+
+
+    public static final double kTurningScale = 0.5;
+}
   public static final int ID_LEFT_PRIMARY = 20;
   public static final int ID_LEFT_SECONDARY = 22;
   public static final int ID_RIGHT_PRIMARY = 23;
   public static final int ID_RIGHT_SECONDARY = 25;
 
   public static final int JoystickPort = 0;
+  public static final int JoystickPort2 = 1;
+
+
+  public static final int TOWER_SPARKMAX_CANID = 10;
   
-  public static double xDistance = 0;
-  public static double yDistance = 0;
-  public static double offset = 0;
-  public static double distancedistance = 0;
+  public static final class Arm {
+    public static final int kArmCanId = 10;
+    public static final boolean kArmInverted = false;
+    public static final int kCurrentLimit = 40;
+
+    public static final double kSoftLimitReverse = 0.0;
+    public static final double kSoftLimitForward = 4.6;
+
+    public static final double kArmGearRatio = 1.0 / (48.0 * 4.0) * 2.0 * Math.PI; //multiply SM value by this number and get arm position in radians
+    public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
+    public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12/3.09577776, 0.0);
+    public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
+    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
+
+    public static final double kHomePosition = 0.0;
+    //public static final double kScoringPosition = 2.95;
+    public static final double kScoringPosition = 3.10;
+    public static final double kIntakePosition = 4.32;
+    public static final double kFeederPosition = 2.55;
+}
+public static final class Gripper {
+  public static final int kGripperCanId = 11;
+  public static final double kSoftLimitReverse = -20.0;
+  public static final double kSoftLimitForward = 22.0;
+  public static final double kClosePosition = 0.0;
+  public static final double kOpenPosition = 21.0;
+  public static final double kSafePosition = 27.0;
+  public static final int kCurrentLimit = 10;
+  public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
+}
+ //Arbitrary PID and FF values, will tune later
+public static final double PID_kP = 0.227;//0.227 0-4v
+public static final int PID_kI = 0;
+public static final double PID_kD = 0.1;
+public static final double FF_kA = 0.0;
+public static final double FF_kG = .73; //amount of volts to Overcome gravity on the arm, was 1
+public static final double FF_kS = 19.0;
+public static final double FF_kV = 1.0; 
+public static final double FF_Velocity = 1.0;
+public static final double FF_Accel = 1.0;
+
 }
