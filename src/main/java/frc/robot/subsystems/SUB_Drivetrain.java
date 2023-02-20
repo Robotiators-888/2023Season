@@ -6,7 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -23,7 +23,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   private CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   private CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   private CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  
+  private RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
+  private RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
 
   // create a speed controller group for each side
   //private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
