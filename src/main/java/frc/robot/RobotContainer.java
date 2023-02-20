@@ -86,10 +86,10 @@ public class RobotContainer {
    rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
 
    // abutton.whileHeld(() -> m_addressableLED.rainbow(), m_addressableLED);
-   abutton.whileTrue(new RunCommand(() -> {m_blinkin.set(0.65);}, m_blinkin)); //Orange
-   bbutton.whileTrue(new RunCommand(()->{m_blinkin.set(-0.99);}, m_blinkin));  //Rainbow
-   xbutton.whileTrue(new RunCommand(() -> {m_blinkin.set(-0.35);}, m_blinkin)); //Red Scanner
-   ybutton.whileTrue(new RunCommand(() -> {m_blinkin.set(0.93);}, m_blinkin)); //White   
+   abutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.65);}, m_blinkin)); //Orange
+   bbutton.onTrue(new RunCommand(()->{m_blinkin.set(-0.99);}, m_blinkin));  //Rainbow
+   xbutton.onTrue(new RunCommand(() -> {m_blinkin.set(-0.35);}, m_blinkin)); //Red Scanner
+   ybutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.93);}, m_blinkin)); //White   
   }
 
   /**
