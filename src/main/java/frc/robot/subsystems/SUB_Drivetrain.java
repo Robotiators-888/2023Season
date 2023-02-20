@@ -59,11 +59,19 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
-    leftPrimary.setSmartCurrentLimit(60);
-    leftSecondary.setSmartCurrentLimit(60);
-    rightPrimary.setSmartCurrentLimit(60);
-    rightSecondary.setSmartCurrentLimit(60);
+    leftPrimary.setSmartCurrentLimit(40);
+    leftSecondary.setSmartCurrentLimit(40);
+    rightPrimary.setSmartCurrentLimit(40);
+    rightSecondary.setSmartCurrentLimit(40);
     
+  }
+
+  public double getLeftEncoder(){
+    return leftPrimary.getEncoder().getPosition();
+  }
+
+  public double getRightEncoder(){
+    return rightPrimary.getEncoder().getPosition();
   }
 
   public void setBrakeMode(boolean brake){
