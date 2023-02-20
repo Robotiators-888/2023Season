@@ -52,6 +52,15 @@ public class RobotContainer {
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
     // Configure the trigger bindings
     
+    // detect color code that compiles! will move later
+    CvSink video = CameraServer.getVideo();
+    Mat frame = null;
+    video.grabFrame(frame);
+
+    Scalar lowerColorRange = new Scalar(25,100,70);
+    Scalar upperColorRange = new Scalar(45,120,110);
+    org.opencv.core.Core.inRange(frame, lowerColorRange, upperColorRange, frame);
+    
     configureBindings();
   }
 
