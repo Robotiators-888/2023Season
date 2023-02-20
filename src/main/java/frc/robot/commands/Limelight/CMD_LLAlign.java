@@ -28,12 +28,12 @@ public class CMD_LLAlign extends CommandBase {
         
         if (limelight.getX() > 0.009) { // turn left
             double turnSpeed = -Math.min(Math.max(limelight.getX() * -0.03, -0.5),-0.275);
-            drive.driveArcade(0, turnSpeed); // If we are further away, we will turn faster
+            drive.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
             SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
             SmartDashboard.putBoolean("aligning", true);
         } else if (limelight.getX() < -0.009){ // turn right
             double turnSpeed = -Math.max(Math.min(limelight.getX() * -0.03, 0.5),0.275);
-            drive.driveArcade(0, turnSpeed); // If we are further away, we will turn faster
+            drive.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
             SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
             SmartDashboard.putBoolean("aligning", true);
         }

@@ -11,6 +11,7 @@ public class CMD_ATDrive extends CommandBase {
         aprilTag = at;
         drive = dt;
         addRequirements(at);
+        addRequirements(dt);
     } 
     //  in inches
     
@@ -29,7 +30,7 @@ public class CMD_ATDrive extends CommandBase {
         if(aprilTag.getTv()){
             // We found that -3.6 is the correct number for Y, so as long as we don't reach it, we will drive forward
             if(distance > 12){
-                drive.driveArcade( 0.4, 0.0);
+                drive.driveArcadeSquared( 0.4, 0.0);
                 SmartDashboard.putNumber("ATDISTANCE", distance);
             }
                 

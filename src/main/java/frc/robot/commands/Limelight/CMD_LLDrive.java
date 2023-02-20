@@ -11,6 +11,7 @@ public class CMD_LLDrive extends CommandBase {
         limelight = ll;
         drive = dt;
         addRequirements(ll);
+        addRequirements(dt);
     } 
     //  in inches
     
@@ -29,7 +30,7 @@ public class CMD_LLDrive extends CommandBase {
         if(limelight.getTv()){
             // We found that -3.6 is the correct number for Y, so as long as we don't reach it, we will drive forward
             if (distance > 24.5) {
-                drive.driveArcade( 0.4, 0.0);
+                drive.driveArcadeSquared( 0.4, 0.0);
                 System.out.println(distance);
             }
         }
