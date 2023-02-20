@@ -73,8 +73,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     // Press the Y button once, then we will start the sequence and press it again we stop
-    yButton.toggleOnTrue(LimeSequential);
-    bButton.toggleOnTrue(AprilSequential);
+    c2_yButton.toggleOnTrue(LimeSequential);
+    c2_bButton.toggleOnTrue(AprilSequential);
     
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
@@ -136,7 +136,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // The auto code
-    return LimeSequential;
+    // An example command will be run in autonomous
+    return Autos.exampleAuto(m_exampleSubsystem);
   }
 }
