@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private Joystick controller = new Joystick(Constants.JoystickPort);
+  private Joystick controller2 = new Joystick(Constants.JoystickPort);
   private SUB_Limelight limelight = new SUB_Limelight();
   private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private SUB_AprilTag apriltag = new SUB_AprilTag();
@@ -32,21 +32,9 @@ public class RobotContainer {
   private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag);
 
   
-  JoystickButton lTrigger = new JoystickButton(controller, 4);
-  JoystickButton rTrigger = new JoystickButton(controller, 2);
+  JoystickButton yButton = new JoystickButton(controller2, 4);
+  JoystickButton bButton = new JoystickButton(controller2, 2);
 
-  // The robot's subsystems and commands are defined here...
-
-  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
-  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
-  private JoystickButton c_aButton = new JoystickButton(controller, 1);
-  private JoystickButton c_bButton = new JoystickButton(controller, 2);
-  private JoystickButton c_yButton = new JoystickButton(controller, 3);
-  private JoystickButton c_xButton = new JoystickButton(controller, 4);
-
-
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -72,34 +60,8 @@ public class RobotContainer {
   private void configureBindings() {
 
     // Press the Y button once, then we will start the sequence and press it again we stop
-    lTrigger.toggleOnTrue(LimeSequential);
-    rTrigger.toggleOnTrue(AprilSequential);
-    
-
-    // this is all for the teleop drive
-    drivetrain.setDefaultCommand(new CMD_TeleDrive(drivetrain, () -> -controller.getRawAxis(1),
-                                () -> -controller.getRawAxis(4)));
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    
-    //Creates a default command for runing the tower up using the left trigger
-
-    // default case, balances arm without changing position.
-    tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
-    // buttons, move arm forward and backward
-    lBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(-2);/*voltage added onto feedforward(arm balancer)*/ }, tower));
-    rBumper.whileTrue(new RunCommand(() -> {tower.armMoveVoltage(2);}, tower));
-    //resets arm encoder
-    xButton.whileTrue(new RunCommand(() -> {tower.resetEncoder();}, tower));
-
-
-    //Creates a default command for runing the tower down using the right trigger
-
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-
-    // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
-    // cancelling on release.
+    yButton.toggleOnTrue(LimeSequential);
+    bButton.toggleOnTrue(AprilSequential);
     
   }
 

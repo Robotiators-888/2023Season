@@ -18,10 +18,7 @@ import frc.libs.PIDGains;
  */
 public final class Constants {
   public static class OperatorConstants {
-    public static final int kDriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.05;
-    public static final double kArmManualDeadband = 0.05;
-    public static final double kArmManualScale = 0.5;
+    public static final int kDriverControllerPort = 1;
   }
   public static final int ID_LEFT_PRIMARY = 20;
   public static final int ID_LEFT_SECONDARY = 22;
