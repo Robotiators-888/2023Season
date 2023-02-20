@@ -32,8 +32,8 @@ public class RobotContainer {
   private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag);
 
   
-  JoystickButton lTrigger = new JoystickButton(controller, 6);
-  JoystickButton rTrigger = new JoystickButton(controller, 7);
+  JoystickButton lTrigger = new JoystickButton(controller, 4);
+  JoystickButton rTrigger = new JoystickButton(controller, 2);
 
   // The robot's subsystems and commands are defined here...
 

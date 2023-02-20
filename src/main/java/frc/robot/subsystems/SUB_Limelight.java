@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,7 +17,8 @@ public class SUB_Limelight extends SubsystemBase{
     }
     
     public void switchapipeline(int pipelineNumber){
-        table.getEntry("pipeline").setNumber(pipelineNumber);
+        NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
+        pipelineEntry.setNumber(pipelineNumber);
     }
     /* Whether the limelight has any valid targets
    * 
@@ -39,13 +41,13 @@ public class SUB_Limelight extends SubsystemBase{
 
     // Finds distance from robot to target and returns distance
     public double getDistance() {
-        double h1 = 22;
+        double h1 = 26.5;
         double h2 = 24.25;
         // was -3.47935054
         double a1 = Math.toRadians(0); //mounting angle, radians
         double a2 = Math.toRadians(this.getY());
 
-        double distance = (h2 - h1)/Math.tan(a1 + a2);
+        double distance = Math.abs((h2 - h1)/Math.tan(a1 + a2));
 
         return distance;
     }
@@ -69,7 +71,7 @@ public class SUB_Limelight extends SubsystemBase{
         SmartDashboard.putNumber("LimelightY", this.getY());
         SmartDashboard.putBoolean("LimeHasTarget", this.getTv());
         SmartDashboard.putNumber("LimelightX", this.getX());
-        SmartDashboard.putNumber("Distance", this.getDistance());
+        SmartDashboard.putNumber("LIMEDistance", this.getDistance());
         SmartDashboard.putNumber("a1", Math.toRadians(-2));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
