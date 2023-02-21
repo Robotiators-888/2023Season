@@ -18,7 +18,7 @@ public class CMD_AutoSequential extends SequentialCommandGroup {
       new WaitCommand(1.5);
       addCommands(new InstantCommand(() -> Tower.setTargetPosition(Constants.Arm.kHomePosition, Gripper)));
       new WaitCommand(1.5);
-      addCommands(new RunCommand(() -> {Drivetrain.driveArcade(0.06,0.0);}).withTimeout(Constants.AUTO_TIME_SECS-6));
+      addCommands(new RunCommand(() -> {Drivetrain.driveArcade(0.06,0.0);}).withTimeout(3));
 
     }
 }
