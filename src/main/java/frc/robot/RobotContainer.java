@@ -135,6 +135,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return new CMD_AutoSequential(gripper, tower, drivetrain);
   }
 }
