@@ -36,6 +36,8 @@ public class RobotContainer {
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
 
+
+
   private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
   private JoystickButton c_aButton = new JoystickButton(controller2, 1);
@@ -75,18 +77,13 @@ public class RobotContainer {
 
     //Creates a default command for runing the tower up using the left trigger
     c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
-    /* 
     c_rBumper
-    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
-    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
-    */
-    c_rBumper
-    .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
-    .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
+    .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
+    .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
     // buttons, move arm forward and backward

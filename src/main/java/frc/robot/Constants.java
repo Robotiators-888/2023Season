@@ -81,7 +81,9 @@ public final class Constants {
     public static final double kSoftLimitReverse = -20.0;
     public static final double kSoftLimitForward = 22.0;
     public static final double kClosePosition = 0.0;
-    public static final double kOpenPosition = 21.0;
+    public static final double kCloseCubePosition = 10.0;
+    public static final double kConePosition = 15.0;
+    public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 10;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
