@@ -5,7 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import frc.libs.PIDGains;
 
 /**
@@ -37,8 +39,15 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
 
-
     public static final double kTurningScale = -0.5;
+
+    public static final double TRACKWIDTH = 35.5; // This is in inches
+    public static final double WHEEL_RADIUS = 3; // wheel radius in inches
+    public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
+   
+
+    public static final DifferentialDriveKinematics kDriveKinematics = 
+         new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
 }
 //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
@@ -52,9 +61,7 @@ public final class Constants {
  public static final double DEAD_ZONE = 0.3;
  public static final double TURNING_SCALE = 0.5;
 
- public static final double WHEEL_RADIUS = 3; // wheel radius in inches
- public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
-
+ 
  public static final double AUTO_SPEED = 0.45; 
  public static final double AUTO_TIME_SECS = 15;
 
