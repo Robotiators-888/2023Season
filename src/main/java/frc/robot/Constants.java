@@ -38,7 +38,7 @@ public final class Constants {
     public static final int kCurrentLimit = 55;
 
 
-    public static final double kTurningScale = 0.5;
+    public static final double kTurningScale = -0.5;
 }
   public static final int ID_LEFT_PRIMARY = 20;
   public static final int ID_LEFT_SECONDARY = 22;

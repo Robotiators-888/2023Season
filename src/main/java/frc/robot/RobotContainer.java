@@ -33,11 +33,11 @@ public class RobotContainer {
   private SUB_Limelight limelight = new SUB_Limelight();
   private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private SUB_AprilTag apriltag = new SUB_AprilTag();
-  private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight);
-  private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag);
-  // The robot's subsystems and commands are defined here...
   private final SUB_Gripper gripper = new SUB_Gripper();
   private final SUB_Tower tower = new SUB_Tower();
+  private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight,gripper,tower);
+  private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag,gripper,tower);
+  // The robot's subsystems and commands are defined here...
   private JoystickButton c_rBumper = new JoystickButton(controller, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller, 6);
   private JoystickButton c_aButton = new JoystickButton(controller, 1);
@@ -59,6 +59,8 @@ public class RobotContainer {
     configureBindings();
     limelight.setLed(3);
     
+    
+
   }
 
   /**

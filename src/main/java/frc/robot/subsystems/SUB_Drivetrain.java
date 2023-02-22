@@ -101,8 +101,10 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void driveArcadeSquared(double _straight, double _turn) {
-    double left  = Math.pow(MathUtil.clamp(_straight + _turn, -1.0, 1.0), 2);
-    double right = Math.pow(MathUtil.clamp(_straight - _turn, -1.0, 1.0), 2);
+    double squaredTurn = Math.pow(_turn,2);
+    double squaredStraight = Math.pow(_straight,2);
+    double left  = MathUtil.clamp(squaredStraight + squaredTurn, -1.0, 1.0);
+    double right = MathUtil.clamp(squaredStraight - squaredTurn, -1.0, 1.0);
 
 
     leftPrimary.set(left);
