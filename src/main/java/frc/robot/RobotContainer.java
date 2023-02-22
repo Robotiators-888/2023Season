@@ -34,13 +34,14 @@ public class RobotContainer {
   private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private final SUB_Tower tower = new SUB_Tower();
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
 
-  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
-  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
-  private JoystickButton c_aButton = new JoystickButton(controller, 1);
-  private JoystickButton c_bButton = new JoystickButton(controller, 2);
-  private JoystickButton c_yButton = new JoystickButton(controller, 3);
-  private JoystickButton c_xButton = new JoystickButton(controller, 4);
+  private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
+  private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_aButton = new JoystickButton(controller2, 1);
+  private JoystickButton c_bButton = new JoystickButton(controller2, 2);
+  private JoystickButton c_yButton = new JoystickButton(controller2, 3);
+  private JoystickButton c_xButton = new JoystickButton(controller2, 4);
 
 
 
@@ -105,10 +106,10 @@ public class RobotContainer {
       , tower)
     );
     new Trigger(() -> 
-      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
+      Math.abs(controller2.getRawAxis(3) - controller2.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
       ).whileTrue(new RunCommand(
         () ->
-        tower.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
+        tower.runManual((controller2.getRawAxis(3) - controller2.getRawAxis(2
           )) * Constants.OperatorConstants.kArmManualScale)
         , tower));
 

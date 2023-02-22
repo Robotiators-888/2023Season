@@ -42,6 +42,7 @@ public final class Constants {
 }
 //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
+ public static final int JOYSTICK_PORT2 = 1;
  public static final int DRIVER_CONTROLLER = 0;
 
  public static final int LEFT_AXIS = 1;
