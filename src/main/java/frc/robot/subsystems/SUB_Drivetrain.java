@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -24,6 +25,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   private CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   private CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   
+  SlewRateLimiter limiter = new SlewRateLimiter(1.2);
 
   // create a speed controller group for each side
   //private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -89,8 +91,9 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   // The different drivetrains
   public void driveArcade(double _straight, double _turn) {
-    double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
-    double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
+    double slewTurn = limiter.calculate(_turn);
+    double left  = MathUtil.clamp(_straight + slewTurn, -1.0, 1.0);
+    double right = MathUtil.clamp(_straight - slewTurn, -1.0, 1.0);
 
 
     leftPrimary.set(left);
