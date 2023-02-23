@@ -82,7 +82,7 @@ public final class Constants {
     public static final double kSoftLimitForward = 22.0;
     public static final double kCloseConePosition = 0.0;
     public static final double kCloseCubePosition = 10.0;
-    public static final double kConePosition = 15.0;
+    public static final double kConePosition = 19.0;
     public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 10;
@@ -105,9 +105,9 @@ public final class Constants {
 
     public static final double kHomePosition = 0.0;
     //public static final double kScoringPosition = 2.95;
-    public static final double kScoringPosition = 3.10;
+    public static final double kScoringPosition = 2.89;
     public static final double kIntakePosition = 4.32;
-    public static final double kFeederPosition = 2.55;
+    public static final double kFeederPosition = 2.42;
 }
 
 }
