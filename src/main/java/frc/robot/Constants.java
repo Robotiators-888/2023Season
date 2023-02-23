@@ -17,6 +17,7 @@ import frc.libs.PIDGains;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
@@ -24,6 +25,7 @@ public final class Constants {
     public static final double kArmManualScale = 0.5;
   }
 
+  //Drivetrain Constants
   public static final class Drivetrain {
     public static final int kFrontLeftCanId = 20;
     public static final int kFrontRightCanId = 23;
@@ -39,8 +41,9 @@ public final class Constants {
 
 
     public static final double kTurningScale = -0.5;
-}
-//Joystick Constants
+  }
+
+ //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
  public static final int DRIVER_CONTROLLER = 0;
 
@@ -60,10 +63,7 @@ public final class Constants {
 
  public static final double TELESPEED = 0.45;
 
-//Manipulator CANIDS
- public static final int TOWER_SPARKMAX_CANID = 10;
-
- //Arbitrary PID and FF values, will tune later
+  //PID ID's
  public static final double PID_kP = 0.227;//0.227 0-4v
   public static final int PID_kI = 0;
   public static final double PID_kD = 0.1;
@@ -74,7 +74,10 @@ public final class Constants {
   public static final double FF_Velocity = 1.0;
   public static final double FF_Accel = 1.0;
 
-  
+  //Manipulator Constants
+
+  public static final int TOWER_SPARKMAX_CANID = 10;
+
   public static final class Gripper {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;

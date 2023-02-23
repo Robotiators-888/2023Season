@@ -35,7 +35,7 @@ public class SUB_Tower extends SubsystemBase {
     private double feedforward;
     private double manualValue;
     
-
+    //sets up data logger
     DataLog log = DataLogManager.getLog();
     DoubleLogEntry towerMotorOutput = new DoubleLogEntry(log, "/tower/motorOutput");
     DoubleLogEntry towerEncoderRotations = new DoubleLogEntry(log, "/tower/encoderRotations");
@@ -81,6 +81,7 @@ public class SUB_Tower extends SubsystemBase {
     updateMotionProfile();
     }
 
+    //set desired position of our tower
     public void setTargetPosition(double _setpoint, SUB_Gripper _gripper) {
         if (_setpoint != m_setpoint) {
           m_setpoint = _setpoint;

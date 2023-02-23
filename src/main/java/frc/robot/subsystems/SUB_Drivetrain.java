@@ -37,6 +37,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public SUB_Drivetrain() {
     
+    //Configure settings and limits for each motor
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     leftPrimary.setIdleMode(IdleMode.kCoast);
@@ -66,6 +67,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     
   }
 
+  //Gets encoder position in # of rotations of motor
   public double getLeftEncoder(){
     return leftPrimary.getEncoder().getPosition();
   }
