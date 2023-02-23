@@ -80,7 +80,7 @@ public final class Constants {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
     public static final double kSoftLimitForward = 22.0;
-    public static final double kClosePosition = 0.0;
+    public static final double kCloseConePosition = 0.0;
     public static final double kCloseCubePosition = 10.0;
     public static final double kConePosition = 15.0;
     public static final double kCubePosition = 21.0;

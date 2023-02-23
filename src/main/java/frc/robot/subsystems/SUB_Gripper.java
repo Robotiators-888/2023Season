@@ -48,7 +48,7 @@ public class SUB_Gripper extends SubsystemBase {
 
     GripperSparkMax.burnFlash();
 
-    m_setpoint = Constants.Gripper.kClosePosition;
+    m_setpoint = Constants.Gripper.kCloseConePosition;
   }
 
   public boolean isSafe() {
@@ -62,7 +62,7 @@ public class SUB_Gripper extends SubsystemBase {
 
   public void closeConeGripper() {
     SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = Constants.Gripper.kClosePosition;
+    m_setpoint = Constants.Gripper.kCloseConePosition;
   }
 
   public void openCubeGripper() {

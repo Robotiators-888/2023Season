@@ -81,9 +81,12 @@ public class RobotContainer {
     .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
+    /* 
     c_rBumper
     .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
     .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
+    */
+
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
     // buttons, move arm forward and backward

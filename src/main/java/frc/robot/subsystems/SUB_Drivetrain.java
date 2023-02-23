@@ -61,10 +61,6 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
-    leftPrimary.setSmartCurrentLimit(60);
-    leftSecondary.setSmartCurrentLimit(60);
-    rightPrimary.setSmartCurrentLimit(60);
-    rightSecondary.setSmartCurrentLimit(60);
     
   }
 
