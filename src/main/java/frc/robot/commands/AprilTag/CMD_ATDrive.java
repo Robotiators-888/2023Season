@@ -22,13 +22,12 @@ public class CMD_ATDrive extends CommandBase {
     
     @Override
     public void execute() {
-        // We are using the Y value, because the Y value will change as you get closer or further
-        // We got a pretty accurate value for what the y value should be in order for us to get as close as we can
+        // We get the distance from the april tag 
         double distance = aprilTag.getDistance();
 
         // We check if we can even find one to begin with, or it will be impossible to turn to something tha tdoesn't exist
         if(aprilTag.getTv()){
-            // We found that -3.6 is the correct number for Y, so as long as we don't reach it, we will drive forward
+            // If we are more than a feet away, we will drive forward
             if(distance > 12){
                 drive.driveArcadeSquared( 0.4, 0.0);
                 SmartDashboard.putNumber("ATDISTANCE", distance);

@@ -17,6 +17,7 @@ public class SUB_Limelight extends SubsystemBase{
     }
     
     public void switchapipeline(int pipelineNumber){
+        // Switches the pipeline
         NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
         pipelineEntry.setNumber(pipelineNumber);
     }

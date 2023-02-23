@@ -75,6 +75,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     // Press the Y button once, then we will start the sequence and press it again we stop
+    // Press the B button once, then the april tag sequence will start
     c2_yButton.toggleOnTrue(LimeSequential);
     c2_bButton.toggleOnTrue(AprilSequential);
     

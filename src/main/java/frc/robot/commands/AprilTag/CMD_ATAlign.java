@@ -47,7 +47,7 @@ public class CMD_ATAlign extends CommandBase {
         
     
     public boolean isFinished(){
-        // If we are within 0.0085 degrees of the target, we will stop
+        // If we are within 0.05 degrees of the target, we will stop
         if (Math.abs(aprilTag.getX()) <= 0.05){//  if no target found: limelight.getX() = 0.0
             return true;
         }else{

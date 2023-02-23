@@ -16,7 +16,8 @@ public class SUB_AprilTag extends SubsystemBase{
     }
     
     public void switchapipeline(int pipelineNumber){
-      NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
+      // Allows the pipeline to switch
+        NetworkTableEntry pipelineEntry = table.getEntry("pipeline");
       pipelineEntry.setNumber(pipelineNumber);
   }
     /* Whether the limelight has any valid targets
@@ -49,10 +50,6 @@ public class SUB_AprilTag extends SubsystemBase{
         double distance = (h2 - h1)/Math.tan(a1 + a2);
 
         return distance;
-    }
-    // turns on limelight(mainly used for) (force on)
-    public void setLed(int value) {
-        table.getEntry("ledMode").setNumber(value);
     }
 
     // Gets the angle offset on the x plane to know how far to align

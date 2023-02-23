@@ -8,7 +8,9 @@ import frc.robot.subsystems.SUB_Tower;
 
 public class CMD_AutoPlacePieceMedium extends SequentialCommandGroup {
     public CMD_AutoPlacePieceMedium(SUB_Gripper Gripper, SUB_Tower Tower){
+      // Puts to arm in targetting position
       new InstantCommand(() -> Tower.setTargetPosition(Constants.Arm.kScoringPosition, Gripper));
+      // Opens the gripper up
       addCommands(new InstantCommand(() -> {Gripper.openGripper();SmartDashboard.putNumber("Gripper Status", Gripper.getSetPosition());}));
     }
 }
