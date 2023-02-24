@@ -33,11 +33,11 @@ public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
 
-  
+  public static final Field2d field2d = new Field2d();
 
-  private final SUB_Gripper gripper = new SUB_Gripper();
-  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
-  private final SUB_Tower tower = new SUB_Tower();
+  public static final SUB_Gripper gripper = new SUB_Gripper();
+  public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
+  public static final SUB_Tower tower = new SUB_Tower();
   private static final Autonomous autos = new Autonomous();
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
