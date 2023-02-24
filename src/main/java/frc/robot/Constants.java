@@ -19,6 +19,33 @@ import frc.libs.PIDGains;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  public static class Autonomous{
+    public static final double kmaxVelocity = 5.0;
+    public static final double kmaxAcceleration = 2.0;
+    
+    public static final double TRACKWIDTH = 35.5; // This is in inches 
+    //1.399in in width per wheel
+    public static final double WHEEL_RADIUS = 3; // wheel radius in inches
+    public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
+   
+
+    public static final DifferentialDriveKinematics kDriveKinematics = 
+         new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
+
+    public static final double ksVolts = 0.15437;
+    public static final double kvVoltsSecondsPerMeter = 0.86449;
+    public static final double kaVoltsSecondsSquaredPerMeter = 0.083814;
+    public static final double kpDriverVelocity = 1.028;
+
+    public static final double kMaxSpeedMetersPerSecond = 0.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
+  
+  }
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriveDeadband = 0.05;
@@ -40,25 +67,6 @@ public final class Constants {
     public static final int kCurrentLimit = 55;
 
     public static final double kTurningScale = -0.5;
-
-    public static final double TRACKWIDTH = 35.5; // This is in inches
-    public static final double WHEEL_RADIUS = 3; // wheel radius in inches
-    public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
-   
-
-    public static final DifferentialDriveKinematics kDriveKinematics = 
-         new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
-
-    public static final double ksVolts = 0.15437;
-    public static final double kvVoltsSecondsPerMeter = 0.86449;
-    public static final double kaVoltsSecondsSquaredPerMeter = 0.083814;
-    public static final double kpDriverVelocity = 1.028;
-
-    public static final double kMaxSpeedMetersPerSecond = 0.0;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
-
-    public static final double kRamseteB = 2;
-    public static final double kRamseteZeta = 0.7;
   }
 
 //Joystick Constants

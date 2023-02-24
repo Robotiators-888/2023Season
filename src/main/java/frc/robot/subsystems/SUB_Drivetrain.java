@@ -173,7 +173,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @return returns rate of encoder in meters per second
    */
   public double getRate(double input) {
-    return  (input / Constants.Drivetrain.GEARRATIO) * ((2 * Math.PI * Units.inchesToMeters(Constants.Drivetrain.WHEEL_RADIUS)) / 60);
+    return  (input / Constants.Autonomous.GEARRATIO) * ((2 * Math.PI * Units.inchesToMeters(Constants.Autonomous.WHEEL_RADIUS)) / 60);
   }
 
   /**
@@ -192,8 +192,8 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @return meters the robot has moved
    */
   public double rotationsToMeters(double input) {
-    double wheelCirc = (2 * Math.PI * Constants.Drivetrain.WHEEL_RADIUS);
-    double rotationsPerInch = wheelCirc / Constants.Drivetrain.GEARRATIO;
+    double wheelCirc = (2 * Math.PI * Constants.Autonomous.WHEEL_RADIUS);
+    double rotationsPerInch = wheelCirc / Constants.Autonomous.GEARRATIO;
     return Units.inchesToMeters(rotationsPerInch * input);
 
   }
