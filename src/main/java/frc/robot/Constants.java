@@ -103,7 +103,7 @@ public final class Constants {
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
     public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
-    public static final double kHomePosition = 0.0;
+    public static final double kHomePosition = .2;
     //public static final double kScoringPosition = 2.95;
     public static final double kScoringPosition = 2.89;
     public static final double kIntakePosition = 4.32;
