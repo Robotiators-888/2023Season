@@ -28,8 +28,8 @@ import edu.wpi.first.wpilibj.DataLogManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private Joystick controller = new Joystick(Constants.JoystickPort);
-  private Joystick controller2 = new Joystick(Constants.JoystickPort2);
+  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private Joystick controller2 = new Joystick(Constants.DRIVER_CONTROLLER);
   private SUB_Limelight limelight = new SUB_Limelight();
   private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private SUB_AprilTag apriltag = new SUB_AprilTag();
