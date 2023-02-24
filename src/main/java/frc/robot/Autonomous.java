@@ -12,7 +12,12 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
 
 
@@ -70,11 +75,22 @@ public class Autonomous{
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 drivetrain::tankDriveVolts, drivetrain);
     }
+    // ====================================================================
+    //                          Trajectories
+    // ====================================================================
+        Trajectory red1_p1 = getTrajectory("Pathweaver/output/red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("Pathweaver/output/red1_p2.wpilib.json");
 
-    Trajectory red1_p1 = getTrajectory("Pathweaver/output/red1_p1.wpilib.json");
-    Trajectory red1_p2 = getTrajectory("Pathweaver/output/red1_p2.wpilib.json");
 
+    // ====================================================================
+    //                          Auto Sequences
+    // ====================================================================
 
+    Command red1_1GP = new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(0.25), 
+          new InstantCommand(() -> gripper.openConeGripper(), gripper)));
 
 
 

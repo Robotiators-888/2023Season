@@ -64,7 +64,25 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture(0)
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
     // Configure the trigger bindings
-    
+    AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_1GP);
+
+    DelayChooser.setDefaultOption("0 sec", 0);
+    DelayChooser.addOption("1 sec", 1);
+    DelayChooser.addOption("2 sec", 2);
+    DelayChooser.addOption("3 sec", 3);
+    DelayChooser.addOption("4 sec", 4);
+    DelayChooser.addOption("5 sec", 5);
+    DelayChooser.addOption("6 sec", 6);
+    DelayChooser.addOption("7 sec", 7);
+    DelayChooser.addOption("8 sec", 8);
+    DelayChooser.addOption("9 sec", 9);
+    DelayChooser.addOption("10 sec", 10);
+
+    SmartDashboard.putData("Auto Chooser", AutoChooser);
+    SmartDashboard.putData("Delay Chooser", DelayChooser);
+
+
+
     configureBindings();
   }
 
@@ -148,7 +166,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
-  }
+    Command chosenAuto = AutoChooser.getSelected();
+    int delay = DelayChooser.getSelected();
+    drivetrain.zeroEncoders();
+    drivetrain.zeroHeading();
+    return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
+}
 }
