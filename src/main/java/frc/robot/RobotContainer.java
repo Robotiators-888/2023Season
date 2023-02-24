@@ -112,11 +112,10 @@ public class RobotContainer {
       , tower)
     );
     new Trigger(() -> 
-      Math.abs(controller2.getRawAxis(3)*0.1 - controller2.getRawAxis(2)*0.1) > Constants.OperatorConstants.kArmManualDeadband
+      Math.abs(Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) > Constants.OperatorConstants.kArmManualDeadband
       ).whileTrue(new RunCommand(
         () ->
-        tower.runManual((controller2.getRawAxis(3) - controller2.getRawAxis(2
-          )) * Constants.OperatorConstants.kArmManualScale)
+        tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
