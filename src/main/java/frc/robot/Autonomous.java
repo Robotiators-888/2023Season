@@ -78,19 +78,26 @@ public class Autonomous{
     // ====================================================================
     //                          Trajectories
     // ====================================================================
-        Trajectory red1_p1 = getTrajectory("Pathweaver/output/red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("Pathweaver/output/red1_p2.wpilib.json");
+        Trajectory red1_p1 = getTrajectory("PathWeaver/output/red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("PathWeaver/output/red1_p2.wpilib.json");
 
 
     // ====================================================================
     //                          Auto Sequences
     // ====================================================================
 
-    Command red1_1GP = new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
+    Command red1_1GP = new SequentialCommandGroup(
+        new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
          new SequentialCommandGroup(
-          new WaitCommand(0.25), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper)));
+          new WaitCommand(2.5), 
+          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new SequentialCommandGroup(
+            new WaitCommand(1), 
+            new InstantCommand(()->gripper.closeConeGripper())), 
+            new SequentialCommandGroup(
+                new WaitCommand(0.5), 
+                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
 
 
 

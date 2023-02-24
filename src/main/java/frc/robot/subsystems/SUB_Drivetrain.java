@@ -4,7 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SerialPort;
+import com.kauailabs.navx.frc.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
@@ -19,9 +20,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import edu.wpi.first.util.sendable.Sendable;
 
-//navx
-// import com.kauailabs.navx.frc.AHRS;
+
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
@@ -35,7 +36,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
 
    // The gyro sensor
-   private AHRS navx = new AHRS();
+   private AHRS navx = new AHRS(SerialPort.Port.kMXP);
 
    //Field Map
    private Field2d field2d;
@@ -212,6 +213,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @return rotation2d object with current heading
    */
   public Rotation2d getGyroHeading() {
+    
     return new Rotation2d(Math.toRadians(-1 * navx.getYaw()));
   }
 

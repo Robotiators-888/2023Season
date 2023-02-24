@@ -63,7 +63,7 @@ public class RobotContainer {
   public RobotContainer() {
     CameraServer.startAutomaticCapture(0)
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
-    // Configure the trigger bindings
+
     AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_1GP);
 
     DelayChooser.setDefaultOption("0 sec", 0);
