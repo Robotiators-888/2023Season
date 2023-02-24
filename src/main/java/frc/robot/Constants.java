@@ -71,6 +71,7 @@ public final class Constants {
 
 //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
+ public static final int JOYSTICK_PORT2 = 1;
  public static final int DRIVER_CONTROLLER = 0;
 
  public static final int LEFT_AXIS = 1;
@@ -106,8 +107,10 @@ public final class Constants {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
     public static final double kSoftLimitForward = 22.0;
-    public static final double kClosePosition = 0.0;
-    public static final double kOpenPosition = 21.0;
+    public static final double kCloseConePosition = 0.0;
+    public static final double kCloseCubePosition = 10.0;
+    public static final double kConePosition = 19.0;
+    public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 10;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
@@ -127,11 +130,11 @@ public final class Constants {
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
     public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
-    public static final double kHomePosition = 0.0;
+    public static final double kHomePosition = .2;
     //public static final double kScoringPosition = 2.95;
-    public static final double kScoringPosition = 3.10;
+    public static final double kScoringPosition = 2.89;
     public static final double kIntakePosition = 4.32;
-    public static final double kFeederPosition = 2.55;
+    public static final double kFeederPosition = 2.42;
 }
 
 }

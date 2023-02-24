@@ -79,14 +79,8 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
-    /* 
-      leftPrimary.setSmartCurrentLimit(40);
-    leftSecondary.setSmartCurrentLimit(40);
-    rightPrimary.setSmartCurrentLimit(40);
-    rightSecondary.setSmartCurrentLimit(40);
-    */
-
-    }
+    
+  }
 
   public void setBrakeMode(boolean brake){
     /* 
@@ -111,6 +105,11 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   // The different drivetrains
   public void driveArcade(double _straight, double _turn) {
+
+   _straight=  Math.copySign(Math.pow(_straight, 2), _straight);
+   _turn=  Math.copySign(Math.pow(_turn, 2), _turn);
+
+
     double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
     double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
 

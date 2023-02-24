@@ -15,14 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
-import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.DataLogManager;
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -33,20 +32,22 @@ import edu.wpi.first.wpilibj.DataLogManager;
 public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
-  public static final Field2d field2d = new Field2d();
-  public static final SUB_Gripper gripper = new SUB_Gripper();
-  public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
-  public static final SUB_Tower tower = new SUB_Tower();
 
+  
+
+  private final SUB_Gripper gripper = new SUB_Gripper();
+  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  private final SUB_Tower tower = new SUB_Tower();
   private static final Autonomous autos = new Autonomous();
-
+  
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
-  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
-  private JoystickButton c_aButton = new JoystickButton(controller, 1);
-  private JoystickButton c_bButton = new JoystickButton(controller, 2);
-  private JoystickButton c_yButton = new JoystickButton(controller, 3);
-  private JoystickButton c_xButton = new JoystickButton(controller, 4);
+  private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+  private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
+  private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_aButton = new JoystickButton(controller2, 1);
+  private JoystickButton c_bButton = new JoystickButton(controller2, 2);
+  private JoystickButton c_yButton = new JoystickButton(controller2, 4);
+  private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
 
 
@@ -86,30 +87,32 @@ public class RobotContainer {
 
     //Creates a default command for runing the tower up using the left trigger
     c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 
     c_rBumper
-    .onTrue(new RunCommand(()-> {m_gripper.driveGripper(0.25);}, m_gripper))
-    .onFalse(new RunCommand(()->{m_gripper.driveGripper(0.0);}, m_gripper));
+    .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
+    .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
     */
-    c_rBumper
-    .onTrue(new RunCommand(()-> {gripper.driveGripper(-0.25);}, gripper))
-    .onFalse(new RunCommand(()->{gripper.driveGripper(0.0);}, gripper));
+
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
     // buttons, move arm forward and backward
     //set up arm preset positions
     c_aButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
     c_bButton      
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
    c_yButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)));
     c_xButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, gripper)));
+      .onTrue(new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(0.25), 
+          new InstantCommand(() -> gripper.openConeGripper(), gripper))));
     //Creates a default command for runing the tower down using the right trigger
     tower.setDefaultCommand(new RunCommand(
       () ->
@@ -117,11 +120,10 @@ public class RobotContainer {
       , tower)
     );
     new Trigger(() -> 
-      Math.abs(controller.getRawAxis(3) - controller.getRawAxis(2)) > Constants.OperatorConstants.kArmManualDeadband
+      Math.abs(Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) > Constants.OperatorConstants.kArmManualDeadband
       ).whileTrue(new RunCommand(
         () ->
-        tower.runManual((controller.getRawAxis(3) - controller.getRawAxis(2
-          )) * Constants.OperatorConstants.kArmManualScale)
+        tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
 
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
