@@ -9,6 +9,7 @@ import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -30,8 +31,9 @@ import edu.wpi.first.wpilibj.DataLogManager;
 public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
+  private final Field2d field2d = new Field2d();
   private final SUB_Gripper gripper = new SUB_Gripper();
-  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
   private final SUB_Tower tower = new SUB_Tower();
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
 

@@ -48,7 +48,19 @@ public final class Constants {
 
     public static final DifferentialDriveKinematics kDriveKinematics = 
          new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
-}
+
+    public static final double ksVolts = 0.15437;
+    public static final double kvVoltsSecondsPerMeter = 0.86449;
+    public static final double kaVoltsSecondsSquaredPerMeter = 0.083814;
+    public static final double kpDriverVelocity = 1.028;
+
+    public static final double kMaxSpeedMetersPerSecond = 0.0;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
+
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
+  }
+
 //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
  public static final int DRIVER_CONTROLLER = 0;
