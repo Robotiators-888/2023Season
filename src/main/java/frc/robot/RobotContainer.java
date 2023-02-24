@@ -7,9 +7,11 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -31,12 +33,14 @@ import edu.wpi.first.wpilibj.DataLogManager;
 public class RobotContainer {
   
   // The robot's subsystems and commands are defined here...
-  private final Field2d field2d = new Field2d();
-  private final SUB_Gripper gripper = new SUB_Gripper();
-  private final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
-  private final SUB_Tower tower = new SUB_Tower();
-  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  public static final Field2d field2d = new Field2d();
+  public static final SUB_Gripper gripper = new SUB_Gripper();
+  public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
+  public static final SUB_Tower tower = new SUB_Tower();
 
+  private static final Autonomous autos = new Autonomous();
+
+  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private JoystickButton c_rBumper = new JoystickButton(controller, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller, 6);
   private JoystickButton c_aButton = new JoystickButton(controller, 1);
@@ -45,6 +49,12 @@ public class RobotContainer {
   private JoystickButton c_xButton = new JoystickButton(controller, 4);
 
 
+
+ // Auto objects
+ SendableChooser<Command> AutoChooser = new SendableChooser<>();
+ SendableChooser<Integer> DelayChooser = new SendableChooser<>();
+
+ 
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   
