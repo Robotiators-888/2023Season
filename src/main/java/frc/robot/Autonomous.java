@@ -78,8 +78,8 @@ public class Autonomous{
     // ====================================================================
     //                          Trajectories
     // ====================================================================
-        Trajectory red1_p1 = getTrajectory("deploy/paths/output/red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("deploy/paths/output/red1_p2.wpilib.json");
+        Trajectory red1_p1 = getTrajectory("paths/output/red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("paths/output/red1_p2.wpilib.json");
 
 
     // ====================================================================
