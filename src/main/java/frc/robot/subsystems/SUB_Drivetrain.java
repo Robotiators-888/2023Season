@@ -57,7 +57,9 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public SUB_Drivetrain(Field2d input) {
     this.field2d = input;
+    zeroHeading();
     navx.setAngleAdjustment(0.0);
+
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     leftPrimary.setIdleMode(IdleMode.kCoast);
@@ -296,6 +298,9 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Left Secondary Encoder", leftSecondaryEncoder.getPosition());
     SmartDashboard.putNumber("Right Primary Encoder", rightPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Right Secondary Encoder", rightSecondaryEncoder.getPosition());
+    SmartDashboard.putNumber("Yaw", getYaw());
+    SmartDashboard.putNumber("Pitch", getPitch());
+    SmartDashboard.putNumber("Roll", getRoll());
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
