@@ -35,6 +35,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
+  public static StateManager stateManager = new StateManager();
 
   public static final Field2d field2d = new Field2d();
 
@@ -59,6 +60,8 @@ public class RobotContainer {
 
   JoystickButton c0_yButton = new JoystickButton(controller, 4);
   JoystickButton c0_bButton = new JoystickButton(controller, 2);
+  private JoystickButton c0_aButton = new JoystickButton(controller, 1);
+  private JoystickButton c0_xButton = new JoystickButton(controller, 3);
 
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -107,6 +110,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    c0_aButton
+    .onTrue(new RunCommand(() -> {stateManager.setCubeCone(true);}, stateManager));
+    c0_xButton
+    .onTrue(new RunCommand(() -> {stateManager.setCubeCone(false);}, stateManager));
+
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
@@ -114,8 +123,8 @@ public class RobotContainer {
     c0_bButton.onTrue(AprilSequential);
     
     c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 
@@ -130,8 +139,10 @@ public class RobotContainer {
     //set up arm preset positions
     c_aButton
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
+
+    //Uses cubes or cones depending 
     c_bButton      
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
    c_yButton
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)));
     c_xButton
@@ -139,7 +150,7 @@ public class RobotContainer {
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(0.25), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))));
+          new InstantCommand(() -> gripper.openGripper(), gripper))));
 
     //Creates a default command for runing the tower down using the right trigger
     tower.setDefaultCommand(new RunCommand(

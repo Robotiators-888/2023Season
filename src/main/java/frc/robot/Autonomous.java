@@ -27,6 +27,7 @@ public class Autonomous{
     final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
+    final StateManager stateManager = RobotContainer.stateManager;
 
  // ====================================================================
  // Trajectories
@@ -87,14 +88,15 @@ public class Autonomous{
     // ====================================================================
 
     Command red1_1GP = new SequentialCommandGroup(
+        new InstantCommand(() -> {stateManager.setCubeCone(true);}, stateManager),
         new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new InstantCommand(() -> gripper.openGripper(), gripper))),
           new SequentialCommandGroup(
             new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeConeGripper())), 
+            new InstantCommand(()->gripper.closeGripper())), 
             new SequentialCommandGroup(
                 new WaitCommand(0.5), 
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
