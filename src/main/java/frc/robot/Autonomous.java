@@ -125,17 +125,28 @@ public class Autonomous{
         new AutoBalance(drivetrain)
     );
 
+    
+    Command turn180Degree() {
+        return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
+        .until(()->(drivetrain.getYaw() > 179.5 &&  drivetrain.getYaw() < 180.5));
+    }
 
     // ====================================================================
     //                          Auto Routines
     // ====================================================================
-
     
+
     Command red1_Score1(){
         return null;
     } 
     
-
+    Command scoreThenAutoBalance(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            turn180Degree(),
+            buildAutoBalanceSequence()
+        );
+    }
 
 
 
