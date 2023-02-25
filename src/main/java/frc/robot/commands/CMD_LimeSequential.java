@@ -23,7 +23,7 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
   }
     public Command limelightPlacement(){
       return new SequentialCommandGroup(
-        new InstantCommand(() -> {stateManager.setCubeCone(true);},stateManager),
+        new InstantCommand(() -> {stateManager.setCone();}, stateManager),
         new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
         new RunCommand(() -> {limelight.setLed(3);}, limelight),
         new WaitCommand(1),

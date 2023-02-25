@@ -88,7 +88,7 @@ public class Autonomous{
     // ====================================================================
 
     Command red1_1GP = new SequentialCommandGroup(
-        new InstantCommand(() -> {stateManager.setCubeCone(true);}, stateManager),
+        new InstantCommand(() -> {stateManager.setCone();}, stateManager),
         new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
          new SequentialCommandGroup(

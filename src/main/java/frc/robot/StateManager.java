@@ -4,34 +4,29 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class StateManager extends SubsystemBase{
 
+    Gamepiece gp = Gamepiece.cone;
+
     public StateManager(){
     }
 
-    boolean cube_or_cone = true;
+    enum Gamepiece {
+        cube,
+        cone
+    }
 
-    /**
-   * Toggles Cube or Cone mode
-   * 
-   * @param cube_or_cone true for cone, false for cube
-   */
+    public void setCube(){
+        gp = Gamepiece.cube;
+    }
 
-
-    /**
-   * Sets Cube or Cone mode
-   * 
-   * @param cube_or_cone true for cone, false for cube
-   */
-
-    public void setCubeCone(boolean b){
-        cube_or_cone = b;
+    public void setCone(){
+        gp = Gamepiece.cone;
     }
 
     //VALUES FOR CONES ARE ALL ARBITRARY CURRENTLY
 
     //Arm
     public double kScoringPosition(){
-        if (cube_or_cone == true) {
-            //for cones
+        if (gp == Gamepiece.cone) {
             return Constants.Arm.kScoringPosition;
         }
         else {
@@ -41,7 +36,7 @@ public class StateManager extends SubsystemBase{
 
     //Gripper
     public double kClosePosition(){
-        if (cube_or_cone == true) {
+        if (gp == Gamepiece.cone) {
             //for cones
             return Constants.Gripper.kCloseConePosition;
         }
@@ -51,7 +46,7 @@ public class StateManager extends SubsystemBase{
     }
 
     public double kPosition(){
-        if (cube_or_cone == true) {
+        if (gp == Gamepiece.cone) {
             //for cones
             return Constants.Gripper.kConePosition;
         }
