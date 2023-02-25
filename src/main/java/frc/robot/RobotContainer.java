@@ -111,6 +111,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    // Cube|Cone Setter
     c0_aButton
     .onTrue(new RunCommand(() -> {stateManager.setCone();}, stateManager));
     c0_xButton

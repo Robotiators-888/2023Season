@@ -14,9 +14,21 @@ public class StateManager extends SubsystemBase{
         cone
     }
 
+   /**
+    * Sets state to Cube
+    * 
+    * @param setCube
+    */
+
     public void setCube(){
         gp = Gamepiece.cube;
     }
+
+   /**
+    * Sets state to Cone
+    * 
+    * @param setCone
+    */
 
     public void setCone(){
         gp = Gamepiece.cone;
