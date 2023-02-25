@@ -64,8 +64,8 @@ public class Autonomous{
     // ====================================================================
     //                          Trajectories
     // ====================================================================
-        Trajectory red1_p1 = getTrajectory("deploy/paths/output/red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("deploy/paths/output/red1_p2.wpilib.json");
+        Trajectory red1_p1 = getTrajectory("deploy/paths/output/Red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("deploy/paths/output/Red1_p2.wpilib.json");
 
 
     // ====================================================================
@@ -134,7 +134,7 @@ public class Autonomous{
     );
 
 
-    // ====================================================================
+    // ==================================================================== 
     //                          Auto Routines
     // ====================================================================
 
