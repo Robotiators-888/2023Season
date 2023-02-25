@@ -87,6 +87,7 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.burnFlash();
 
       setBrakeMode(true);
+      
   }
 
   public void setBrakeMode(boolean brake){
@@ -125,6 +126,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightPrimary.set(right);
     leftSecondary.set(left);
     rightSecondary.set(right);
+    driveTrain.feedWatchdog();
 
   }
 
@@ -143,7 +145,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public void driveArcadeSquared(double _straight, double _turn) {
     driveArcade(Math.signum(_straight)*Math.pow(_straight,2),Math.signum(_turn)*Math.pow(_turn,2));
-
+    driveTrain.feedWatchdog();
   }
 
   public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
