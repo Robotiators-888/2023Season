@@ -37,7 +37,7 @@ public class RobotContainer {
   private final SUB_Drivetrain drivetrain = new SUB_Drivetrain();
   private final SUB_Tower tower = new SUB_Tower();
   private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  public static final blinkin m_blinkin = new blinkin(Constants.KBLINKIN);
+  public final static blinkin m_blinkin = new blinkin(Constants.KBLINKIN);
 
   JoystickButton rBumper = new JoystickButton(controller, 5);
   JoystickButton lBumper = new JoystickButton(controller, 6);
@@ -86,10 +86,15 @@ public class RobotContainer {
    rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
 
    // abutton.whileHeld(() -> m_addressableLED.rainbow(), m_addressableLED);
-   abutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.65);}, m_blinkin)); //Orange
-   bbutton.onTrue(new RunCommand(()->{m_blinkin.set(-0.99);}, m_blinkin));  //Rainbow
-   xbutton.onTrue(new RunCommand(() -> {m_blinkin.set(-0.35);}, m_blinkin)); //Red Scanner
-   ybutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.93);}, m_blinkin)); //White   
+   //abutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.65);}, m_blinkin)); //Orange
+   //bbutton.onTrue(new RunCommand(()->{m_blinkin.set(-0.99);}, m_blinkin));  //Rainbow
+   //xbutton.onTrue(new RunCommand(() -> {m_blinkin.set(-0.35);}, m_blinkin)); //Red Scanner
+   //ybutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.93);}, m_blinkin)); //White  
+   
+   abutton.onTrue(m_blinkin.solidRedCommand());
+   bbutton.onTrue(m_blinkin.solidVioletCommand());
+   xbutton.onTrue(m_blinkin.solidOrangeCommand());
+   ybutton.onTrue(m_blinkin.allianceColorCommand());
   }
 
   /**

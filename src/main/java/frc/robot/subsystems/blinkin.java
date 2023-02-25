@@ -11,6 +11,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
@@ -31,7 +33,7 @@ public class blinkin extends SubsystemBase {
    */
   public blinkin(int pwmPort) {
     m_blinkin = new Spark(pwmPort);
-    solid_orange();
+    solidOrange();
   }
 
   /*
@@ -51,18 +53,45 @@ public class blinkin extends SubsystemBase {
   public void rainbow() {
     set(-0.99);
   }
-
-  public void solid_orange() {
+  public void solidRed(){
+    set(0.17);
+  }
+  
+  public void solidViolet(){
+    set(0.91);
+  }
+  public void solidOrange() {
     set(0.65);
+  }
+  public void off(){
+    set(0);
   }
   public void allianceColor() {
     boolean isRed = (DriverStation.getAlliance() == Alliance.Red);
+    System.out.println("isRED: "+isRed);
     if (isRed){
       set(-0.01);
       System.out.println("led RED");
     } else {
-      set(0.19);
+      set(0.87);
       System.out.println("led BLUE");
     }
   }
+
+public Command solidVioletCommand(){
+  return new InstantCommand(
+    ()->{solidViolet();});
+}
+public Command solidRedCommand(){
+  return new InstantCommand(
+()-> {solidRed();});
+}
+public Command solidOrangeCommand(){
+  return new InstantCommand(
+()-> {solidOrange();});
+}
+public Command allianceColorCommand(){
+  return new InstantCommand(
+()-> {allianceColor();}); 
+}
 }
