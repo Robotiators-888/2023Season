@@ -81,7 +81,8 @@ public class SUB_Tower extends SubsystemBase {
     updateMotionProfile();
     }
 
-    public void setTargetPosition(double _setpoint, SUB_Tower _gripper) {
+    public void setTargetPosition(double _setpoint, SUB_Tower _tower) {
+
         if (_setpoint != m_setpoint) {
           m_setpoint = _setpoint;
           updateMotionProfile();
