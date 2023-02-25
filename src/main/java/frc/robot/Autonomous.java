@@ -104,6 +104,21 @@ public class Autonomous{
                 new WaitCommand(0.5), 
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
     }
+
+    public Command buildPickUpSequence(){
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower))
+            )
+        );
+    }
+
+    public Command buildAutoBalanceSequence(){
+        return new SequentialCommandGroup(
+        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
+        .until(()->(drivetrain.getRoll() >= 9)),
+        new AutoBalance(drivetrain));
+    }
     Command autoBalanceSequence = new SequentialCommandGroup(
         new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
         .until(()->(drivetrain.getRoll() >= 9)),
@@ -117,9 +132,7 @@ public class Autonomous{
 
     
     Command red1_Score1(){
-        return new SequentialCommandGroup(
-            buildScoringSequence(),
-            getRamsete(red1_p1));
+        return null;
     } 
     
 
