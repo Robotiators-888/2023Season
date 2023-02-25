@@ -135,8 +135,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void driveArcadeSquared(double _straight, double _turn) {
-    driveArcade(Math.pow(_straight,2), Math.pow(_turn,2));
-
+    driveArcade(Math.signum(_straight)*Math.pow(_straight,2),Math.signum(_turn)*Math.pow(_turn,2));
 
   }
 
