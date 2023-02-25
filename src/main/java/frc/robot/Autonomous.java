@@ -89,7 +89,7 @@ public class Autonomous{
     //                          Auto Sequences
     // ====================================================================
 
-    Command red1_1GP = new SequentialCommandGroup(
+    Command scoringSequence = new SequentialCommandGroup(
         new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
          new SequentialCommandGroup(
@@ -102,10 +102,17 @@ public class Autonomous{
                 new WaitCommand(0.5), 
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
 
-    Command autoBalance = new SequentialCommandGroup(
+    Command autoBalanceSequence = new SequentialCommandGroup(
         new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
         .until(()->(drivetrain.getRoll() >= 9)),
         new AutoBalance(drivetrain)
     );
+
+
+    // ====================================================================
+    //                          Auto Routines
+    // ====================================================================
+
+
 
 }
