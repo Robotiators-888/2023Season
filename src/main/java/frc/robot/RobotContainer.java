@@ -54,7 +54,6 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_blinkin.set(0.0);
     // Configure the trigger bindings
 
 
