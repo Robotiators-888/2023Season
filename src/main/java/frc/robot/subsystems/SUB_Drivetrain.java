@@ -80,7 +80,6 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
-    
   }
 
   public void setBrakeMode(boolean brake){
@@ -133,6 +132,11 @@ public class SUB_Drivetrain extends SubsystemBase {
     leftSecondary.setVoltage(leftVolts);
     rightPrimary.setVoltage(rightVolts);
     rightSecondary.setVoltage(rightVolts);
+
+  public void driveArcadeSquared(double _straight, double _turn) {
+    driveArcade(Math.pow(_straight,2), Math.pow(_turn,2));
+
+
   }
 
   public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
@@ -151,7 +155,6 @@ public class SUB_Drivetrain extends SubsystemBase {
   public double getLeftEncoder(){
     return leftPrimary.getEncoder().getPosition();
   }
-
   public double getRightEncoder(){
     return rightPrimary.getEncoder().getPosition();
   }
@@ -285,6 +288,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   // Switches it?
 
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
@@ -300,3 +304,4 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   }
 }
+

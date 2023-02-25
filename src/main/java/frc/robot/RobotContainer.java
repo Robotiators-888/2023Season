@@ -4,11 +4,14 @@
 
 package frc.robot;
 
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.networktables.NetworkTable;
+
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -18,10 +21,20 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
+
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.*;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.VideoMode;
+import edu.wpi.first.math.MathUtil;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,8 +43,17 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  
+  public static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  public static Joystick controller2 = new Joystick(Constants.DRIVER_CONTROLLER);
+  public static SUB_Limelight limelight = new SUB_Limelight();
+  public static SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  public static SUB_AprilTag apriltag = new SUB_AprilTag();
+  public static final SUB_Gripper gripper = new SUB_Gripper();
+  public static final SUB_Tower tower = new SUB_Tower();
+  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
+  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   // The robot's subsystems and commands are defined here...
+
 
   public static final Field2d field2d = new Field2d();
 
@@ -42,6 +64,7 @@ public class RobotContainer {
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+
   private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
   private JoystickButton c_aButton = new JoystickButton(controller2, 1);
@@ -49,7 +72,8 @@ public class RobotContainer {
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
   private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
-
+  JoystickButton c0_yButton = new JoystickButton(controller, 4);
+  JoystickButton c0_bButton = new JoystickButton(controller, 2);
 
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -57,8 +81,6 @@ public class RobotContainer {
 
  
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
-  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     CameraServer.startAutomaticCapture(0)
@@ -84,6 +106,10 @@ public class RobotContainer {
 
 
     configureBindings();
+    limelight.setLed(1);
+    
+    
+
   }
 
   /**
@@ -96,14 +122,12 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
-
-
-    // Curvature Drive
-   // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
-    //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
-
-    //Creates a default command for runing the tower up using the left trigger
+    limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
+    // Press the Y button once, then we will start the sequence and press it again we stop
+    // Press the B button once, then the april tag sequence will start
+    c0_yButton.onTrue(LimeSequential);
+    c0_bButton.onTrue(AprilSequential);
+    
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
     .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
@@ -131,6 +155,7 @@ public class RobotContainer {
          new SequentialCommandGroup(
           new WaitCommand(0.25), 
           new InstantCommand(() -> gripper.openConeGripper(), gripper))));
+
     //Creates a default command for runing the tower down using the right trigger
     tower.setDefaultCommand(new RunCommand(
       () ->
@@ -157,7 +182,6 @@ public class RobotContainer {
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
   , drivetrain)
     );
-
   }
 
   /**
