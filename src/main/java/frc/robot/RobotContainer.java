@@ -95,8 +95,8 @@ public class RobotContainer {
    //ybutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.93);}, m_blinkin)); //White  
    
    abutton.onTrue(m_blinkin.solidRedCommand());
-   bbutton.onTrue(m_blinkin.solidVioletCommand());
-   xbutton.onTrue(m_blinkin.solidOrangeCommand());
+   xbutton.onTrue(m_blinkin.solidVioletCommand());
+   abutton.onTrue(m_blinkin.solidOrangeCommand());
    ybutton.onTrue(m_blinkin.allianceColorCommand());
   }
 
