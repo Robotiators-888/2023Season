@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+
 import com.kauailabs.navx.frc.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -46,11 +49,11 @@ public class SUB_Drivetrain extends SubsystemBase {
    new Pose2d(0, 0, new Rotation2d()));
 
   // create a speed controller group for each side
-  //private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
-  //private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
+  private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
+  private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
 
   // create a drive train group with the speed controller groups
-  //private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
+  private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
 
   //navx
   // private AHRS navx = new AHRS();
@@ -82,10 +85,12 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
+
+      setBrakeMode(true);
   }
 
   public void setBrakeMode(boolean brake){
-    /* 
+     
     if(brake){
         leftPrimary.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
@@ -97,7 +102,7 @@ public class SUB_Drivetrain extends SubsystemBase {
         rightPrimary.setIdleMode(IdleMode.kCoast);
         rightSecondary.setIdleMode(IdleMode.kCoast);
     }
-    */
+    
   }
 
   // public void putNumber(int num) {
@@ -130,10 +135,10 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    leftPrimary.setVoltage(leftVolts);
-    leftSecondary.setVoltage(leftVolts);
-    rightPrimary.setVoltage(rightVolts);
-    rightSecondary.setVoltage(rightVolts);
+    groupLeft.setVoltage(leftVolts);
+    groupRight.setVoltage(rightVolts);
+    driveTrain.feedWatchdog();
+
   }
 
   public void driveArcadeSquared(double _straight, double _turn) {
@@ -241,8 +246,9 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @param position The position (both translation and rotation)
    */
   public void setPosition(Pose2d position) {
-    driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
-    new Pose2d(0, 0, new Rotation2d()));
+    //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
+    //new Pose2d(0, 0, new Rotation2d()));
+    driveOdometry.resetPosition(navx.getRotation2d(), position.getX(), position.getY(), position);
     zeroEncoders();
 
   }
@@ -301,6 +307,10 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Yaw", getYaw());
     SmartDashboard.putNumber("Pitch", getPitch());
     SmartDashboard.putNumber("Roll", getRoll());
+    SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));

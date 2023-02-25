@@ -73,6 +73,7 @@ public class RobotContainer {
 
     AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_Score1());
     AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("Drive Back", autos.driveBack());
 
     DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);

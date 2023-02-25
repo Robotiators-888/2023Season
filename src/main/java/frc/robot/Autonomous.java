@@ -64,8 +64,9 @@ public class Autonomous{
     // ====================================================================
     //                          Trajectories
     // ====================================================================
-        Trajectory red1_p1 = getTrajectory("deploy/paths/output/Red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("deploy/paths/output/Red1_p2.wpilib.json");
+        Trajectory red1_p1 = getTrajectory("paths/output/Red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("paths/output/Red1_p2.wpilib.json");
+        Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
 
 
     // ====================================================================
@@ -141,6 +142,7 @@ public class Autonomous{
     
     Command red1_Score1(){
         return new SequentialCommandGroup(
+           new InstantCommand(()->drivetrain.setPosition(red1_p1.getInitialPose())),
             buildScoringSequence(),
             getRamsete(red1_p1),
             buildPickUpSequence(),
@@ -148,6 +150,12 @@ public class Autonomous{
             buildScoringSequence()
             );
     } 
+
+    Command driveBack(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
+            getRamsete(dummyPath));
+    }
     
 
 
