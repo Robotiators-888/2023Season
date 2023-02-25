@@ -108,8 +108,16 @@ public class Autonomous{
     public Command buildPickUpSequence(){
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-                new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower))
-            )
+                new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+                new SequentialCommandGroup(
+                    new WaitCommand(1.5),
+                    new InstantCommand(()->gripper.openConeGripper())
+                )
+            ),
+            new WaitCommand(1.5),
+            new InstantCommand(()->gripper.closeConeGripper()),
+            new WaitCommand(0.5),
+            new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
         );
     }
 
@@ -132,7 +140,13 @@ public class Autonomous{
 
     
     Command red1_Score1(){
-        return null;
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            getRamsete(red1_p1),
+            buildPickUpSequence(),
+            getRamsete(red1_p2),
+            buildScoringSequence()
+            );
     } 
     
 
