@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.subsystems.blinkin;
 
 /**
@@ -52,7 +54,7 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    
+    m_blinkin.set(0.0);
     // Configure the trigger bindings
 
 
@@ -70,21 +72,23 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    drivetrain.setDefaultCommand(new RunCommand( ()-> drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
-    controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), drivetrain));
+    //drivetrain.setDefaultCommand(new RunCommand( ()-> drivetrain.setMotorsArcade(controller.getRawAxis(Constants.LEFT_AXIS), 
+    //controller.getRawAxis(Constants.RIGHT_X_AXIS)*Constants.TURNING_SCALE), drivetrain));
 
     // Curvature Drive
    // m_drivetrain.setDefaultCommand(new RunCommand(() -> m_drivetrain.setMotorsCurvature(controller.getRawAxis(Constants.LEFT_AXIS), 
     //    controller.getRawAxis(Constants.RIGHT_X_AXIS), controller.getRawButton(Constants.LEFT_TRIGGER)), m_drivetrain));
 
-    gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
+    //gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
 
    //While held this will open the gripper using a run command that executes the mehtod manually
-   lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+   //lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
 
    //While held this will close the gripper using a run command that executes the mehtod manually
-   rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
+   //rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
 
+   defaultAllianceColor();
+  
    // abutton.whileHeld(() -> m_addressableLED.rainbow(), m_addressableLED);
    //abutton.onTrue(new RunCommand(() -> {m_blinkin.set(0.65);}, m_blinkin)); //Orange
    //bbutton.onTrue(new RunCommand(()->{m_blinkin.set(-0.99);}, m_blinkin));  //Rainbow
@@ -106,4 +110,17 @@ public class RobotContainer {
     // An example command will be run in autonomous
     return new CMD_AutoDrive(drivetrain).withTimeout(Constants.AUTO_TIME_SECS);
   }
+
+public double defaultAllianceColor(){
+  boolean isRed = (DriverStation.getAlliance() == Alliance.Red);
+  if (isRed){
+    
+    return-0.35;
+    
+  } else {
+    return 0.87;
+    
+  }
+}
+
 }
