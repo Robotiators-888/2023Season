@@ -261,25 +261,25 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
 
-  // public double getAngle(){
-  //   return navx.getAngle();
-  // }
+   public double getAngle(){
+     return navx.getAngle();
+   }
 
-  // public void resetAngle(){
-  //   navx.reset();
-  // }
+   public void resetAngle(){
+     navx.reset();
+  }
 
-  // public double getYaw(){
-  //   return navx.getYaw();
-  // }
+   public double getYaw(){
+   return navx.getYaw();
+   }
 
-  // public double getPitch(){
-  //   return navx.getPitch();
-  // }
+  public double getPitch(){
+    return navx.getPitch();
+   }
 
-  // public double getRoll(){
-  //   return navx.getRoll();
-  // }
+  public double getRoll(){
+     return navx.getRoll();
+  }
 
   // Gets the number from the smart dashboard to change drive
   // public int driveMode(){
