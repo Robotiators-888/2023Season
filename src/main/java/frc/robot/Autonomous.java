@@ -103,7 +103,8 @@ public class Autonomous{
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
 
     Command autoBalance = new SequentialCommandGroup(
-        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain).until(()->(drivetrain.getRoll() >= 9)),
+        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
+        .until(()->(drivetrain.getRoll() >= 9)),
         new AutoBalance(drivetrain)
     );
 
