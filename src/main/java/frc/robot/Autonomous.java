@@ -60,24 +60,7 @@ public class Autonomous{
         return trajectory;
     }
 
-    /**
-     * returns ramsete command to drive provided trajectory
-     * 
-     * @param traj trajectory to follow
-     * @return ramsete controller to follow trajectory
-     */
-    public RamseteCommand getRamset(Trajectory traj) {
-        return new RamseteCommand(
-                traj, 
-                drivetrain::getPose,
-                new RamseteController(Constants.Autonomous.kRamseteB, Constants.Autonomous.kRamseteZeta),
-                new SimpleMotorFeedforward(Constants.Autonomous.ksVolts, Constants.Autonomous.kvVoltsSecondsPerMeter,
-                        Constants.Autonomous.kaVoltsSecondsSquaredPerMeter),
-                Constants.Autonomous.kDriveKinematics, drivetrain::getWheelSpeeds,
-                new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
-                new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
-                drivetrain::tankDriveVolts, drivetrain);
-    }
+    
     // ====================================================================
     //                          Trajectories
     // ====================================================================
@@ -89,7 +72,26 @@ public class Autonomous{
     //                          Auto Sequences
     // ====================================================================
 
-    Command scoringSequence = new SequentialCommandGroup(
+    /**
+     * returns ramsete command to drive provided trajectory
+     * 
+     * @param traj trajectory to follow
+     * @return ramsete controller to follow trajectory
+     */
+    public RamseteCommand getRamsete(Trajectory traj) {
+        return new RamseteCommand(
+                traj, 
+                drivetrain::getPose,
+                new RamseteController(Constants.Autonomous.kRamseteB, Constants.Autonomous.kRamseteZeta),
+                new SimpleMotorFeedforward(Constants.Autonomous.ksVolts, Constants.Autonomous.kvVoltsSecondsPerMeter,
+                        Constants.Autonomous.kaVoltsSecondsSquaredPerMeter),
+                Constants.Autonomous.kDriveKinematics, drivetrain::getWheelSpeeds,
+                new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
+                new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
+                drivetrain::tankDriveVolts, drivetrain);
+    }
+    public Command buildScoringSequence(){
+     return new SequentialCommandGroup(
         new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
          new SequentialCommandGroup(
@@ -101,7 +103,7 @@ public class Autonomous{
             new SequentialCommandGroup(
                 new WaitCommand(0.5), 
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
-
+    }
     Command autoBalanceSequence = new SequentialCommandGroup(
         new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
         .until(()->(drivetrain.getRoll() >= 9)),
@@ -112,6 +114,19 @@ public class Autonomous{
     // ====================================================================
     //                          Auto Routines
     // ====================================================================
+
+    
+    Command red1_Score1(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            getRamsete(red1_p1));
+    } 
+    
+
+
+
+
+
 
 
 

@@ -71,7 +71,7 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture(0)
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
 
-    AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.scoringSequence);
+    AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_Score1());
     AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
 
     DelayChooser.setDefaultOption("0 sec", 0);
