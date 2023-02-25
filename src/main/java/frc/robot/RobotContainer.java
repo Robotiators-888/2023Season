@@ -31,7 +31,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final Drivetrain drivetrain = new Drivetrain();
-  private final SUB_Intake intake = new SUB_Intake();
+  //private final SUB_Intake intake = new SUB_Intake();
   private final Joystick controller = new Joystick(0);
   private final JoystickButton yButton = new JoystickButton(controller, 4);
 
@@ -55,14 +55,14 @@ public class RobotContainer {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
     new Trigger(m_exampleSubsystem::exampleCondition)
         .onTrue(new ExampleCommand(m_exampleSubsystem));
-        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(5),
-                                () -> controller.getRawAxis(0)));
+        drivetrain.setDefaultCommand(new TeleDrive(drivetrain, () -> controller.getRawAxis(1),
+                                () -> controller.getRawAxis(4)));
 
     // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
 
     //intakeDown.whileActiveContinuous(new CMD_AutoIntake(canal, intake, index));
-    yButton.onTrue((new InstantCommand(intake::pistonToggle, intake)));
+    //yButton.onTrue((new InstantCommand(intake::pistonToggle, intake)));
     
   }
 
