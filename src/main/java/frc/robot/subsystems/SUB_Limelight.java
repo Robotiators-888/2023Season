@@ -6,10 +6,13 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotContainer;
 
 
 public class SUB_Limelight extends SubsystemBase{
     NetworkTable table;
+    final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
+
 
     public SUB_Limelight() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -66,14 +69,40 @@ public class SUB_Limelight extends SubsystemBase{
     public double getY() {
         return table.getEntry("ty").getDouble(0.0);
     }
-
+    public void limelightAlign(){
+        if (this.getTv()){
+            if (getX() > 0.009) { // turn left
+                double turnSpeed = -Math.min(Math.max(getX() * -0.03, -0.5),-0.265);
+                drivetrain.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
+                SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
+                SmartDashboard.putBoolean("aligning", true);
+            } else if (getX() < -0.009){ // turn right
+                double turnSpeed = -Math.max(Math.min(getX() * -0.03, 0.5),0.265);
+                drivetrain.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
+                SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
+                SmartDashboard.putBoolean("aligning", true);
+            }else{
+                drivetrain.setBrakeMode(true);
+            }
+    
+        }
+    }
+    
+    public void limelightDrive(){
+        if (this.getTv()){
+            if (this.getDistance() > 24.5) {
+                drivetrain.driveArcadeSquared( 0.4, 0.0);
+                System.out.println(this.getDistance());
+            }
+        }
+    }
     public void periodic() {
         //Sets all the method calls to the SmartDashboard
         SmartDashboard.putNumber("LimelightY", this.getY());
         SmartDashboard.putBoolean("LimeHasTarget", this.getTv());
         SmartDashboard.putNumber("LimelightX", this.getX());
         SmartDashboard.putNumber("LIMEDistance", this.getDistance());
-        SmartDashboard.putNumber("a1", Math.toRadians(-2));
+        SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
     }

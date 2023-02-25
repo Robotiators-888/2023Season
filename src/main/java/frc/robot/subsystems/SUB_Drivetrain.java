@@ -9,8 +9,6 @@ import com.revrobotics.CANSparkMaxLowLevel;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -59,11 +57,6 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       rightSecondary.setIdleMode(IdleMode.kCoast);
       rightSecondary.burnFlash();
-    leftPrimary.setSmartCurrentLimit(60);
-    leftSecondary.setSmartCurrentLimit(60);
-    rightPrimary.setSmartCurrentLimit(60);
-    rightSecondary.setSmartCurrentLimit(60);
-    
   }
 
   public void setBrakeMode(boolean brake){

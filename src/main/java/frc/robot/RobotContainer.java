@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.*;
-import frc.robot.commands.AprilTag.CMD_AprilSequential;
-import frc.robot.commands.Limelight.CMD_LimeSequential;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -18,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.DataLogManager;
 
 
 /**
@@ -28,25 +25,25 @@ import edu.wpi.first.wpilibj.DataLogManager;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  private Joystick controller2 = new Joystick(Constants.DRIVER_CONTROLLER);
-  private SUB_Limelight limelight = new SUB_Limelight();
-  private SUB_Drivetrain drivetrain = new SUB_Drivetrain();
-  private SUB_AprilTag apriltag = new SUB_AprilTag();
-  private final SUB_Gripper gripper = new SUB_Gripper();
-  private final SUB_Tower tower = new SUB_Tower();
-  private CMD_LimeSequential LimeSequential = new CMD_LimeSequential(drivetrain, limelight,gripper,tower);
-  private CMD_AprilSequential AprilSequential = new CMD_AprilSequential(drivetrain, apriltag,gripper,tower);
+  public static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  public static Joystick controller2 = new Joystick(Constants.DRIVER_CONTROLLER);
+  public static SUB_Limelight limelight = new SUB_Limelight();
+  public static SUB_Drivetrain drivetrain = new SUB_Drivetrain();
+  public static SUB_AprilTag apriltag = new SUB_AprilTag();
+  public static final SUB_Gripper gripper = new SUB_Gripper();
+  public static final SUB_Tower tower = new SUB_Tower();
+  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
+  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   // The robot's subsystems and commands are defined here...
-  private JoystickButton c_rBumper = new JoystickButton(controller, 5);
-  private JoystickButton c_lBumper = new JoystickButton(controller, 6);
-  private JoystickButton c_aButton = new JoystickButton(controller, 1);
-  private JoystickButton c_bButton = new JoystickButton(controller, 2);
-  private JoystickButton c_yButton = new JoystickButton(controller, 3);
-  private JoystickButton c_xButton = new JoystickButton(controller, 4);
+  private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
+  private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_aButton = new JoystickButton(controller2, 1);
+  private JoystickButton c_bButton = new JoystickButton(controller2, 2);
+  private JoystickButton c_yButton = new JoystickButton(controller2, 4);
+  private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
-  JoystickButton c2_yButton = new JoystickButton(controller2, 4);
-  JoystickButton c2_bButton = new JoystickButton(controller2, 2);
+  JoystickButton c0_yButton = new JoystickButton(controller, 4);
+  JoystickButton c0_bButton = new JoystickButton(controller, 2);
 
 
 
@@ -57,7 +54,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     
     configureBindings();
-    limelight.setLed(3);
+    limelight.setLed(1);
     
     
 
@@ -73,15 +70,15 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
+    limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    c2_yButton.toggleOnTrue(LimeSequential);
-    c2_bButton.toggleOnTrue(AprilSequential);
+    c0_yButton.onTrue(LimeSequential);
+    c0_bButton.onTrue(AprilSequential);
     
     c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 
@@ -97,13 +94,13 @@ public class RobotContainer {
     // buttons, move arm forward and backward
     //set up arm preset positions
     c_aButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
     c_bButton      
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
    c_yButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)));
     c_xButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, gripper)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)));
     //Creates a default command for runing the tower down using the right trigger
     tower.setDefaultCommand(new RunCommand(
       () ->
