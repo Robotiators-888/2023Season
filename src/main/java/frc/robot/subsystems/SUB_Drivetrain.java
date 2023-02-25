@@ -134,8 +134,9 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightSecondary.setVoltage(rightVolts);
   }
 
+  
   public void driveArcadeSquared(double _straight, double _turn) {
-    driveArcade(Math.signum(_straight)*Math.pow(_straight,2),Math.signum(_turn)*Math.pow(_turn,2));
+    driveArcade(_straight,_turn);
 
   }
 
