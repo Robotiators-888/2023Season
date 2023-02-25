@@ -43,15 +43,7 @@ import edu.wpi.first.math.MathUtil;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  public static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  public static Joystick controller2 = new Joystick(Constants.DRIVER_CONTROLLER);
-  public static SUB_Limelight limelight = new SUB_Limelight();
-  public static SUB_Drivetrain drivetrain = new SUB_Drivetrain();
-  public static SUB_AprilTag apriltag = new SUB_AprilTag();
-  public static final SUB_Gripper gripper = new SUB_Gripper();
-  public static final SUB_Tower tower = new SUB_Tower();
-  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
-  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
+
   // The robot's subsystems and commands are defined here...
 
 
@@ -60,6 +52,10 @@ public class RobotContainer {
   public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
   public static final SUB_Tower tower = new SUB_Tower();
+  public static SUB_Limelight limelight = new SUB_Limelight();
+  public static SUB_AprilTag apriltag = new SUB_AprilTag();
+  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
+  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
