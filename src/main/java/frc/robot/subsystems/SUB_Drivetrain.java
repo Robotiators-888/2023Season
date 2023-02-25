@@ -251,7 +251,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    * sets current heading to zero
    */
   public void zeroHeading() {
-    navx.zeroRoll();
+    navx.zeroYaw();
   }
 
   /**
