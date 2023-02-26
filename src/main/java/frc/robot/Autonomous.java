@@ -125,9 +125,8 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
-        .until(()->(drivetrain.getRoll() >= 9)),
-        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain).withTimeout(.2),
+        new RunCommand(()->{drivetrain.driveArcade(0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
+        .until(()->(drivetrain.getPitch() >= 9)),
         new AutoBalance(drivetrain));
     }
     Command autoBalanceSequence = new SequentialCommandGroup(
@@ -168,7 +167,6 @@ public class Autonomous{
     }
     
     Command scoreThenAutoBalance(){
-    
         return new SequentialCommandGroup(
             buildScoringSequence(),
             turn180Degree(),

@@ -74,6 +74,7 @@ public class RobotContainer {
     //AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_Score1());
     //AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     //AutoChooser.addOption("Drive Back", autos.driveBack());
+    //AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
 
     AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
 
