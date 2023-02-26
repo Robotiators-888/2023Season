@@ -130,7 +130,7 @@ public class Autonomous{
         new AutoBalance(drivetrain));
     }
     Command autoBalanceSequence = new SequentialCommandGroup(
-        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
+        new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
         .until(()->(drivetrain.getRoll() >= 9)),
         new AutoBalance(drivetrain)
     );
