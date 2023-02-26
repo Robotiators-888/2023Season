@@ -7,8 +7,13 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
+
+import javax.swing.text.StyleContext.SmallAttributeSet;
+
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -22,7 +27,7 @@ import frc.robot.Constants;
 public class SUB_Gripper extends SubsystemBase {
 
   private CANSparkMax GripperSparkMax;
-  private RelativeEncoder m_encoder;
+  private AbsoluteEncoder m_encoder;
   private SparkMaxPIDController m_controller;
   private double m_setpoint;
   private double m_prevSetpoint;
@@ -41,7 +46,7 @@ public class SUB_Gripper extends SubsystemBase {
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Gripper.kSoftLimitForward);
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Gripper.kSoftLimitReverse);
 
-    m_encoder = GripperSparkMax.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    m_encoder = GripperSparkMax.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
 
     m_controller = GripperSparkMax.getPIDController();
     PIDGains.setSparkMaxGains(m_controller, Constants.Gripper.kPositionPIDGains);
@@ -98,6 +103,7 @@ public class SUB_Gripper extends SubsystemBase {
       }
       m_prevSetpoint = m_setpoint;
 
+      SmartDashboard.putNumber("absolute encoder position", m_encoder.getPosition());
   }
 
   
