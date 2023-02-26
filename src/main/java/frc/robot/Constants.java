@@ -27,7 +27,7 @@ public final class Constants {
     public static final double TRACKWIDTH = 35.5; // This is in inches 
     //1.399in in width per wheel
     public static final double WHEEL_RADIUS = 3; // wheel radius in inches
-    public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
+    public static final double GEARRATIO = 10.71; //gear ratio from output shaft of motor to wheel axle
    
 
     public static final DifferentialDriveKinematics kDriveKinematics = 
@@ -43,6 +43,12 @@ public final class Constants {
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
+
+    public static final double KP = 0.021; // was 0.015, was 0.021
+    public static final double KD = 0.2; // was 0.2, was 0.2
+    public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
+    public static final double BEAM_BALANCED_ANGLE_TRESHOLD_DEGREES = 1;
+    public static final double BACKWARDS_BALANCING_EXTRA_POWER_MULTIPLIER = 1;
   
   }
 
