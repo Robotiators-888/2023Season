@@ -52,7 +52,7 @@ public class AutoBalance extends CommandBase{
       // calculate error based on angle and target angle... 0
       error = 0 - currentAngle;
       // calculate motor speed, proportionally based on angle error, then multiple by a constant KP
-      drivePower = -Math.min(Constants.Autonomous.kpDriverVelocity * error, 1);
+      drivePower = -Math.min(Constants.Autonomous.BALANCE_KP * error, 1);
       
 
       // detects if beam flipping down, then permanently decreases speeds
@@ -75,7 +75,7 @@ public class AutoBalance extends CommandBase{
 
       // add difInAngle to drivePower
       // decreases speed if angle changing quickly
-      drivePower += diferenceInAngle*Constants.Autonomous.KD;
+      drivePower += diferenceInAngle*Constants.Autonomous.BALANCE_KD;
 
       // caps speed at maxSpeed, Maxspeed decreases after first beam flip
       if (Math.abs(drivePower) > maxSpeed) {
