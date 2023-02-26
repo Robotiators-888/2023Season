@@ -55,6 +55,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   // create a drive train group with the speed controller groups
   private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
 
+  boolean brake = false;
+
   //navx
   // private AHRS navx = new AHRS();
 
@@ -315,9 +317,18 @@ public class SUB_Drivetrain extends SubsystemBase {
     }
   }
 
+  public void toggleBrake(){
+    if(brake){
+      brake = false;
+    }else{
+      brake = true;
+    }
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putBoolean("BREAK MODE", brake);
     SmartDashboard.putNumber("Left Primary Encoder", leftPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Left Secondary Encoder", leftSecondaryEncoder.getPosition());
     SmartDashboard.putNumber("Right Primary Encoder", rightPrimaryEncoder.getPosition());
@@ -333,6 +344,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 
     field2d.setRobotPose(driveOdometry.getPoseMeters());
+    setBrakeMode(brake);
 
   }
 }
