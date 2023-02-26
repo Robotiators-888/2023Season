@@ -71,8 +71,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    CameraServer.startAutomaticCapture(0)
-    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
+    CameraServer.startAutomaticCapture()
+    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
     //AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_Score1());
     //AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
