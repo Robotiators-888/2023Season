@@ -72,8 +72,9 @@ public class RobotContainer {
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
 
     AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_Score1());
-    AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("Auto Balance Only", autos.buildAutoBalanceSequence());
     AutoChooser.addOption("Score Then AutoBalance", autos.scoreThenAutoBalance());
+    AutoChooser.addOption("turn180",autos.turn180Degree());
 
     DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);

@@ -62,42 +62,43 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    leftPrimary.setIdleMode(IdleMode.kCoast);
+    leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
     rightPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    rightPrimary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.setIdleMode(IdleMode.kBrake);
     rightPrimary.burnFlash();
   
       
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      leftSecondary.setIdleMode(IdleMode.kCoast);
+      leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
   
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      rightSecondary.setIdleMode(IdleMode.kCoast);
+      rightSecondary.setIdleMode(IdleMode.kBrake);
       rightSecondary.burnFlash();
+      
   }
 
   public void setBrakeMode(boolean brake){
-    /* 
-    if(brake){
-        leftPrimary.setIdleMode(IdleMode.kBrake);
-        leftSecondary.setIdleMode(IdleMode.kBrake);
-        rightPrimary.setIdleMode(IdleMode.kBrake);
-        rightSecondary.setIdleMode(IdleMode.kBrake);
-    }else{
-        leftPrimary.setIdleMode(IdleMode.kCoast);
-        leftSecondary.setIdleMode(IdleMode.kCoast);
-        rightPrimary.setIdleMode(IdleMode.kCoast);
-        rightSecondary.setIdleMode(IdleMode.kCoast);
-    }
-    */
+    
+    // if(brake){
+    //     leftPrimary.setIdleMode(IdleMode.kBrake);
+    //     leftSecondary.setIdleMode(IdleMode.kBrake);
+    //     rightPrimary.setIdleMode(IdleMode.kBrake);
+    //     rightSecondary.setIdleMode(IdleMode.kBrake);
+    // }else{
+    //     leftPrimary.setIdleMode(IdleMode.kCoast);
+    //     leftSecondary.setIdleMode(IdleMode.kCoast);
+    //     rightPrimary.setIdleMode(IdleMode.kCoast);
+    //     rightSecondary.setIdleMode(IdleMode.kCoast);
+    // }
+    
   }
 
   // public void putNumber(int num) {
@@ -294,11 +295,11 @@ public class SUB_Drivetrain extends SubsystemBase {
     double degree = getYaw();
     //posative turn is left
     if (degree < 180) { // turn left
-      double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.5),-0.265);
+      double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.265);
       this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
       SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
     } else if (degree > 180){ // turn right
-        double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.5),0.265);
+        double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.265);
         this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
         SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
     }
