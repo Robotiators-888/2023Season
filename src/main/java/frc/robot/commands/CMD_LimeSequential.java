@@ -24,9 +24,9 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
         new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
         new RunCommand(() -> {limelight.setLed(3);}, limelight),
         new WaitCommand(1),
-        new RunCommand(() -> {limelight.limelightAlign();}, limelight),
-        new RunCommand(() -> {limelight.limelightDrive();}, limelight),
-        new RunCommand(() -> {limelight.limelightAlign();}, limelight),
+        new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+        new RunCommand(() -> {limelight.limelightDrive();}, limelight).until(() -> (limelight.getDistance() <= 24.5)),
+        new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
         new RunCommand(() -> {limelight.setLed(1);}, limelight),
         new ParallelCommandGroup(
           new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),

@@ -22,9 +22,9 @@ public class CMD_AprilSequential extends SequentialCommandGroup {
     public Command limelightPlacement(){
       return new SequentialCommandGroup(
         new RunCommand(() -> {aprilTag.switchapipeline(1);}, aprilTag),
-        new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag),
-        new RunCommand(() -> {aprilTag.aprilDrive();}, aprilTag),
-        new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag),
+        new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
+        new RunCommand(() -> {aprilTag.aprilDrive();}, aprilTag).until(() -> (aprilTag.getDistance() <= 12)),
+        new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
         new ParallelCommandGroup(
           new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
            new SequentialCommandGroup(
