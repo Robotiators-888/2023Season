@@ -7,7 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import javax.swing.text.StyleContext.SmallAttributeSet;
 
 import com.revrobotics.AbsoluteEncoder;
@@ -27,7 +27,7 @@ import frc.robot.Constants;
 public class SUB_Gripper extends SubsystemBase {
 
   private CANSparkMax GripperSparkMax;
-  private AbsoluteEncoder m_encoder;
+  private DutyCycleEncoder m_encoder;
   private SparkMaxPIDController m_controller;
   private double m_setpoint;
   private double m_prevSetpoint;
@@ -46,7 +46,7 @@ public class SUB_Gripper extends SubsystemBase {
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Gripper.kSoftLimitForward);
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Gripper.kSoftLimitReverse);
 
-    m_encoder = GripperSparkMax.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+    m_encoder = new DutyCycleEncoder(0);
 
     m_controller = GripperSparkMax.getPIDController();
     PIDGains.setSparkMaxGains(m_controller, Constants.Gripper.kPositionPIDGains);
@@ -57,7 +57,7 @@ public class SUB_Gripper extends SubsystemBase {
   }
 
   public boolean isSafe() {
-    return m_encoder.getPosition() > Constants.Gripper.kSafePosition;
+    return m_encoder.getAbsolutePosition() > Constants.Gripper.kSafePosition;
   }
 
   public void openConeGripper() {
@@ -97,13 +97,13 @@ public class SUB_Gripper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    gripperMotorOutput.append(GripperSparkMax.get());
-    if (m_setpoint != m_prevSetpoint) {
-        m_controller.setReference(m_setpoint, CANSparkMax.ControlType.kPosition);
-      }
-      m_prevSetpoint = m_setpoint;
+    // gripperMotorOutput.append(GripperSparkMax.get());
+    // if (m_setpoint != m_prevSetpoint) {
+    //     m_controller.setReference(m_setpoint, CANSparkMax.ControlType.kPosition);
+    //   }
+    //   m_prevSetpoint = m_setpoint;
 
-      SmartDashboard.putNumber("absolute encoder position", m_encoder.getPosition());
+      SmartDashboard.putNumber("absolute encoder position", m_encoder.getAbsolutePosition());
   }
 
   
