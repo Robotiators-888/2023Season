@@ -50,6 +50,8 @@ public class RobotContainer {
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
 
+  private JoystickButton d_rBumper = new JoystickButton(controller, 5);
+
   private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
   private JoystickButton c_aButton = new JoystickButton(controller2, 1);
@@ -126,6 +128,10 @@ public class RobotContainer {
     .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
     .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
     */
+
+    d_rBumper
+      .toggleOnTrue(new InstantCommand(()->drivetrain.setBrakeMode(true)))
+      .toggleOnFalse(new InstantCommand(()->drivetrain.setBrakeMode(false)));
 
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
