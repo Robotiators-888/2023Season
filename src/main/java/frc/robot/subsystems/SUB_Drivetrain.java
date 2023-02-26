@@ -60,6 +60,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public SUB_Drivetrain(Field2d input) {
     this.field2d = input;
+    SmartDashboard.putData(field2d);
     zeroHeading();
     navx.setAngleAdjustment(0.0);
 
@@ -251,8 +252,9 @@ public class SUB_Drivetrain extends SubsystemBase {
   public void setPosition(Pose2d position) {
     //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
     //new Pose2d(0, 0, new Rotation2d()));
-    driveOdometry.resetPosition(navx.getRotation2d(), position.getX(), position.getY(), position);
     zeroEncoders();
+    zeroHeading();
+    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(), position);
 
   }
 
@@ -326,7 +328,6 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
-
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));

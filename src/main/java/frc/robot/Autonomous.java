@@ -127,6 +127,7 @@ public class Autonomous{
         return new SequentialCommandGroup(
         new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain)
         .until(()->(drivetrain.getRoll() >= 9)),
+        new RunCommand(()->drivetrain.setMotorsTank(0.5, 0.5), drivetrain).withTimeout(.2),
         new AutoBalance(drivetrain));
     }
     Command autoBalanceSequence = new SequentialCommandGroup(
@@ -147,23 +148,27 @@ public class Autonomous{
     
 
     Command red1_Score1(){
+        field2d.getObject("trajectory").setTrajectory(red1_p1);   
         return new SequentialCommandGroup(
            new InstantCommand(()->drivetrain.setPosition(red1_p1.getInitialPose())),
             buildScoringSequence(),
             getRamsete(red1_p1),
             buildPickUpSequence(),
+            new InstantCommand(()->field2d.getObject("trajectory").setTrajectory(red1_p2)            ),
             getRamsete(red1_p2),
             buildScoringSequence()
             );
     } 
 
     Command driveBack(){
+        field2d.getObject("trajectory").setTrajectory(dummyPath);   
         return new SequentialCommandGroup(
             new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
             getRamsete(dummyPath));
     }
     
     Command scoreThenAutoBalance(){
+    
         return new SequentialCommandGroup(
             buildScoringSequence(),
             turn180Degree(),
