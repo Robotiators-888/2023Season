@@ -55,7 +55,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   private MotorControllerGroup groupRight = new MotorControllerGroup(rightPrimary, rightSecondary);
 
   // create a drive train group with the speed controller groups
-  //private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
+  private DifferentialDrive driveTrain = new DifferentialDrive(groupLeft, groupRight);
 
   boolean brake = false;
 
@@ -131,7 +131,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightPrimary.set(right);
     leftSecondary.set(left);
     rightSecondary.set(right);
-    //driveTrain.feedWatchdog();
+    driveTrain.feedWatchdog();
 
   }
 
@@ -142,16 +142,16 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    //groupLeft.setVoltage(leftVolts);
-    //groupRight.setVoltage(rightVolts);
-    //driveTrain.feedWatchdog();
+    groupLeft.setVoltage(leftVolts);
+    groupRight.setVoltage(rightVolts);
+    driveTrain.feedWatchdog();
 
   }
 
   
   public void driveArcadeSquared(double _straight, double _turn) {
     driveArcade(_straight,_turn);
-    //driveTrain.feedWatchdog();
+    driveTrain.feedWatchdog();
   }
 
   public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
@@ -160,14 +160,12 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public void setMotorsTank(Supplier<Double> lSpeed, Supplier<Double> rSpeed) {
     
-    double left = Math.copySign(Math.pow(lSpeed.get(), 2), lSpeed.get());
-    double right = Math.copySign(Math.pow(rSpeed.get(), 2), rSpeed.get());
+    double leftSpeed = Math.copySign(Math.pow(lSpeed.get(), 2), lSpeed.get());
+    double rightSpeed = Math.copySign(Math.pow(rSpeed.get(), 2), rSpeed.get());
     
-    leftPrimary.set(-left);
-    rightPrimary.set(-right);
-    leftSecondary.set(-left);
-    rightSecondary.set(-right);
-    //driveTrain.feedWatchdog();
+    groupLeft.set(leftSpeed);
+    groupRight.set(rightSpeed);
+    driveTrain.feedWatchdog();
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed){
@@ -175,8 +173,8 @@ public class SUB_Drivetrain extends SubsystemBase {
      leftSpeed = Math.copySign(Math.pow(leftSpeed, 2), leftSpeed);
      rightSpeed = Math.copySign(Math.pow(rightSpeed, 2), rightSpeed);
 
-     //driveTrain.tankDrive(leftSpeed, rightSpeed);
-     //driveTrain.feedWatchdog();
+     driveTrain.tankDrive(leftSpeed, rightSpeed);
+     driveTrain.feedWatchdog();
   }
 
   public void setMotorsCurvature(double xSpeed, double zRotation, boolean isQuickTurn){
