@@ -66,8 +66,8 @@ public class RobotContainer {
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
   private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
-  JoystickButton c0_yButton = new JoystickButton(controller, 4);
-  JoystickButton c0_bButton = new JoystickButton(controller, 2);
+  JoystickButton d_yButton = new JoystickButton(controller, 4);
+  JoystickButton d_xButton = new JoystickButton(controller, 3);
 
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -123,8 +123,8 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    c0_yButton.onTrue(LimeSequential);
-    c0_bButton.onTrue(AprilSequential);
+    d_yButton.onTrue(LimeSequential);
+    d_xButton.onTrue(AprilSequential);
     
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
