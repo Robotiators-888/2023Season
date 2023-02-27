@@ -150,7 +150,7 @@ public class RobotContainer {
     // buttons, move arm forward and backward
     //set up arm preset positions
     c_aButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
+      .onTrue(autos.buildHomeSequence());
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
    c_yButton
