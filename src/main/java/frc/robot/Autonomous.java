@@ -123,6 +123,13 @@ public class Autonomous{
         );
     }
 
+    public Command buildHomeSequence(){
+        return new ParallelCommandGroup(
+            new InstantCommand(()->gripper.closeConeGripper()),
+            new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
+        );
+    }
+
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
         new RunCommand(()->{drivetrain.driveArcade(0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
