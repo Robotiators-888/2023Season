@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 
+import java.util.function.Supplier;
+
 import com.kauailabs.navx.frc.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -156,12 +158,23 @@ public class SUB_Drivetrain extends SubsystemBase {
     //driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
   }
 
-  public void setMotorsTank(double leftSpeed, double rightSpeed) {
-    leftSpeed = Math.copySign(Math.pow(leftSpeed, 2), leftSpeed);
-    rightSpeed = Math.copySign(Math.pow(rightSpeed, 2), rightSpeed);
+  public void setMotorsTank(Supplier<Double> lSpeed, Supplier<Double> rSpeed) {
     
-    driveTrain.tankDrive(leftSpeed, rightSpeed);
+    double leftSpeed = Math.copySign(Math.pow(lSpeed.get(), 2), lSpeed.get());
+    double rightSpeed = Math.copySign(Math.pow(rSpeed.get(), 2), rSpeed.get());
+    
+    groupLeft.set(leftSpeed);
+    groupRight.set(rightSpeed);
     driveTrain.feedWatchdog();
+  }
+
+  public void setMotorsTank(double leftSpeed, double rightSpeed){
+
+     leftSpeed = Math.copySign(Math.pow(leftSpeed, 2), leftSpeed);
+     rightSpeed = Math.copySign(Math.pow(rightSpeed, 2), rightSpeed);
+
+     driveTrain.tankDrive(leftSpeed, rightSpeed);
+     driveTrain.feedWatchdog();
   }
 
   public void setMotorsCurvature(double xSpeed, double zRotation, boolean isQuickTurn){

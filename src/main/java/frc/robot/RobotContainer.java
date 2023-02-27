@@ -51,11 +51,9 @@ public class RobotContainer {
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
   
 
-  /* 
-  private final Joystick leftJoystick = new Joystick(Constants.JOYSTICK_PORT);
-  private final Joystick rightJoystick = new Joystick(Constants.JOYSTICK_PORT1);
-  private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
-  */
+  
+  //private final Joystick leftJoystick = new Joystick(Constants.JOYSTICK_PORT);
+  //private final Joystick rightJoystick = new Joystick(Constants.JOYSTICK_PORT1);  
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
@@ -180,20 +178,16 @@ public class RobotContainer {
         () ->
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-
   
-   /* 
-   drivetrain.setDefaultCommand(
-    ()->drivetrain.setMotorsTank(
-      leftJoystick.getRawAxis(1), 
-      rightJoystick.getRawAxis(1)), 
-      drivetrain);
+   /*
+   drivetrain.setDefaultCommand((new RunCommand(
+    ()-> 
+      drivetrain.setMotorsTank(
+        leftJoystick.getRawAxis(1), 
+        rightJoystick.getRawAxis(1)))));
+  
   */
+  
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         drivetrain.driveArcade(
