@@ -157,7 +157,11 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed) {
-    //driveTrain.tankDrive(leftSpeed, rightSpeed);
+    leftSpeed = Math.copySign(Math.pow(leftSpeed, 2), leftSpeed);
+    rightSpeed = Math.copySign(Math.pow(rightSpeed, 2), rightSpeed);
+    
+    driveTrain.tankDrive(leftSpeed, rightSpeed);
+    driveTrain.feedWatchdog();
   }
 
   public void setMotorsCurvature(double xSpeed, double zRotation, boolean isQuickTurn){

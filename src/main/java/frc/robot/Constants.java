@@ -77,6 +77,7 @@ public final class Constants {
 
 //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
+ public static final int JOYSTICK_PORT1 = 1;
  public static final int JOYSTICK_PORT2 = 1;
  public static final int DRIVER_CONTROLLER = 0;
 
@@ -113,9 +114,9 @@ public final class Constants {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
     public static final double kSoftLimitForward = 22.0;
-    public static final double kCloseConePosition = 0.0;
+    public static final double kCloseConePosition = -2.0;
     public static final double kCloseCubePosition = 10.0;
-    public static final double kConePosition = 11.0;
+    public static final double kConePosition = 13.0;
     public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 10;
