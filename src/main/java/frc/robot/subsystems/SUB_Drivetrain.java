@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.util.sendable.Sendable;
 
 
 public class SUB_Drivetrain extends SubsystemBase {
@@ -47,7 +46,8 @@ public class SUB_Drivetrain extends SubsystemBase {
    private Field2d field2d;
 
    // Odometry class for tracking robot pose
-   DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
+   DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), leftPrimaryEncoder.getPosition(), 
+   rightSecondaryEncoder.getPosition(),
    new Pose2d(0, 0, new Rotation2d()));
 
   // create a speed controller group for each side
