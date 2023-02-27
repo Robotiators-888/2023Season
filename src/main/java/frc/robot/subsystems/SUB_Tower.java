@@ -11,6 +11,7 @@ import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.libs.PIDGains;
 import frc.robot.Constants;
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,7 +24,7 @@ public class SUB_Tower extends SubsystemBase {
     //set motors
 
     private CANSparkMax armMotor = new CANSparkMax(Constants.TOWER_SPARKMAX_CANID, CANSparkMaxLowLevel.MotorType.kBrushless);
-
+    private double feedforward;
     private TrapezoidProfile m_profile;
     private Timer m_timer;
 
@@ -32,7 +33,6 @@ public class SUB_Tower extends SubsystemBase {
     private double m_setpoint;
     private RelativeEncoder m_encoder;
     private TrapezoidProfile.State targetState;
-    private double feedforward;
     private double manualValue;
     
 
@@ -43,7 +43,6 @@ public class SUB_Tower extends SubsystemBase {
 
     //declares and sets PID, setpoint is arbitrary
     PIDController pid = new PIDController(Constants.PID_kP, Constants.PID_kI, Constants.PID_kD);
-    double setpoint = 42.0;
     //Counteract Gravity on Arm, Currently lbsArm is arbitrary (For kG of FF)
     double lbsArm = 30.0;
     double gravitional_force_in_Kg = (lbsArm*4.44822162)/9.8;
@@ -108,6 +107,7 @@ public class SUB_Tower extends SubsystemBase {
         feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
         m_controller.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
       }
+
       public void runManual(double _power) {
         //reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and passively
         m_setpoint = m_encoder.getPosition();
