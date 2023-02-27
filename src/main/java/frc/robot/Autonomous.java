@@ -30,6 +30,9 @@ public class Autonomous{
     final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
+    final SUB_AprilTag aprilTag = RobotContainer.apriltag;
+    final SUB_Limelight limelight = RobotContainer.limelight;
+
 
  // ====================================================================
  // Trajectories
@@ -140,6 +143,49 @@ public class Autonomous{
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
         .until(()->(drivetrain.getYaw() > 179.5 &&  drivetrain.getYaw() < 180.5));
     }
+
+    public Command buildAprilTagPlacementSequence(){
+        return new SequentialCommandGroup(
+          new RunCommand(() -> {aprilTag.switchapipeline(1);}, aprilTag),
+          new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
+          new RunCommand(() -> {aprilTag.aprilDrive();}, aprilTag).until(() -> (aprilTag.getDistance() <= 12)),
+          new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
+          new ParallelCommandGroup(
+            new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+             new SequentialCommandGroup(
+              new WaitCommand(2.5), 
+              new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+              new SequentialCommandGroup(
+                new WaitCommand(1), 
+                new InstantCommand(()->gripper.closeConeGripper())), 
+                new SequentialCommandGroup(
+                    new WaitCommand(0.5), 
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
+      }
+
+      public Command buildLimelightPlacementSequence(){
+        return new SequentialCommandGroup(
+          new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
+          new RunCommand(() -> {limelight.setLed(3);}, limelight),
+          new WaitCommand(1),
+          new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+          new RunCommand(() -> {limelight.limelightDrive();}, limelight).until(() -> (limelight.getDistance() <= 24.5)),
+          new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+          new RunCommand(() -> {limelight.setLed(1);}, limelight),
+          new ParallelCommandGroup(
+            new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+             new SequentialCommandGroup(
+              new WaitCommand(2.5), 
+              new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+              new SequentialCommandGroup(
+                new WaitCommand(1), 
+                new InstantCommand(()->gripper.closeConeGripper())), 
+                new SequentialCommandGroup(
+                    new WaitCommand(0.5), 
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
+      }
+
+
 
     // ==================================================================== 
     //                          Auto Routines
