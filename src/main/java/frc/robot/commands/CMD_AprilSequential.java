@@ -20,7 +20,7 @@ public class CMD_AprilSequential extends SequentialCommandGroup {
   public CMD_AprilSequential() {
     // Drivers get a quick way to know april tag sequence is working
   }
-    public Command limelightPlacement(){
+    public Command aprilPlacement(){
       return new SequentialCommandGroup(
         new RunCommand(() -> {aprilTag.switchapipeline(1);}, aprilTag),
         new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),

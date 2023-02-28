@@ -123,8 +123,8 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    d_yButton.onTrue(LimeSequential);
-    d_xButton.onTrue(AprilSequential);
+    d_yButton.onTrue(LimeSequential.limelightPlacement());
+    d_xButton.onTrue(AprilSequential.aprilPlacement());
     
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
