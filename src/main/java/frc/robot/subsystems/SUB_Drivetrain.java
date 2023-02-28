@@ -64,7 +64,6 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public SUB_Drivetrain(Field2d input) {
     this.field2d = input;
-    SmartDashboard.putData(field2d);
     zeroHeading();
     navx.setAngleAdjustment(0.0);
 
@@ -345,6 +344,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putData("Field",field2d);
     SmartDashboard.putBoolean("BREAK MODE", brake);
     SmartDashboard.putNumber("Left Primary Encoder", leftPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Left Secondary Encoder", leftSecondaryEncoder.getPosition());
