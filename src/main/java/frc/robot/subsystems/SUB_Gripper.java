@@ -4,12 +4,16 @@
 
 package frc.robot.subsystems;
 
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+
 import javax.swing.text.StyleContext.SmallAttributeSet;
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector.ReferenceProperty.Type;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -23,11 +27,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.libs.PIDGains;
 import frc.robot.Constants;
+//import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 public class SUB_Gripper extends SubsystemBase {
 
   private CANSparkMax GripperSparkMax;
-  private DutyCycleEncoder m_encoder;
+  private AbsoluteEncoder m_encoder;
   private SparkMaxPIDController m_controller;
   private double m_setpoint;
   private double m_prevSetpoint;
@@ -46,7 +51,8 @@ public class SUB_Gripper extends SubsystemBase {
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Gripper.kSoftLimitForward);
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Gripper.kSoftLimitReverse);
 
-    m_encoder = new DutyCycleEncoder(0);
+    // get absolute encoder connect to spark max
+    m_encoder = GripperSparkMax.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
     
     GripperSparkMax.burnFlash();
 
@@ -54,7 +60,7 @@ public class SUB_Gripper extends SubsystemBase {
   }
 
   public boolean isSafe() {
-    return m_encoder.getAbsolutePosition() > Constants.Gripper.kSafePosition;
+    return m_encoder.getPosition() > Constants.Gripper.kSafePosition;
   }
 
   public void openConeGripper() {
@@ -101,7 +107,8 @@ public class SUB_Gripper extends SubsystemBase {
       //   driveGripper(0.1);
       // }
 
-      SmartDashboard.putNumber("absolute encoder position", m_encoder.getAbsolutePosition());
+      // print absolute position of gripper
+      SmartDashboard.putNumber("absolute encoder position", m_encoder.getPosition());
   }
 
   

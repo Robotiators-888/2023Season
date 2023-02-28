@@ -120,7 +120,9 @@ public class RobotContainer {
     c0_yButton.onTrue(LimeSequential);
     c0_bButton.onTrue(AprilSequential);
     
+    // set defualt speed of gripper
     gripper.setDefaultCommand(new RunCommand(()->{gripper.driveGripper(0);}, gripper));
+    //drive gripper controller 2 bumpers
     c_rBumper.onTrue(new RunCommand(()->{gripper.driveGripper(0.15);}, gripper));
     c_lBumper.onTrue(new RunCommand(()->{gripper.driveGripper(-0.15);}, gripper));
     //c_lBumper
