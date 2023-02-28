@@ -86,7 +86,10 @@ public class SUB_AprilTag extends SubsystemBase{
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
             }
-
+            else{
+                SmartDashboard.putBoolean("aligning", false);
+                drive.setBrakeMode(true);
+            }
             SmartDashboard.putBoolean("limeAlign", true);
         }
     }

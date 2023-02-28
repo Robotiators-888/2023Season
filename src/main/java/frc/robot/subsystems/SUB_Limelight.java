@@ -81,6 +81,8 @@ public class SUB_Limelight extends SubsystemBase{
                 drivetrain.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
+            }else{
+                drivetrain.setBrakeMode(true);
             }
     
         }
