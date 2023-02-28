@@ -205,6 +205,14 @@ public class Autonomous{
             new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
             getRamsete(dummyPath));
     }
+
+    Command scoreDriveBack(){
+        field2d.getObject("trajectory").setTrajectory(dummyPath);   
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
+            getRamsete(dummyPath));
+    }
     
     Command scoreThenAutoBalance(){
         return new SequentialCommandGroup(
