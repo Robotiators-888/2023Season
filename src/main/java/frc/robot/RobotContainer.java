@@ -88,6 +88,8 @@ public class RobotContainer {
     AutoChooser.addOption("Auto Balance Only", autos.buildAutoBalanceSequence());
     AutoChooser.addOption("Score Then AutoBalance", autos.scoreThenAutoBalance());
     AutoChooser.addOption("turn180",autos.turn180Degree());
+    AutoChooser.addOption("Mid auto",autos.red3_Mid_2GP());
+
 
     DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);
@@ -193,7 +195,7 @@ public class RobotContainer {
       () -> 
         drivetrain.driveArcade(
           MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
-          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
+          MathUtil.applyDeadband(controller.getRawAxis(3)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
   , drivetrain)
     );
 

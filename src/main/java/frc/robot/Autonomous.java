@@ -70,6 +70,9 @@ public class Autonomous{
         Trajectory red1_p1 = getTrajectory("paths/output/red1_p1.wpilib.json");
         Trajectory red1_p2 = getTrajectory("paths/output/red1_p2.wpilib.json");
         Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
+        Trajectory red3_p3 = getTrajectory("paths/output/Red3_p3.wpilib.json");
+        Trajectory red3_p4 = getTrajectory("paths/output/Red3_p4.wpilib.json");
+
 
 
     // ====================================================================
@@ -227,8 +230,14 @@ public class Autonomous{
             buildAutoBalanceSequence()
         );
     }
-
-
+    Command red3_Mid_2GP(){
+        field2d.getObject("trajectory").setTrajectory(red3_p3);   
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),
+            getRamsete(red3_p3)
+        );
+    }
 
 
 
