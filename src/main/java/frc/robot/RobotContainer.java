@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Constants.Gripper;
 import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -119,9 +120,12 @@ public class RobotContainer {
     c0_yButton.onTrue(LimeSequential);
     c0_bButton.onTrue(AprilSequential);
     
-    c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    gripper.setDefaultCommand(new RunCommand(()->{gripper.driveGripper(0);}, gripper));
+    c_rBumper.onTrue(new RunCommand(()->{gripper.driveGripper(0.15);}, gripper));
+    c_lBumper.onTrue(new RunCommand(()->{gripper.driveGripper(-0.15);}, gripper));
+    //c_lBumper
+    //.onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
+    //.onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 

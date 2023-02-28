@@ -41,16 +41,13 @@ public class SUB_Gripper extends SubsystemBase {
     GripperSparkMax.restoreFactoryDefaults();
     GripperSparkMax.setInverted(false);
     GripperSparkMax.setSmartCurrentLimit(Constants.Gripper.kCurrentLimit);
-    GripperSparkMax.enableSoftLimit(SoftLimitDirection.kForward, true);
-    GripperSparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    //GripperSparkMax.enableSoftLimit(SoftLimitDirection.kForward, true);
+    //GripperSparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Gripper.kSoftLimitForward);
     GripperSparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Gripper.kSoftLimitReverse);
 
     m_encoder = new DutyCycleEncoder(0);
-
-    m_controller = GripperSparkMax.getPIDController();
-    PIDGains.setSparkMaxGains(m_controller, Constants.Gripper.kPositionPIDGains);
-
+    
     GripperSparkMax.burnFlash();
 
     m_setpoint = Constants.Gripper.kCloseConePosition;
@@ -96,12 +93,13 @@ public class SUB_Gripper extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
-    // gripperMotorOutput.append(GripperSparkMax.get());
-    // if (m_setpoint != m_prevSetpoint) {
-    //     m_controller.setReference(m_setpoint, CANSparkMax.ControlType.kPosition);
-    //   }
-    //   m_prevSetpoint = m_setpoint;
+      // code to drive gripper to setpoint
+      // if (m_encoder.getAbsolutePosition() > m_setpoint){
+      //   driveGripper(-0.1);
+      // }
+      // else{
+      //   driveGripper(0.1);
+      // }
 
       SmartDashboard.putNumber("absolute encoder position", m_encoder.getAbsolutePosition());
   }
