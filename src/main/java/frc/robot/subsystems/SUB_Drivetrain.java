@@ -69,25 +69,25 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    leftPrimary.setIdleMode(IdleMode.kCoast);
+    leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
     rightPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    rightPrimary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.setIdleMode(IdleMode.kBrake);
     rightPrimary.burnFlash();
   
       
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      leftSecondary.setIdleMode(IdleMode.kCoast);
+      leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
   
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      rightSecondary.setIdleMode(IdleMode.kCoast);
+      rightSecondary.setIdleMode(IdleMode.kBrake);
       rightSecondary.burnFlash();
 
       setBrakeMode(true);
