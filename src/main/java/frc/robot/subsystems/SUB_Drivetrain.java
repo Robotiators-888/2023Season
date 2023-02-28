@@ -307,6 +307,20 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Primary Encoder", rightPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Right Secondary Encoder", rightSecondaryEncoder.getPosition());
 
+    //Voltages for Advantage Kit
+    SmartDashboard.putNumber("Left Primary Input", leftPrimary.getBusVoltage());
+    SmartDashboard.putNumber("Left Primary Output", leftPrimary.getOutputCurrent());
+
+    SmartDashboard.putNumber("Left Secondary Input", leftSecondary.getBusVoltage());
+    SmartDashboard.putNumber("Left Secondary Output", leftSecondary.getOutputCurrent());
+
+    SmartDashboard.putNumber("Right Primary Input", rightPrimary.getBusVoltage());
+    SmartDashboard.putNumber("Right Primary Output", rightPrimary.getOutputCurrent());
+
+    SmartDashboard.putNumber("Right Secondary Input", rightSecondary.getBusVoltage());
+    SmartDashboard.putNumber("Right Secondary Output", rightSecondary.getOutputCurrent());
+
+
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 

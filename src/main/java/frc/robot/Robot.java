@@ -27,7 +27,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     DataLogManager.start();
-    DataLogManager.start();
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
