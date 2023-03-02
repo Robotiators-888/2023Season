@@ -192,7 +192,7 @@ public class RobotContainer {
       () -> 
         drivetrain.driveArcade(
           MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
-          MathUtil.applyDeadband(controller.getRawAxis(3)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
+          MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
   , drivetrain)
     );
 
