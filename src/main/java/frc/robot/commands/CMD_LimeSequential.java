@@ -17,7 +17,6 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
   final SUB_Limelight limelight = RobotContainer.limelight;
   final SUB_Tower tower = RobotContainer.tower;
   final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
-  final Autonomous Autonomous = new frc.robot.Autonomous();
   public CMD_LimeSequential() {
     // Drivers get a quick way to know april tag sequence is working
   }

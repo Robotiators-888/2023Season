@@ -26,9 +26,6 @@ public class CMD_AprilSequential extends SequentialCommandGroup {
         new RunCommand(() -> {aprilTag.switchapipeline(1);}, aprilTag),
         new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {aprilTag.aprilDrive();}, aprilTag).until(() -> (aprilTag.getDistance() <= 12)),
-        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
         new SequentialCommandGroup(
         new ParallelCommandGroup(
