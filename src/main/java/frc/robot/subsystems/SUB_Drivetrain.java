@@ -246,7 +246,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    */
   public Rotation2d getGyroHeading() {
     
-    return new Rotation2d(-Math.toRadians(navx.getYaw()));
+    return new Rotation2d(-1*Math.toRadians(navx.getYaw()));
   }
 
    /**

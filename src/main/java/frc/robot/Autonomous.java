@@ -86,6 +86,7 @@ public class Autonomous{
      * @return ramsete controller to follow trajectory
      */
     public RamseteCommand getRamsete(Trajectory traj) {
+        /* 
         return new RamseteCommand(
                 traj, 
                 drivetrain::getPose,
@@ -96,6 +97,20 @@ public class Autonomous{
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 drivetrain::tankDriveVolts, drivetrain);
+                */
+
+                // Troubleshooting auto :(
+                return new RamseteCommand(
+                    traj, 
+                    drivetrain::getPose,
+                    new RamseteController(Constants.Autonomous.kRamseteB, Constants.Autonomous.kRamseteZeta),
+                    new SimpleMotorFeedforward(Constants.Autonomous.ksVolts, Constants.Autonomous.kvVoltsSecondsPerMeter,
+                            Constants.Autonomous.kaVoltsSecondsSquaredPerMeter),
+                    Constants.Autonomous.kDriveKinematics, drivetrain::getWheelSpeeds,
+                    new PIDController(0, 0, 0),
+                    new PIDController(0, 0, 0),
+                    drivetrain::tankDriveVolts, drivetrain);
+
     }
     
     public Command buildScoringSequence(){
@@ -231,7 +246,7 @@ public class Autonomous{
         );
     }
     Command red3_Mid_2GP(){
-        field2d.getObject("trajectory").setTrajectory(red3_p3);   
+       // field2d.getObject("trajectory").setTrajectory(red3_p3);   
         return new SequentialCommandGroup(
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),

@@ -3,14 +3,11 @@
     "Persistent Values": {
       "open": false
     },
-    "Retained Values": {
-      "open": false
-    },
-    "Transitory Values": {
-      "open": false
-    },
     "transitory": {
       "SmartDashboard": {
+        "Auto Chooser": {
+          "open": true
+        },
         "open": true
       }
     },
@@ -29,9 +26,31 @@
       }
     }
   },
+  "NetworkTables Info": {
+    "glass@1": {
+      "Publishers": {
+        "open": true
+      }
+    }
+  },
   "NetworkTables Settings": {
     "listenAddress": "10.8.88.2",
     "mode": "Client (NT4)",
     "serverTeam": "10.8.88.2"
+  },
+  "Plots": {
+    "Plot <0>": {
+      "plots": [
+        {
+          "height": 155
+        },
+        {
+          "height": 155
+        }
+      ],
+      "window": {
+        "visible": false
+      }
+    }
   }
 }
