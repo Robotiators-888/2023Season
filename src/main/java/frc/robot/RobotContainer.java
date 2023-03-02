@@ -81,6 +81,7 @@ public class RobotContainer {
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
     AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
+    AutoChooser.addOption("Drive Back", autos.driveBack());
     AutoChooser.addOption("Red 1 - One Game Piece", autos.red1_Score1());
     AutoChooser.addOption("Auto Balance Only", autos.buildAutoBalanceSequence());
     AutoChooser.addOption("Drive Back", autos.driveBack());
