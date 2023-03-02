@@ -113,9 +113,9 @@ public class RobotContainer {
 
     // Cube|Cone Setter
     c0_aButton
-    .onTrue(new RunCommand(() -> {stateManager.setCone();}, stateManager));
+    .onTrue(new InstantCommand(() -> {stateManager.setCone();}, stateManager));
     c0_xButton
-    .onTrue(new RunCommand(() -> {stateManager.setCube();}, stateManager));
+    .onTrue(new InstantCommand(() -> {stateManager.setCube();}, stateManager));
 
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop

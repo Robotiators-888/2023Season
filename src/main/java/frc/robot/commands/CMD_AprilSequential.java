@@ -23,7 +23,7 @@ public class CMD_AprilSequential extends SequentialCommandGroup {
   }
     public Command limelightPlacement(){
       return new SequentialCommandGroup(
-        new InstantCommand(() -> {stateManager.setCone();}, stateManager),
+        new InstantCommand(() -> {stateManager.setCube();}, stateManager),
         new RunCommand(() -> {aprilTag.switchapipeline(1);}, aprilTag),
         new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag),
         new RunCommand(() -> {aprilTag.aprilDrive();}, aprilTag),

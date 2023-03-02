@@ -34,7 +34,7 @@ public class StateManager extends SubsystemBase{
         gp = Gamepiece.cone;
     }
 
-    //VALUES FOR CONES ARE ALL ARBITRARY CURRENTLY
+    //VALUES FOR CUBES ARE ALL ARBITRARY CURRENTLY
 
     //Arm
     public double kScoringPosition(){
