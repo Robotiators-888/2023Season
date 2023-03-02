@@ -271,7 +271,6 @@ public class SUB_Drivetrain extends SubsystemBase {
     //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
     //new Pose2d(0, 0, new Rotation2d()));
     zeroEncoders();
-    zeroHeading();
     driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(), position);
 
   }
