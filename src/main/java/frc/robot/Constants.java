@@ -28,7 +28,7 @@ public final class Constants {
     //1.399in in width per wheel
     public static final double WHEEL_RADIUS = 3; // wheel radius in inches
     public static final double GEARRATIO = 10.71; //gear ratio from output shaft of motor to wheel axle
-   
+    
 
     public static final DifferentialDriveKinematics kDriveKinematics = 
          new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
@@ -40,6 +40,7 @@ public final class Constants {
     public static final double kpDriverVelocity = 1.028;
       //public static final double kpDriverVelocity = 2.5217; Value from last year
     */
+    //  UNITS PER ROTATION ~0.4900 Meters
     public static final double ksVolts = 0.15849;
     public static final double kvVoltsSecondsPerMeter = 2.7889;
     public static final double kaVoltsSecondsSquaredPerMeter = 0.45972;
