@@ -27,7 +27,7 @@ public final class Constants {
     public static final double TRACKWIDTH = 35.5; // This is in inches 
     //1.399in in width per wheel
     public static final double WHEEL_RADIUS = 3; // wheel radius in inches
-    public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
+    public static final double GEARRATIO = 10.71; //gear ratio from output shaft of motor to wheel axle
    
 
     public static final DifferentialDriveKinematics kDriveKinematics = 
@@ -43,6 +43,12 @@ public final class Constants {
 
     public static final double kRamseteB = 2;
     public static final double kRamseteZeta = 0.7;
+
+    public static final double BALANCE_KP = 0.021; // was 0.015, was 0.021
+    public static final double BALANCE_KD = 0.025; // was 0.2, was 0.2
+    public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
+    public static final double BEAM_BALANCED_ANGLE_TRESHOLD_DEGREES = 1;
+    public static final double BACKWARDS_BALANCING_EXTRA_POWER_MULTIPLIER = 1;
   
   }
 
@@ -66,11 +72,12 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
 
-    public static final double kTurningScale = -0.5;
+    public static final double kTurningScale = -0.7;
   }
 
 //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
+ public static final int JOYSTICK_PORT1 = 1;
  public static final int JOYSTICK_PORT2 = 1;
  public static final int DRIVER_CONTROLLER = 0;
 
@@ -107,9 +114,9 @@ public final class Constants {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
     public static final double kSoftLimitForward = 22.0;
-    public static final double kCloseConePosition = 0.0;
+    public static final double kCloseConePosition = -2.0;
     public static final double kCloseCubePosition = 10.0;
-    public static final double kConePosition = 19.0;
+    public static final double kConePosition = 13.0;
     public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 10;
@@ -122,7 +129,7 @@ public final class Constants {
     public static final int kCurrentLimit = 40;
 
     public static final double kSoftLimitReverse = 0.0;
-    public static final double kSoftLimitForward = 4.6;
+    public static final double kSoftLimitForward = 4.5;
 
     public static final double kArmGearRatio = 1.0 / (48.0 * 4.0) * 2.0 * Math.PI; //multiply SM value by this number and get arm position in radians
     public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
@@ -130,11 +137,13 @@ public final class Constants {
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
     public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
-    public static final double kHomePosition = .2;
+    public static final double kBalancePosition = 4.47;
+    public static final double kHomePosition = .15;
     //public static final double kScoringPosition = 2.95;
     public static final double kScoringPosition = 2.89;
     public static final double kIntakePosition = 4.32;
-    public static final double kFeederPosition = 2.42;
+    public static final double kFeederPosition = 2.46;
+    
 }
 
 }
