@@ -86,7 +86,7 @@ public class Autonomous{
      * @return ramsete controller to follow trajectory
      */
     public RamseteCommand getRamsete(Trajectory traj) {
-        /* 
+        
         return new RamseteCommand(
                 traj, 
                 drivetrain::getPose,
@@ -97,9 +97,10 @@ public class Autonomous{
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 drivetrain::tankDriveVolts, drivetrain);
-                */
+                
 
                 // Troubleshooting auto :(
+                /* 
                 return new RamseteCommand(
                     traj, 
                     drivetrain::getPose,
@@ -110,7 +111,7 @@ public class Autonomous{
                     new PIDController(0, 0, 0),
                     new PIDController(0, 0, 0),
                     drivetrain::tankDriveVolts, drivetrain);
-
+                */
     }
     
     public Command buildScoringSequence(){

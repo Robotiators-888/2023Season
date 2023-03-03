@@ -40,10 +40,10 @@ public final class Constants {
     public static final double kpDriverVelocity = 1.028;
       //public static final double kpDriverVelocity = 2.5217; Value from last year
     */
-    public static final double ksVolts = 0.16026;
-    public static final double kvVoltsSecondsPerMeter = 2.7827;
-    public static final double kaVoltsSecondsSquaredPerMeter = 0.45974;
-    public static final double kpDriverVelocity = 0.00045674;
+    public static final double ksVolts = 0.15849;
+    public static final double kvVoltsSecondsPerMeter = 2.7889;
+    public static final double kaVoltsSecondsSquaredPerMeter = 0.45972;
+    public static final double kpDriverVelocity = 0.00045381;
 
     public static final double kMaxSpeedMetersPerSecond = 0.0;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
