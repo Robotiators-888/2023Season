@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.util.sendable.Sendable;
+import org.littletonrobotics.junction.Logger;
 
 
 
@@ -309,18 +310,25 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Primary Encoder", rightPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Right Secondary Encoder", rightSecondaryEncoder.getPosition());
 
-    //Voltages for Advantage Kit
-    SmartDashboard.putNumber("Left Primary Input", leftPrimary.getBusVoltage());
-    SmartDashboard.putNumber("Left Primary Output", leftPrimary.getOutputCurrent());
+    //Advantage Kit
+    //Logger.getInstance().recordOutput("Odometry", Pose2d <- should record that);
 
-    SmartDashboard.putNumber("Left Secondary Input", leftSecondary.getBusVoltage());
-    SmartDashboard.putNumber("Left Secondary Output", leftSecondary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftSecondaryEncoder.getPosition());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getPosition());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getPosition());
 
-    SmartDashboard.putNumber("Right Primary Input", rightPrimary.getBusVoltage());
-    SmartDashboard.putNumber("Right Primary Output", rightPrimary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftPrimary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftPrimary.getOutputCurrent());
 
-    SmartDashboard.putNumber("Right Secondary Input", rightSecondary.getBusVoltage());
-    SmartDashboard.putNumber("Right Secondary Output", rightSecondary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftSecondary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftSecondary.getOutputCurrent());
+
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightPrimary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightPrimary.getOutputCurrent());
+
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightSecondary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightSecondary.getOutputCurrent());
 
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
