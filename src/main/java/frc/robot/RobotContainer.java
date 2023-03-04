@@ -90,6 +90,7 @@ public class RobotContainer {
     AutoChooser.addOption("Score Then AutoBalance", autos.scoreThenAutoBalance());
     AutoChooser.addOption("turn180",autos.turn180Degree());
     AutoChooser.addOption("Mid auto",autos.red3_Mid_2GP());
+    AutoChooser.addOption("Play 1", autos.play1());
 
 
     DelayChooser.setDefaultOption("0 sec", 0);

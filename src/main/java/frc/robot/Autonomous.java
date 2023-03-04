@@ -73,6 +73,7 @@ public class Autonomous{
         Trajectory red3_p3 = getTrajectory("paths/output/Red3_p3.wpilib.json");
         Trajectory red3_p4 = getTrajectory("paths/output/Red3_p4.wpilib.json");
         Trajectory drive_back = getTrajectory("paths/output/DriveBack.wpilib.json");
+        Trajectory play1 = getTrajectory("paths/output/play1.wpilib.json");
 
 
     // ====================================================================
@@ -252,6 +253,14 @@ public class Autonomous{
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),
             getRamsete(red3_p3)
+        );
+    }
+
+    Command play1(){
+        field2d.getObject("Traj").setTrajectory(play1); 
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),
+            getRamsete(red3_p3) 
         );
     }
 

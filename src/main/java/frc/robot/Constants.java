@@ -41,10 +41,10 @@ public final class Constants {
       //public static final double kpDriverVelocity = 2.5217; Value from last year
     */
     //  UNITS PER ROTATION ~0.4900 Meters
-    public static final double ksVolts = 0.15849;
-    public static final double kvVoltsSecondsPerMeter = 2.7889;
-    public static final double kaVoltsSecondsSquaredPerMeter = 0.45972;
-    public static final double kpDriverVelocity = 0.00045381;
+    public static final double ksVolts = 0.096164;
+    public static final double kvVoltsSecondsPerMeter = 2.8131;
+    public static final double kaVoltsSecondsSquaredPerMeter = 0.27983;
+    public static final double kpDriverVelocity = 0.97592;
 
     public static final double kMaxSpeedMetersPerSecond = 0.0;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
