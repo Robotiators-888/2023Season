@@ -36,7 +36,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   private RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
   private RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   private RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
-  private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
+  private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder(); 
+  private Pose2d odometryPose = new Pose2d(); 
 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
@@ -311,24 +312,34 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Right Secondary Encoder", rightSecondaryEncoder.getPosition());
 
     //Advantage Kit
-    //Logger.getInstance().recordOutput("Odometry", Pose2d <- should record that);
 
+    //Odometry
+    Logger.getInstance().recordOutput("Odometry", getPose());
+
+    //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftSecondaryEncoder.getPosition());
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getPosition());
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getPosition());
 
+    //Voltages & Currents
     Logger.getInstance().recordOutput("Drivetrain/Voltage", leftPrimary.getBusVoltage());
-    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftPrimary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Current", leftPrimary.getOutputCurrent());
 
     Logger.getInstance().recordOutput("Drivetrain/Voltage", leftSecondary.getBusVoltage());
-    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftSecondary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Current", leftSecondary.getOutputCurrent());
 
     Logger.getInstance().recordOutput("Drivetrain/Voltage", rightPrimary.getBusVoltage());
-    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightPrimary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Current", rightPrimary.getOutputCurrent());
 
     Logger.getInstance().recordOutput("Drivetrain/Voltage", rightSecondary.getBusVoltage());
-    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightSecondary.getOutputCurrent());
+    Logger.getInstance().recordOutput("Drivetrain/Current", rightSecondary.getOutputCurrent());
+
+    //Speeds
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getVelocity());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftSecondaryEncoder.getVelocity());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getVelocity());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
 
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),

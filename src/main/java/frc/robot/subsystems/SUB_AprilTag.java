@@ -7,7 +7,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import org.littletonrobotics.junction.Logger;
 
 public class SUB_AprilTag extends SubsystemBase{
     NetworkTable table;
@@ -69,6 +69,7 @@ public class SUB_AprilTag extends SubsystemBase{
             if(this.getDistance() > 12){
                 drive.driveArcadeSquared( 0.4, 0.0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
+                Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
             }
         }
     }
@@ -80,14 +81,19 @@ public class SUB_AprilTag extends SubsystemBase{
                 drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
+                Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+                Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
             } else if (this.getX() < -0.009){ // turn right
                 double turnSpeed = -Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
                 drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
+                Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+                Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
             }
             else{
                 SmartDashboard.putBoolean("aligning", false);
+                Logger.getInstance().recordOutput("AprilTag/AlignBool", false);
                 drive.setBrakeMode(true);
             }
             SmartDashboard.putBoolean("limeAlign", true);
@@ -103,6 +109,12 @@ public class SUB_AprilTag extends SubsystemBase{
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
+        Logger.getInstance().recordOutput("AprilTag/ATY", this.getY());
+        Logger.getInstance().recordOutput("AprilTag/ATTarget", this.getTv());
+        Logger.getInstance().recordOutput("AprilTag/ATX", this.getX());
+        Logger.getInstance().recordOutput("AprilTag/ATDistance", this.getDistance());
+        Logger.getInstance().recordOutput("AprilTag/a1", Math.toRadians(0));
+        Logger.getInstance().recordOutput("AprilTag/a2", Math.toRadians(this.getY()));
     }
 }
 

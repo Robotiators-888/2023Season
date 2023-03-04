@@ -18,6 +18,7 @@ import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.Timer;
+import org.littletonrobotics.junction.Logger;
 
 public class SUB_Tower extends SubsystemBase {
     //set motors
@@ -156,6 +157,18 @@ public class SUB_Tower extends SubsystemBase {
         SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition());
         SmartDashboard.putNumber("encoder velocity", m_encoder.getVelocity());
         SmartDashboard.putNumber("encoder counts/rev", m_encoder.getCountsPerRevolution());
+
+        Logger.getInstance().recordOutput("Arm/CurrentRotations: ", getRotations());
+        Logger.getInstance().recordOutput("Arm/degreesRotation", calculateDegreesRotation());
+        Logger.getInstance().recordOutput("Arm/degreesRotationCosineAngle",Constants.FF_kG*Math.cos(Math.toRadians(calculateDegreesRotation())) );
+        Logger.getInstance().recordOutput("Arm/TowerMotorCurrent", armMotor.getOutputCurrent());
+        Logger.getInstance().recordOutput("Arm/setpoint", m_setpoint);
+        Logger.getInstance().recordOutput("Arm/time", m_timer.get());
+        Logger.getInstance().recordOutput("Arm/feedfoward", feedforward);
+        Logger.getInstance().recordOutput("Arm/manualValue", manualValue);
+        Logger.getInstance().recordOutput("Arm/encoderPositiion", m_encoder.getPosition());
+        Logger.getInstance().recordOutput("Arm/encoderVelocity", m_encoder.getVelocity());
+        Logger.getInstance().recordOutput("Arm/encoderRev", m_encoder.getCountsPerRevolution());
     }
 
     // balances the arm using feedforward, then adds on volts to move the arm.
@@ -163,6 +176,7 @@ public class SUB_Tower extends SubsystemBase {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
         armMotor.setVoltage(volts+getAutoBalanceVolts());// sets voltage of arm -12 to 12 volts
         SmartDashboard.putNumber("TowerMotorVolts", volts+getAutoBalanceVolts());
+        Logger.getInstance().recordOutput("Arm/MotorVolts",volts+getAutoBalanceVolts());
         //System.out.println("feedforward: "+feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
     }
 
