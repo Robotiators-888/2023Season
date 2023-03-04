@@ -324,7 +324,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     double degree = getYaw();
     //posative turn is left
     if (degree < 180) { // turn left
-      double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.265);
+      double turnSpeed = -Math.min(Math.max(degree * -0.3, -0.3),-0.265);
       this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
       SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
     } else if (degree > 180){ // turn right
