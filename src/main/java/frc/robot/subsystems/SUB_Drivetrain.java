@@ -38,6 +38,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   private RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   private RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
+  private boolean reversed = false;
 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
@@ -71,6 +72,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
+    //leftPrimaryEncoder.setInverted(true);
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
@@ -83,7 +85,7 @@ public class SUB_Drivetrain extends SubsystemBase {
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
-  
+      //rightPrimaryEncoder.setInverted(true);
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
@@ -108,6 +110,59 @@ public class SUB_Drivetrain extends SubsystemBase {
         rightSecondary.setIdleMode(IdleMode.kCoast);
     }
     
+  }
+
+public double invertEncoderVal(double currentVal){
+  return -currentVal;
+}
+
+  /**
+   * Sets the reverse variable ito given value
+   * @param state value to set reversed to
+   */
+  public void setReverse(boolean state){
+    reversed = state;
+
+    if(reversed){
+      leftPrimary.setInverted(!reversed);
+      rightPrimary.setInverted(reversed);
+      leftSecondary.setInverted(!reversed);
+      rightSecondary.setInverted(reversed);
+      reversed = false;
+    }else {
+      leftPrimary.setInverted(!reversed);
+      rightPrimary.setInverted(reversed);
+      leftSecondary.setInverted(!reversed);
+      rightSecondary.setInverted(reversed);
+      reversed = true;
+    }
+
+  }
+
+  /**
+   * toggles state of reverse variable
+   */
+  public void toggleReverse(){
+    if(reversed){
+      leftPrimary.setInverted(!reversed);
+      rightPrimary.setInverted(reversed);
+      leftSecondary.setInverted(!reversed);
+      rightSecondary.setInverted(reversed);
+      reversed = false;
+    }else {
+      leftPrimary.setInverted(!reversed);
+      rightPrimary.setInverted(reversed);
+      leftSecondary.setInverted(!reversed);
+      rightSecondary.setInverted(reversed);
+      reversed = true;
+    }
+  }
+
+  /**
+   * @return boolean sotred in reverse variable
+   */
+  public boolean getReverse(){
+    return reversed;
   }
 
   // public void putNumber(int num) {
@@ -141,8 +196,8 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    groupLeft.setVoltage(leftVolts);
-    groupRight.setVoltage(rightVolts);
+    groupLeft.setVoltage(rightVolts);
+    groupRight.setVoltage(leftVolts);
     driveTrain.feedWatchdog();
 
   }
@@ -355,6 +410,8 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading", getGyroHeading().getDegrees());
+
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));

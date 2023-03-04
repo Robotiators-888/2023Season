@@ -80,7 +80,7 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture()
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
-    AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
+    AutoChooser.setDefaultOption("Play 1 forward", autos.play1_forwad());
     AutoChooser.addOption("Drive Back", autos.driveBack());
     AutoChooser.addOption("Red 1 - One Game Piece", autos.red1_Score1());
     AutoChooser.addOption("Auto Balance Only", autos.buildAutoBalanceSequence());
@@ -91,6 +91,7 @@ public class RobotContainer {
     AutoChooser.addOption("turn180",autos.turn180Degree());
     AutoChooser.addOption("Mid auto",autos.red3_Mid_2GP());
     AutoChooser.addOption("Play 1", autos.play1());
+    //AutoChooser.addOption("Play 1 forward", autos.play1_forwad());
 
 
     DelayChooser.setDefaultOption("0 sec", 0);

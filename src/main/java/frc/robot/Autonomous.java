@@ -74,6 +74,7 @@ public class Autonomous{
         Trajectory red3_p4 = getTrajectory("paths/output/Red3_p4.wpilib.json");
         Trajectory drive_back = getTrajectory("paths/output/DriveBack.wpilib.json");
         Trajectory play1 = getTrajectory("paths/output/play1.wpilib.json");
+        Trajectory play1_forwad = getTrajectory("paths/output/play1_forwad.wpilib.json");
 
 
     // ====================================================================
@@ -101,7 +102,7 @@ public class Autonomous{
                 
 
                 // Troubleshooting auto :(
-                /* 
+                 /*
                 return new RamseteCommand(
                     traj, 
                     drivetrain::getPose,
@@ -257,10 +258,20 @@ public class Autonomous{
     }
 
     Command play1(){
+        drivetrain.toggleReverse();
         field2d.getObject("Traj").setTrajectory(play1); 
         return new SequentialCommandGroup(
-            new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),
-            getRamsete(red3_p3) 
+            new InstantCommand(()->drivetrain.setPosition(play1.getInitialPose())),
+            getRamsete(play1) 
+        );
+    }
+
+    Command play1_forwad(){
+        drivetrain.toggleReverse();
+        field2d.getObject("Traj").setTrajectory(play1_forwad); 
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(play1_forwad.getInitialPose())),
+            getRamsete(play1_forwad) 
         );
     }
 
