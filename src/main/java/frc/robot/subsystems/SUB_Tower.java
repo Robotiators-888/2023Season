@@ -38,9 +38,9 @@ public class SUB_Tower extends SubsystemBase {
     
     //sets up data logger
     DataLog log = DataLogManager.getLog();
-    DoubleLogEntry towerMotorOutput = new DoubleLogEntry(log, "/tower/motorOutput");
-    DoubleLogEntry towerEncoderRotations = new DoubleLogEntry(log, "/tower/encoderRotations");
-    DoubleLogEntry towerDegreesRotations = new DoubleLogEntry(log, "/tower/encoderDegreesRotations");
+    DoubleLogEntry towerMotorOutput = new DoubleLogEntry(log, "Arm/motorOutput");
+    DoubleLogEntry towerEncoderRotations = new DoubleLogEntry(log, "Arm/encoderRotations");
+    DoubleLogEntry towerDegreesRotations = new DoubleLogEntry(log, "Arm/encoderDegreesRotations");
 
     //declares and sets PID, setpoint is arbitrary
     PIDController pid = new PIDController(Constants.PID_kP, Constants.PID_kI, Constants.PID_kD);
@@ -195,6 +195,7 @@ public class SUB_Tower extends SubsystemBase {
 
     // get arm encoder clicks
     public double getRotations(){
+      
         //gets position
         return m_encoder.getPosition();
     }

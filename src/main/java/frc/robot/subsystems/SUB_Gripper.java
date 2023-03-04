@@ -29,7 +29,7 @@ public class SUB_Gripper extends SubsystemBase {
   private double m_prevSetpoint;
 
   DataLog log = DataLogManager.getLog();
-  DoubleLogEntry gripperMotorOutput = new DoubleLogEntry(log, "/gripper/motorOutput");
+  DoubleLogEntry gripperMotorOutput = new DoubleLogEntry(log, "/Gripper/motorOutput");
 
   /** Creates a new GripperSubsystem. */
   public SUB_Gripper() {
