@@ -85,6 +85,7 @@ public class RobotContainer {
     AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     AutoChooser.addOption("Drive Back", autos.driveBack());
     AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
+    AutoChooser.addOption("Better Balance", autos.betterAutoBalance());
 
 
 
