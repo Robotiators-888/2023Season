@@ -122,7 +122,7 @@ public class AutoBalance extends CommandBase{
       SmartDashboard.putNumber("balanceTime Milisecs", (getMiliSeconds()-balanceTime));
 
       // not balenced, reset timer
-      if (!(currentAngle > -8 && currentAngle < 8 ) || diferenceInAngle > -0.13){
+      if (!(currentAngle < -8 && currentAngle > 8 ) || diferenceInAngle < -0.13){
         balanceTime = getMiliSeconds();
       }
  

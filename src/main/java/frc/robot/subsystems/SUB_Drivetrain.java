@@ -155,7 +155,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
-    //driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
+    driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
   }
 
   public void setMotorsTank(Supplier<Double> lSpeed, Supplier<Double> rSpeed) {
@@ -165,7 +165,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     
     groupLeft.set(leftSpeed);
     groupRight.set(rightSpeed);
-    driveTrain.feedWatchdog();
+    //driveTrain.feedWatchdog();
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed){

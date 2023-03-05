@@ -2,6 +2,9 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Timer;
+
+import javax.swing.text.html.ParagraphView;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -12,10 +15,12 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -30,6 +35,7 @@ public class Autonomous{
     final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
+    edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
 
  // ====================================================================
  // Trajectories
@@ -67,7 +73,7 @@ public class Autonomous{
         Trajectory red1_p1 = getTrajectory("paths/output/Red1_p1.wpilib.json");
         Trajectory red1_p2 = getTrajectory("paths/output/Red1_p2.wpilib.json");
         Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
-
+        Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
 
     // ====================================================================
     //                          Auto Sequences
@@ -90,6 +96,19 @@ public class Autonomous{
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 drivetrain::tankDriveVolts, drivetrain);
+    }
+
+    public Command balancing(){ 
+        drivetrain.setBrakeMode(true);  
+        return new ParallelDeadlineGroup(
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.35, 0); balanceTime.start();}, drivetrain)
+                .until(()->(balanceTime.advanceIfElapsed(3.45)))
+                //.until(()->())
+                    .andThen(new RunCommand(()->drivetrain.setMotorsArcade(0.1, 0), drivetrain))
+                //.getInterruptionBehavior(()->(drivetrain.getPitch() > -3 && drivetrain.getPitch() < 3))
+        );
+
+        
     }
     
     public Command buildScoringSequence(){
@@ -125,14 +144,14 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-        new RunCommand(()->{drivetrain.driveArcade(0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
+        new RunCommand(()->{drivetrain.driveArcade(-0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
         .until(()->(drivetrain.getPitch() >= 9)),
         new AutoBalance(drivetrain));
     }
     Command autoBalanceSequence = new SequentialCommandGroup(
         new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
-        .until(()->(drivetrain.getRoll() >= 9)),
-        new AutoBalance(drivetrain)
+        .until(()->(drivetrain.getPitch() <= -9))
+        
     );
 
     
@@ -171,6 +190,26 @@ public class Autonomous{
             buildScoringSequence(),
             turn180Degree(),
             buildAutoBalanceSequence()
+        );
+    }
+
+    Command betterAutoBalance(){
+        drivetrain.setBrakeMode(true);
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(2.5), 
+          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new SequentialCommandGroup(
+            new WaitCommand(1), 
+            new InstantCommand(()->gripper.closeConeGripper())),
+        new SequentialCommandGroup(
+            //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
+           new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose())),
+           getRamsete(balance), 
+           new RunCommand(()->drivetrain.setMotorsArcade(-0.4, 0), drivetrain).until(()->drivetrain.getPitch() < -13),
+           balancing())
         );
     }
 
