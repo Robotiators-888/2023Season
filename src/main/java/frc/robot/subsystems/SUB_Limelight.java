@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
+import org.littletonrobotics.junction.Logger;
 
 
 public class SUB_Limelight extends SubsystemBase{
@@ -76,11 +77,15 @@ public class SUB_Limelight extends SubsystemBase{
                 drivetrain.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
+                Logger.getInstance().recordOutput("LL/turnSpeed", turnSpeed);
+                Logger.getInstance().recordOutput("LL/Aligning", true);
             } else if (getX() < -0.009){ // turn right
                 double turnSpeed = -Math.max(Math.min(getX() * -0.03, 0.5),0.265);
                 drivetrain.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
+                Logger.getInstance().recordOutput("LL/turnSpeed", turnSpeed);
+                Logger.getInstance().recordOutput("LL/Aligning", true);
             }else{
                 drivetrain.setBrakeMode(true);
             }
@@ -104,6 +109,13 @@ public class SUB_Limelight extends SubsystemBase{
         SmartDashboard.putNumber("LIMEDistance", this.getDistance());
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
+
+        Logger.getInstance().recordOutput("LL/Y", this.getY());
+        Logger.getInstance().recordOutput("LL/HasTarget", this.getTv());
+        Logger.getInstance().recordOutput("LL/X", this.getX());
+        Logger.getInstance().recordOutput("LL/Distance", this.getDistance());
+        Logger.getInstance().recordOutput("LL/a1", Math.toRadians(0));
+        Logger.getInstance().recordOutput("LL/a2", Math.toRadians(this.getY()));
 
     }
 }

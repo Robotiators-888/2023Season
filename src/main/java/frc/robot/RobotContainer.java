@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
+import org.littletonrobotics.junction.inputs.LoggedDriverStation;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +47,7 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
+  private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
@@ -58,6 +60,8 @@ public class RobotContainer {
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
+
+  private static final int kJoystickPorts = 2;
 
   private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
@@ -72,6 +76,20 @@ public class RobotContainer {
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
+
+ /**
+   * The state of the buttons on the joystick.
+   *
+   * @param stick The joystick to read.
+   * @return The state of the buttons on the joystick.
+   */
+  public static int getStickButtons(final int stick) {
+    if (stick < 0 || stick >= kJoystickPorts) {
+      throw new IllegalArgumentException("Joystick index is out of range, should be 0-3");
+    }
+
+    return (int) logDS.getJoystickData(stick).buttonValues;
+  }
 
  
 
@@ -197,6 +215,11 @@ public class RobotContainer {
     );
 
     
+  }
+
+  public static void robotPeriodic() {
+    Logger.getInstance().recordOutput("Joystick", getStickButtons(0));
+    Logger.getInstance().recordOutput("Joystick", getStickButtons(1));
   }
 
   /**
