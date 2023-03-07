@@ -55,6 +55,15 @@ public class RobotContainer {
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+  
+
+  
+  //private final Joystick leftJoystick = new Joystick(Constants.JOYSTICK_PORT);
+  //private final Joystick rightJoystick = new Joystick(Constants.JOYSTICK_PORT1);  
+
+  private JoystickButton d_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton d_aButton = new JoystickButton(controller, 1);
+  private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
   private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
@@ -76,10 +85,16 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    CameraServer.startAutomaticCapture(0)
-    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
+    CameraServer.startAutomaticCapture()
+    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
-    AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_1GP);
+    AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
+    AutoChooser.addOption("Red 1 - One Game Piece", autos.red1_Score1());
+    AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("Drive Back", autos.driveBack());
+    AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
+
+
 
     DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);
@@ -100,8 +115,6 @@ public class RobotContainer {
 
     configureBindings();
     limelight.setLed(1);
-    
-    
 
   }
 
@@ -133,6 +146,14 @@ public class RobotContainer {
     .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
     */
 
+    d_rBumper
+    .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
+
+    d_aButton
+      .onTrue(new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kBalancePosition, tower)));    
+      d_bButton
+      .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
     // buttons, move arm forward and backward
@@ -142,7 +163,11 @@ public class RobotContainer {
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
    c_yButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)));
+      .onTrue(new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(0.25), 
+          new InstantCommand(() -> gripper.openCubeGripper(), gripper))));
     c_xButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
@@ -162,9 +187,14 @@ public class RobotContainer {
         () ->
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
+  
+   /*
+   drivetrain.setDefaultCommand((new RunCommand(
+    ()-> 
+      drivetrain.setMotorsTank(
+        leftJoystick.getRawAxis(1), 
+        rightJoystick.getRawAxis(1)))));
+  
     //gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
 
    //While held this will open the gripper using a run command that executes the mehtod manually
@@ -179,10 +209,8 @@ public class RobotContainer {
    c0_xButton.onTrue(m_blinkin.solidVioletCommand());
    c0_aButton.onTrue(m_blinkin.solidOrangeCommand());
    //ybutton.onTrue(m_blinkin.allianceColorCommand());
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-
-
+  */
+  
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         drivetrain.driveArcade(
@@ -190,6 +218,8 @@ public class RobotContainer {
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
   , drivetrain)
     );
+
+    
   }
 
   public double defaultAllianceColor(){

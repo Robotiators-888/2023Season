@@ -35,7 +35,7 @@ public class SUB_Tower extends SubsystemBase {
     private double feedforward;
     private double manualValue;
     
-
+    //sets up data logger
     DataLog log = DataLogManager.getLog();
     DoubleLogEntry towerMotorOutput = new DoubleLogEntry(log, "/tower/motorOutput");
     DoubleLogEntry towerEncoderRotations = new DoubleLogEntry(log, "/tower/encoderRotations");
