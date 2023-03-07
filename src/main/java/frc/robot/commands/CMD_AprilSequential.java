@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.*;
 import frc.robot.Autonomous;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
 
 // We're doing sequential in order to algin then drive towards it
@@ -29,6 +30,15 @@ public class CMD_AprilSequential extends SequentialCommandGroup {
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
         new RunCommand(() -> {aprilTag.aprilAlign();}, aprilTag).until(() -> (aprilTag.getX() <= 0.05)),
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {Autonomous.buildScoringSequence();}, null));
+        new SequentialCommandGroup(
+            new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(2.5), 
+          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new SequentialCommandGroup(
+            new WaitCommand(1), 
+            new InstantCommand(()->gripper.closeConeGripper()))),
+            new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
     }
 } 
