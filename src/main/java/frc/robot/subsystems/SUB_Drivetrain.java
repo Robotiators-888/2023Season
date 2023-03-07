@@ -43,7 +43,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
-   private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
+   //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
    private Field2d field2d;
@@ -361,6 +361,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
