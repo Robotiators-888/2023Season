@@ -13,11 +13,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoBalance;
 import frc.robot.subsystems.*;
 
 
@@ -57,13 +60,26 @@ public class Autonomous{
         return trajectory;
     }
 
+    
+    // ====================================================================
+    //                          Trajectories
+    // ====================================================================
+        Trajectory red1_p1 = getTrajectory("paths/output/Red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("paths/output/Red1_p2.wpilib.json");
+        Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
+
+
+    // ====================================================================
+    //                          Auto Sequences
+    // ====================================================================
+
     /**
      * returns ramsete command to drive provided trajectory
      * 
      * @param traj trajectory to follow
      * @return ramsete controller to follow trajectory
      */
-    public RamseteCommand getRamset(Trajectory traj) {
+    public RamseteCommand getRamsete(Trajectory traj) {
         return new RamseteCommand(
                 traj, 
                 drivetrain::getPose,
@@ -75,18 +91,9 @@ public class Autonomous{
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 drivetrain::tankDriveVolts, drivetrain);
     }
-    // ====================================================================
-    //                          Trajectories
-    // ====================================================================
-        Trajectory red1_p1 = getTrajectory("paths/output/red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("paths/output/red1_p2.wpilib.json");
-
-
-    // ====================================================================
-    //                          Auto Sequences
-    // ====================================================================
-
-    Command red1_1GP = new SequentialCommandGroup(
+    
+    public Command buildScoringSequence(){
+     return new SequentialCommandGroup(
         new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
          new SequentialCommandGroup(
@@ -98,6 +105,78 @@ public class Autonomous{
             new SequentialCommandGroup(
                 new WaitCommand(0.5), 
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
+    }
+
+    public Command buildPickUpSequence(){
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+                new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+                new SequentialCommandGroup(
+                    new WaitCommand(1.5),
+                    new InstantCommand(()->gripper.openConeGripper())
+                )
+            ),
+            new WaitCommand(1.5),
+            new InstantCommand(()->gripper.closeConeGripper()),
+            new WaitCommand(0.5),
+            new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
+        );
+    }
+
+    public Command buildAutoBalanceSequence(){
+        return new SequentialCommandGroup(
+        new RunCommand(()->{drivetrain.driveArcade(0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
+        .until(()->(drivetrain.getPitch() >= 9)),
+        new AutoBalance(drivetrain));
+    }
+    Command autoBalanceSequence = new SequentialCommandGroup(
+        new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
+        .until(()->(drivetrain.getRoll() >= 9)),
+        new AutoBalance(drivetrain)
+    );
+
+    
+    Command turn180Degree() {
+        return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
+        .until(()->(drivetrain.getYaw() > 179.5 &&  drivetrain.getYaw() < 180.5));
+    }
+
+    // ==================================================================== 
+    //                          Auto Routines
+    // ====================================================================
+    
+
+    Command red1_Score1(){
+        field2d.getObject("trajectory").setTrajectory(red1_p1);   
+        return new SequentialCommandGroup(
+           new InstantCommand(()->drivetrain.setPosition(red1_p1.getInitialPose())),
+            buildScoringSequence(),
+            getRamsete(red1_p1),
+            buildPickUpSequence(),
+            new InstantCommand(()->field2d.getObject("trajectory").setTrajectory(red1_p2)            ),
+            getRamsete(red1_p2),
+            buildScoringSequence()
+            );
+    } 
+
+    Command driveBack(){
+        field2d.getObject("trajectory").setTrajectory(dummyPath);   
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
+            getRamsete(dummyPath));
+    }
+    
+    Command scoreThenAutoBalance(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            turn180Degree(),
+            buildAutoBalanceSequence()
+        );
+    }
+
+
+
+
 
 
 
