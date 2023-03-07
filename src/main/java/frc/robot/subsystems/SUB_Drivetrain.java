@@ -31,14 +31,14 @@ import edu.wpi.first.util.sendable.Sendable;
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
-  private CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
-  private RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
-  private RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
-  private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
+  public CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
+  public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
+  public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
+  public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
@@ -70,28 +70,27 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    leftPrimary.setIdleMode(IdleMode.kCoast);
+    leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
     rightPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    rightPrimary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.setIdleMode(IdleMode.kBrake);
     rightPrimary.burnFlash();
   
       
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      leftSecondary.setIdleMode(IdleMode.kCoast);
+      leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
   
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      rightSecondary.setIdleMode(IdleMode.kCoast);
+      rightSecondary.setIdleMode(IdleMode.kBrake);
       rightSecondary.burnFlash();
-
-      setBrakeMode(true);
+      
       
   }
 
@@ -363,6 +362,10 @@ public class SUB_Drivetrain extends SubsystemBase {
     field2d.setRobotPose(driveOdometry.getPoseMeters());
     setBrakeMode(brake);
 
+  }
+
+  public double getNavxDisplacement(){
+    return navx.getDisplacementY();
   }
 }
 

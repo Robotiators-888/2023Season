@@ -6,6 +6,8 @@ import java.util.Timer;
 
 import javax.swing.text.html.ParagraphView;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.Drivetrain;
 import frc.robot.commands.AutoBalance;
 import frc.robot.subsystems.*;
 
@@ -144,8 +147,8 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-        new RunCommand(()->{drivetrain.driveArcade(-0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
-        .until(()->(drivetrain.getPitch() >= 9)),
+        new RunCommand(()->{drivetrain.driveArcade(-0.4,0.0);System.out.println("auto balance drive");}, drivetrain)
+        .until(()->(drivetrain.getPitch() >= -11)),
         new AutoBalance(drivetrain));
     }
     Command autoBalanceSequence = new SequentialCommandGroup(
@@ -195,6 +198,11 @@ public class Autonomous{
 
     Command betterAutoBalance(){
         drivetrain.setBrakeMode(true);
+
+        drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
+        drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
+        drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
+        drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
@@ -206,11 +214,10 @@ public class Autonomous{
             new InstantCommand(()->gripper.closeConeGripper())),
         new SequentialCommandGroup(
             //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
-           new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose())),
-           getRamsete(balance), 
-           new RunCommand(()->drivetrain.setMotorsArcade(-0.4, 0), drivetrain).until(()->drivetrain.getPitch() < -13),
-           balancing())
+           new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),
+           buildAutoBalanceSequence()
         );
+        
     }
 
 
