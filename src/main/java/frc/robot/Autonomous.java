@@ -148,14 +148,14 @@ public class Autonomous{
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
         new RunCommand(()->{drivetrain.driveArcade(-0.4,0.0);System.out.println("auto balance drive");}, drivetrain)
-        .until(()->(drivetrain.getPitch() >= -11)),
+        .until(()->(drivetrain.getPitch() <= -11)),
         new AutoBalance(drivetrain));
     }
-    Command autoBalanceSequence = new SequentialCommandGroup(
-        new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
-        .until(()->(drivetrain.getPitch() <= -9))
+    // Command autoBalanceSequence = new SequentialCommandGroup(
+    //     new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
+    //     .until(()->(drivetrain.getPitch() <= -9 && drivetrain.getPitch() > ) )
         
-    );
+    // );
 
     
     Command turn180Degree() {
