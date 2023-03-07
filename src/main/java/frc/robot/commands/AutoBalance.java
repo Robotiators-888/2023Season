@@ -105,11 +105,11 @@ public class AutoBalance extends CommandBase{
 
       //System.out.println("drivePower*FM: "+(drivePower*ForwardMult)+"angle: "+currentAngle+" ForwardMult:"+ForwardMult+" difInAngle: "+diferenceInAngle+" maxSpeed: "+maxSpeed);
       SmartDashboard.putNumber("drivePower*FM", (drivePower*ForwardMult));
-      SmartDashboard.putNumber("roll angle",currentAngle);
+      SmartDashboard.putNumber("pitch balance angle",currentAngle);
       SmartDashboard.putNumber("ForwardMult",ForwardMult);
       SmartDashboard.putNumber("difInAngle", diferenceInAngle);
       SmartDashboard.putNumber("AutoBalance maxSpeed", maxSpeed);
-      
+      SmartDashboard.putBoolean("balancing", true);
       
       this.lastAngle = currentAngle;
     }
@@ -118,6 +118,7 @@ public class AutoBalance extends CommandBase{
     @Override
     public void end(boolean interrupted) {
       m_driveTrain.setBrakeMode(true);
+      SmartDashboard.putBoolean("balancing", false);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class AutoBalance extends CommandBase{
  
       // if balenced for 2 secs, lock motors and finish
       //return ((getMiliSeconds()-balanceTimeMili) > 0.5);
-      //return (diferenceInAngle < -0.13 && currentAngle > 10 && currentAngle > -9.5);
-      return ( m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(9.25));
+      return (currentAngle < 7);
+      //return ( m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(9.25));
     }
 }
