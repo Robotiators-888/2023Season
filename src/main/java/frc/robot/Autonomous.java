@@ -14,6 +14,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -105,8 +106,7 @@ public class Autonomous{
         drivetrain.setBrakeMode(true);  
         return new ParallelDeadlineGroup(
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.35, 0); balanceTime.start();}, drivetrain)
-                .until(()->(balanceTime.advanceIfElapsed(3.45)))
-                //.until(()->())
+                .until(()->(drivetrain.getNavxDisplacement() >= Units.inchesToMeters(16)))
                     .andThen(new RunCommand(()->drivetrain.setMotorsArcade(0.1, 0), drivetrain))
                 //.getInterruptionBehavior(()->(drivetrain.getPitch() > -3 && drivetrain.getPitch() < 3))
         );
@@ -147,7 +147,7 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-        new RunCommand(()->{drivetrain.driveArcade(-0.4,0.0);System.out.println("auto balance drive");}, drivetrain)
+        new RunCommand(()->drivetrain.driveArcade(-0.4,0.0), drivetrain)
         .until(()->(drivetrain.getPitch() <= -11)),
         new AutoBalance(drivetrain));
     }
@@ -197,8 +197,6 @@ public class Autonomous{
     }
 
     Command betterAutoBalance(){
-        drivetrain.setBrakeMode(true);
-
         drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
         drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
         drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
