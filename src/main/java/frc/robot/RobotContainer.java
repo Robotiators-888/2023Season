@@ -140,9 +140,7 @@ public class RobotContainer {
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
-    d_aButton
-      .onTrue(new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kBalancePosition, tower)));    
-      d_bButton
+   d_bButton
       .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
 
     // default case, balances arm without changing position.

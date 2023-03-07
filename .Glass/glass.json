@@ -22,11 +22,22 @@
     },
     "windows": {
       "/SmartDashboard/Field": {
-        "image": "C:\\Users\\spenc\\OneDrive\\Documents\\GitHub\\2023Season\\PathWeaver\\2023-field.png",
+        "image": "C:\\Users\\spenc\\Downloads\\2023-field.png",
         "window": {
           "visible": true
         }
       }
+    }
+  },
+  "NetworkTables Info": {
+    "Clients": {
+      "open": false
+    },
+    "Server": {
+      "open": false
+    },
+    "shuffleboard@2": {
+      "open": false
     }
   },
   "NetworkTables Settings": {

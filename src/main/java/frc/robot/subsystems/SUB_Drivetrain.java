@@ -356,6 +356,8 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
+
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
