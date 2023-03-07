@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -42,6 +43,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
+   private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
    private Field2d field2d;
@@ -63,6 +65,10 @@ public class SUB_Drivetrain extends SubsystemBase {
   // private AHRS navx = new AHRS();
 
   public SUB_Drivetrain(Field2d input) {
+    navx.calibrate();
+    navx.resetDisplacement();
+    navx.reset();
+    
     this.field2d = input;
     SmartDashboard.putData(field2d);
     zeroHeading();
