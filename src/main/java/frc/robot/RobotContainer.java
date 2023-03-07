@@ -10,6 +10,7 @@ import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,6 +23,9 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.DriverStation;
+import frc.robot.subsystems.blinkin;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 
@@ -35,6 +39,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
+  //TODO: Adjust buttons and button numbers as needed
 
   public static final Field2d field2d = new Field2d();
 
@@ -46,6 +51,7 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
+  public final static blinkin m_blinkin = new blinkin(Constants.KBLINKIN);
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
@@ -66,8 +72,10 @@ public class RobotContainer {
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
   private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
-  JoystickButton d_yButton = new JoystickButton(controller, 4);
-  JoystickButton d_xButton = new JoystickButton(controller, 3);
+  JoystickButton c0_yButton = new JoystickButton(controller, 4);
+  JoystickButton c0_bButton = new JoystickButton(controller, 2);
+  JoystickButton c0_xButton = new JoystickButton(controller, 3);
+  JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -123,8 +131,9 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    d_yButton.onTrue(LimeSequential);
-    d_xButton.onTrue(AprilSequential);
+    c0_yButton.onTrue(LimeSequential);
+    c0_bButton.onTrue(AprilSequential);
+    
     
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
@@ -186,6 +195,20 @@ public class RobotContainer {
         leftJoystick.getRawAxis(1), 
         rightJoystick.getRawAxis(1)))));
   
+    //gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
+
+   //While held this will open the gripper using a run command that executes the mehtod manually
+   //lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+
+   //While held this will close the gripper using a run command that executes the mehtod manually
+   //rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
+
+   defaultAllianceColor();
+
+   //abutton.onTrue(m_blinkin.solidRedCommand());
+   c0_xButton.onTrue(m_blinkin.solidVioletCommand());
+   c0_aButton.onTrue(m_blinkin.solidOrangeCommand());
+   //ybutton.onTrue(m_blinkin.allianceColorCommand());
   */
   
     drivetrain.setDefaultCommand(new RunCommand(
@@ -199,16 +222,34 @@ public class RobotContainer {
     
   }
 
+  public double defaultAllianceColor(){
+    boolean isRed = (DriverStation.getAlliance() == Alliance.Red);
+    if (isRed){
+      
+      return-0.35;
+      
+    } else {
+      return 0.87;
+      
+    }
+  }
+  
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
     drivetrain.zeroEncoders();
     drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
-}
+  }
+
+
+   
+
 }

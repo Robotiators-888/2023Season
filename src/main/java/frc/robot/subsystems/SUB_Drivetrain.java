@@ -95,6 +95,15 @@ public class SUB_Drivetrain extends SubsystemBase {
       
   }
 
+  //Gets encoder position in # of rotations of motor
+  public double getLeftEncoder(){
+    return leftPrimary.getEncoder().getPosition();
+  }
+
+  public double getRightEncoder(){
+    return rightPrimary.getEncoder().getPosition();
+  }
+
   public void setBrakeMode(boolean brake){
      
     if(brake){
