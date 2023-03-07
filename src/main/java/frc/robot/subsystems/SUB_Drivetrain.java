@@ -420,5 +420,12 @@ public double invertEncoderVal(double currentVal){
     setBrakeMode(brake);
 
   }
+
+
+  public double countEncoder(){
+    
+    
+    return 0.0;
+  }
 }
 
