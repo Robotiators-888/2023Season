@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -24,6 +25,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.util.sendable.Sendable;
@@ -61,14 +63,17 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   boolean brake = false;
 
+  PIDController turnPID = new PIDController(0.02,0,0);
+  
+
   //navx
   // private AHRS navx = new AHRS();
 
   public SUB_Drivetrain(Field2d input) {
+    turnPID.enableContinuousInput(-180, 180);
     navx.calibrate();
     navx.resetDisplacement();
     navx.reset();
-    
     this.field2d = input;
     SmartDashboard.putData(field2d);
     zeroHeading();
@@ -326,17 +331,25 @@ public class SUB_Drivetrain extends SubsystemBase {
   // Switches it?
 
   public void turn180Degree(){
-    double degree = getYaw();
+    double degree = -getYaw();
     //posative turn is left
-    if (degree < 180) { // turn left
-      double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.265);
-      this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-      SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    } else if (degree > 180){ // turn right
-        double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.265);
-        this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-        SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    }
+
+    // if (degree < 180) { // turn left
+    //   double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.365);
+    //   this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+    //   SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
+    // } else if (degree > 180){ // turn right
+    //     double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.365);
+    //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+    //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
+    // }
+    double speed = turnPID.calculate(degree, 180);
+    
+    
+    speed = Math.max(-0.6,Math.min(0.6,speed));
+    this.driveArcade(0,speed);
+    SmartDashboard.putNumber("180 turn speed", speed);
+
   }
 
   public void toggleBrake(){

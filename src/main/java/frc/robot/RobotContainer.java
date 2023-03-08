@@ -86,6 +86,9 @@ public class RobotContainer {
     AutoChooser.addOption("Drive Back", autos.driveBack());
     AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
     AutoChooser.addOption("Better Balance", autos.betterAutoBalance());
+    AutoChooser.addOption("auto balance", autos.buildAutoBalanceSequence());
+    AutoChooser.addOption("turn 180", autos.turn180Degree());
+
 
 
 

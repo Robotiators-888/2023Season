@@ -147,9 +147,11 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-        new RunCommand(()->drivetrain.driveArcade(-0.4,0.0), drivetrain)
-        .until(()->(drivetrain.getPitch() <= -11)),
-        new AutoBalance(drivetrain));
+        new RunCommand(()->drivetrain.driveArcade(0.4,0.0), drivetrain)
+        .until(()->(Math.abs(drivetrain.getPitch()) > 14)),
+        new AutoBalance(drivetrain)
+        //new RunCommand(()->{drivetrain.setMotorsArcade(-0.28, 0);}, drivetrain).withTimeout(0.4)
+        );
     }
     // Command autoBalanceSequence = new SequentialCommandGroup(
     //     new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
@@ -160,7 +162,7 @@ public class Autonomous{
     
     Command turn180Degree() {
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
-        .until(()->(drivetrain.getYaw() > 179.5 &&  drivetrain.getYaw() < 180.5));
+        .until(()->(drivetrain.getYaw() > 173 &&  drivetrain.getYaw() < 186));
     }
 
     // ==================================================================== 
@@ -189,8 +191,10 @@ public class Autonomous{
     }
     
     Command scoreThenAutoBalance(){
+        drivetrain.resetAngle();
         return new SequentialCommandGroup(
             buildScoringSequence(),
+            new WaitCommand(2),
             turn180Degree(),
             buildAutoBalanceSequence()
         );
