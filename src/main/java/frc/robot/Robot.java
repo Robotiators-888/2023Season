@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -18,7 +19,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-  private PowerDistribution pdh = new PowerDistribution();
+  private PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
 
   private RobotContainer m_robotContainer;
 
