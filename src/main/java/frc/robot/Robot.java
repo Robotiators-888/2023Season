@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.PowerDistribution;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
+  private PowerDistribution pdh = new PowerDistribution();
 
   private RobotContainer m_robotContainer;
 
@@ -81,6 +83,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    pdh.setSwitchableChannel(true);
 
     RobotContainer.drivetrain.setBrakeMode(false);
   }
