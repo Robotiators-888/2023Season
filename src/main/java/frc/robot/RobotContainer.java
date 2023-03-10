@@ -81,9 +81,12 @@ public class RobotContainer {
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
     AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
-    AutoChooser.addOption("Red 1 - One Game Piece", autos.red1_Score1());
+    AutoChooser.addOption("Red 1 - One Cone DriveBack", autos.Red1_Cone_DB());
+    AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
+    AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
+    AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("Drive Back", autos.driveBack());
     AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
     AutoChooser.addOption("Better Balance", autos.betterAutoBalance());
     AutoChooser.addOption("auto balance", autos.buildAutoBalanceSequence());

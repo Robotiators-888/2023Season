@@ -72,6 +72,13 @@ public class Autonomous{
         Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
         Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
 
+        //One Cone Reverse
+        Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
+        Trajectory red3_Backwards = getTrajectory("paths/output/Red3_DriveBack.wpilib.json");
+        Trajectory blue1_Backwards = getTrajectory("paths/output/Blue1_DriveBack.wpilib.json");
+        Trajectory blue3_Backwards = getTrajectory("paths/output/Blue3_DriveBack.wpilib.json");
+        
+
     // ====================================================================
     //                          Auto Sequences
     // ====================================================================
@@ -215,6 +222,36 @@ public class Autonomous{
         
     }
 
+    Command Red1_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(red1_Backwards.getInitialPose())),
+            getRamsete(red1_Backwards)
+        );
+    }
+
+    Command Blue1_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(blue1_Backwards.getInitialPose())),
+            getRamsete(blue1_Backwards)
+        );
+    }
+
+    Command Blue3_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(blue3_Backwards.getInitialPose())),
+            getRamsete(blue3_Backwards)
+        );
+    }
+    Command Red3_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(red3_Backwards.getInitialPose())),
+            getRamsete(red3_Backwards)
+        );
+    }
 
 
 
