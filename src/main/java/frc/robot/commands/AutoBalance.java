@@ -47,7 +47,7 @@ public class AutoBalance extends CommandBase{
       System.out.println("auto balancing");
       
        // sets angle to roll: angle the balence beam can rotate.
-      this.currentAngle = Math.abs(m_driveTrain.getPitch());
+      this.currentAngle = -m_driveTrain.getPitch();
 
       // calculates diference in angle since last tick
       // dif in angle will increase when first driving on the beam and when the beam rotates.
@@ -101,7 +101,7 @@ public class AutoBalance extends CommandBase{
       //  // m_driveTrain.driveArcade(drivePower*ForwardMult, 0);
       //  m_driveTrain.driveArcade(0.3, 0);
       // }
-      m_driveTrain.driveArcade(0.25, 0);
+      m_driveTrain.driveArcade(-0.3, 0);
 
       //System.out.println("drivePower*FM: "+(drivePower*ForwardMult)+"angle: "+currentAngle+" ForwardMult:"+ForwardMult+" difInAngle: "+diferenceInAngle+" maxSpeed: "+maxSpeed);
       SmartDashboard.putNumber("drivePower*FM", (drivePower*ForwardMult));
@@ -117,10 +117,8 @@ public class AutoBalance extends CommandBase{
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-      m_driveTrain.setBrakeMode(true);
+      m_driveTrain.setBrakeMode(false);
       SmartDashboard.putBoolean("balancing", false);
-      System.out.println("stopped balancing");
-      
     }
 
     @Override
@@ -134,8 +132,7 @@ public class AutoBalance extends CommandBase{
  
       // if balenced for 2 secs, lock motors and finish
       //return ((getMiliSeconds()-balanceTimeMili) > 0.5);
-      //return (currentAngle > -7 && (m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(16.0)));
+      return (currentAngle > -7 && (m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(16.0)));
       //return ( m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(9.25));
-      return (currentAngle < 10.5);//10.5
     }
 }
