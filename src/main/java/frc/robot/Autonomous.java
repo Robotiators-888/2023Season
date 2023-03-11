@@ -194,7 +194,8 @@ public class Autonomous{
         drivetrain.resetAngle();
         return new SequentialCommandGroup(
             buildScoringSequence(),
-            new WaitCommand(2),
+            new WaitCommand(1),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.3, 0);}, drivetrain).withTimeout(0.2),
             turn180Degree(),
             buildAutoBalanceSequence()
         );
