@@ -190,7 +190,7 @@ public class Autonomous{
             getRamsete(dummyPath));
     }
     
-    Command scoreThenAutoBalance(){
+    Command forwardsScoreThenAutoBalance(){
         drivetrain.resetAngle();
         return new SequentialCommandGroup(
             buildScoringSequence(),
@@ -200,7 +200,7 @@ public class Autonomous{
         );
     }
 
-    Command betterAutoBalance(){
+    Command backwardsScoreThenAutoBalance(){
         drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
         drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
         drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
