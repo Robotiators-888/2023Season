@@ -105,11 +105,13 @@ public class SUB_Drivetrain extends SubsystemBase {
   public void setBrakeMode(boolean brake){
      
     if(brake){
+      brake = true;
         leftPrimary.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
         rightPrimary.setIdleMode(IdleMode.kBrake);
         rightSecondary.setIdleMode(IdleMode.kBrake);
     }else{
+      brake = false;
         leftPrimary.setIdleMode(IdleMode.kCoast);
         leftSecondary.setIdleMode(IdleMode.kCoast);
         rightPrimary.setIdleMode(IdleMode.kCoast);
@@ -352,9 +354,10 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public void toggleBrake(){
     if(brake){
-      brake = false;
+      setBrakeMode(false);
+      
     }else{
-      brake = true;
+      setBrakeMode(true);
     }
   }
 
@@ -378,7 +381,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 
     field2d.setRobotPose(driveOdometry.getPoseMeters());
-    setBrakeMode(brake);
+    //setBrakeMode(brake);
 
   }
 

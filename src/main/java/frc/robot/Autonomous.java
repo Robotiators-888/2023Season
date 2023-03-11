@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ReverseBalance;
 import frc.robot.subsystems.*;
 
 
@@ -147,10 +148,11 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).withTimeout(1),
         new RunCommand(()->drivetrain.driveArcade(0.6,0.0), drivetrain)
-        .until(()->(Math.abs(drivetrain.getPitch()) > 14)),//15,16
-        new AutoBalance(drivetrain)
-        //new RunCommand(()->{drivetrain.setMotorsArcade(-0.28, 0);}, drivetrain).withTimeout(0.4)
+        .until(()->(Math.abs(drivetrain.getPitch()) > 12)),//15,16
+        //new AutoBalance(drivetrain)
+        new ReverseBalance(drivetrain)
         );
     }
     // Command autoBalanceSequence = new SequentialCommandGroup(

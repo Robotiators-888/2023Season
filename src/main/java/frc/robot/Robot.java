@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    //RobotContainer.drivetrain.setBrakeMode(true);
+    //RobotContainer.drivetrain.setBrakeMode(true); need this?
   }
 
   @Override
@@ -70,16 +70,6 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /** This function is called periodically during autonomous. */
-  @Override
-  public void autonomousPeriodic() {
-    RobotContainer.drivetrain.setBrakeMode(true);
-  }
-
-  @Override
-  public void autonomousExit() {
-    RobotContainer.drivetrain.setBrakeMode(true);
-  }
 
   @Override
   public void teleopInit() {
@@ -92,7 +82,7 @@ public class Robot extends TimedRobot {
     }
 
     RobotContainer.drivetrain.setBrakeMode(false);
-  }
+  }     
 
   /** This function is called periodically during operator control. */
   @Override
