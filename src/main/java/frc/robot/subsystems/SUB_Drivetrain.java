@@ -340,7 +340,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
     //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
     // }
-    double speed = turnPID.calculate(degree, 155
+    double speed = turnPID.calculate(degree, -150
     );
     
     

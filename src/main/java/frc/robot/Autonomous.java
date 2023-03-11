@@ -162,7 +162,7 @@ public class Autonomous{
     
     Command turn180Degree() {
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
-        .until(()->(drivetrain.getYaw() > 150 &&  drivetrain.getYaw() < 160))
+        .until(()->(drivetrain.getYaw() > -160 &&  drivetrain.getYaw() < -140))
         .withTimeout(2);
     }
 
