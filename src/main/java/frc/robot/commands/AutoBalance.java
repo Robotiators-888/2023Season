@@ -140,7 +140,7 @@ public class AutoBalance extends CommandBase{
  
       // if balenced for 2 secs, lock motors and finish
       //return ((getMiliSeconds()-balanceTimeMili) > 0.5);
-      return (currentAngle < 9);
+      return (currentAngle < 9);//12
       //return ( m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(9.25));
     }
 }
