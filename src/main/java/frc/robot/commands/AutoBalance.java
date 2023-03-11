@@ -21,7 +21,7 @@ public class AutoBalance extends CommandBase{
     private double ForwardMult = 1.5; // must have its own max speed
     private double maxSpeed = 0.5;
     private double diferenceInAngle;
-    double stopAngle = RobotContainer.AutoBalanceStopAngleChooser.getSelected();
+    double stopAngle = 10.0;
     boolean driveBackwards;
     
     // keep tuning or add more sensors?
@@ -140,7 +140,7 @@ public class AutoBalance extends CommandBase{
  
       // if balenced for 2 secs, lock motors and finish
       //return ((getMiliSeconds()-balanceTimeMili) > 0.5);
-      return (stopAngle < 7 || (m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(16.0)));
+      return (currentAngle < 9);
       //return ( m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(9.25));
     }
 }

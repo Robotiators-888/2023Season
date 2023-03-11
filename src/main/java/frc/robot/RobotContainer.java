@@ -72,7 +72,7 @@ public class RobotContainer {
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
- public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
+ //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -107,20 +107,20 @@ public class RobotContainer {
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
 
-    AutoBalanceStopAngleChooser.addOption("7", 7.0);
-    AutoBalanceStopAngleChooser.addOption("8", 8.0);
-    AutoBalanceStopAngleChooser.addOption("9", 9.0);
-    AutoBalanceStopAngleChooser.addOption("10", 10.0);
-    AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
-    AutoBalanceStopAngleChooser.addOption("11", 11.0);
-    AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
-    AutoBalanceStopAngleChooser.addOption("12", 12.0);
-    AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
+    // AutoBalanceStopAngleChooser.addOption("7", 7.0);
+    // AutoBalanceStopAngleChooser.addOption("8", 8.0);
+    // AutoBalanceStopAngleChooser.addOption("9", 9.0);
+    // AutoBalanceStopAngleChooser.addOption("10", 10.0);
+    // AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
+    // AutoBalanceStopAngleChooser.addOption("11", 11.0);
+    // AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
+    // AutoBalanceStopAngleChooser.addOption("12", 12.0);
+    // AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
 
 
     SmartDashboard.putData("Auto Chooser", AutoChooser);
     SmartDashboard.putData("Delay Chooser", DelayChooser);
-    SmartDashboard.putData("AutoBalanceStopAngleChooser",AutoBalanceStopAngleChooser);
+    //SmartDashboard.putData("AutoBalanceStopAngleChooser",AutoBalanceStopAngleChooser);
 
 
 
