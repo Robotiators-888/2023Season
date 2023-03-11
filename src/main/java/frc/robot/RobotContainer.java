@@ -37,6 +37,7 @@ public class RobotContainer {
 
 
   public static final Field2d field2d = new Field2d();
+  //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
 
   public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
@@ -72,7 +73,6 @@ public class RobotContainer {
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
- //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
