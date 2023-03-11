@@ -52,64 +52,7 @@ public class AutoBalance extends CommandBase{
        // sets angle to roll: angle the balence beam can rotate.
       this.currentAngle = Math.abs(m_driveTrain.getPitch());
 
-      // calculates diference in angle since last tick
-      // dif in angle will increase when first driving on the beam and when the beam rotates.
-      diferenceInAngle = this.currentAngle - this.lastAngle;
-
-     
-      // calculate error based on angle and target angle... 0
-      error = 0 - currentAngle;
-      // calculate motor speed, proportionally based on angle error, then multiple by a constant KP
-      drivePower = -Math.min(Constants.Autonomous.BALANCE_KP * error, 1);
-      
-
-      // detects if beam flipping down, then permanently decreases speeds
-    //was -0.7
-    if (-1.2 > diferenceInAngle || currentAngle < 0){
-      ForwardMult = 1;
-      maxSpeed = 0.43;
-     
-    }
-
-    // reverse if beam swinging fast
-    // if (Math.abs(diferenceInAngle) > 0.7){
-    //   SmartDashboard.putBoolean("Balencing reversing", true);
-    //   drivePower *= -1.5;
-    // }
-    // else{
-    //   SmartDashboard.putBoolean("Balencing reversing",false);
-
-    // }
-
-      // add difInAngle to drivePower
-      // decreases speed if angle changing quickly
-      drivePower += diferenceInAngle*Constants.Autonomous.BALANCE_KD;
-
-      // caps speed at maxSpeed, Maxspeed decreases after first beam flip
-      if (Math.abs(drivePower) > maxSpeed) {
-        drivePower = Math.copySign(maxSpeed, drivePower);
-      }
-      // sets speed to 20% if its lower, (robot will not climb beam lower than 20%)
-      else if ((Math.abs(drivePower) < 0.2)){
-        drivePower = Math.copySign(0.2, drivePower);
-      }
-
-      //if balenced for 0.15 seconds, then stop driving
-      // if ((getMiliSeconds()-balanceTimeMili) > 150 ){ // && Math.abs(diferenceInAngle) > x
-      //   SmartDashboard.putBoolean("balancing", true);
-      //   m_driveTrain.driveArcade(0, 0);
-      // }
-      // else{// otherwise drive!
-      //   SmartDashboard.putBoolean("balancing", false);
-      //  // m_driveTrain.driveArcade(drivePower*ForwardMult, 0);
-      //  m_driveTrain.driveArcade(0.3, 0);
-      // }
-      if (driveBackwards){
-        m_driveTrain.driveArcade(-0.3, 0);
-      }
-      else{
-       m_driveTrain.driveArcade(0.3, 0);
-      }
+      m_driveTrain.driveArcade(0.3, 0);
 
       //System.out.println("drivePower*FM: "+(drivePower*ForwardMult)+"angle: "+currentAngle+" ForwardMult:"+ForwardMult+" difInAngle: "+diferenceInAngle+" maxSpeed: "+maxSpeed);
       SmartDashboard.putNumber("drivePower*FM", (drivePower*ForwardMult));
@@ -140,7 +83,7 @@ public class AutoBalance extends CommandBase{
  
       // if balenced for 2 secs, lock motors and finish
       //return ((getMiliSeconds()-balanceTimeMili) > 0.5);
-      return (currentAngle < 9);//12
+      return (currentAngle < 11);//12
       //return ( m_driveTrain.getNavxDisplacement() >= Units.inchesToMeters(9.25));
     }
 }
