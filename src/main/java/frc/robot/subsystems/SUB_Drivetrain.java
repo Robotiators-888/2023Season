@@ -60,7 +60,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   boolean brake = false;
 
-  PIDController turnPID = new PIDController(0.02,0,0);
+  public PIDController turnPID = new PIDController(0.02,0,0);
   
 
   //navx
@@ -105,13 +105,13 @@ public class SUB_Drivetrain extends SubsystemBase {
   public void setBrakeMode(boolean brake){
      
     if(brake){
-      brake = true;
+      
         leftPrimary.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
         rightPrimary.setIdleMode(IdleMode.kBrake);
         rightSecondary.setIdleMode(IdleMode.kBrake);
     }else{
-      brake = false;
+      
         leftPrimary.setIdleMode(IdleMode.kCoast);
         leftSecondary.setIdleMode(IdleMode.kCoast);
         rightPrimary.setIdleMode(IdleMode.kCoast);
@@ -342,7 +342,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
     //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
     // }
-    double speed = turnPID.calculate(degree, -150
+    double speed = turnPID.calculate(degree, -180
     );
     
     
@@ -354,9 +354,12 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public void toggleBrake(){
     if(brake){
+      brake = false;
       setBrakeMode(false);
+
       
     }else{
+      brake = true;
       setBrakeMode(true);
     }
   }

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SUB_Drivetrain;
 
-public class ReverseBalance extends CommandBase {
+public class ForwardBalance extends CommandBase {
   /** Creates a new ReverseBalance. */
   SUB_Drivetrain m_drivetrain;
 
@@ -23,7 +23,7 @@ public class ReverseBalance extends CommandBase {
     double stopAngle = 10.0;
     boolean driveBackwards;
 
-  public ReverseBalance(SUB_Drivetrain drivetrain) {
+  public ForwardBalance(SUB_Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drivetrain = drivetrain;
     addRequirements(drivetrain);
@@ -40,10 +40,10 @@ public class ReverseBalance extends CommandBase {
   // sets angle to roll: angle the balence beam can rotate.
  this.currentAngle = m_drivetrain.getPitch();
 if(currentAngle > 12 ){
-  m_drivetrain.driveArcade(0.3, 0);
+  m_drivetrain.driveArcade(0.4, 0);
 
 }else if(currentAngle < -7){
-  m_drivetrain.driveArcade(-0.4, 0);
+  m_drivetrain.driveArcade(-0.3, 0);
 
 }else if(currentAngle <= 12 && currentAngle >= -7){
   m_drivetrain.driveArcade(0.0, 0);

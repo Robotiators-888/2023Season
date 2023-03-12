@@ -72,7 +72,7 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
 
-    public static final double kTurningScale = -0.8;
+    public static final double kTurningScale = -0.7;
   }
 
 //Joystick Constants
