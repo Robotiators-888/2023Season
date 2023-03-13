@@ -14,6 +14,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -148,14 +149,14 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1.5),
             new ReverseBalance(drivetrain)
         );
     }
 
     public Command buildReverseAutoBalanceSequence(){
         return new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.75, 0);}, drivetrain).withTimeout(1),
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.75, 0);}, drivetrain).withTimeout(1.5),
             new ReverseBalance(drivetrain)
         );
     }
@@ -167,9 +168,10 @@ public class Autonomous{
 
     
     Command turn180Degree() {
+        
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
         .until(()->(drivetrain.getAngle() < -175 || drivetrain.getAngle() > 175))
-        .withTimeout(2);
+        .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
 
     // ==================================================================== 
@@ -264,11 +266,13 @@ public class Autonomous{
 
     Command Cone_AutoBalance(){
         return new SequentialCommandGroup(
+            new InstantCommand(()->SmartDashboard.putBoolean("Is turning", false)),
+
             new InstantCommand(()->drivetrain.zeroHeading()),
             buildScoringSequence(),
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.25),
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
             turn180Degree(),
-            new ReverseBalance(drivetrain) //This is the improved balance conditional
+            buildAutoBalanceSequence() //This is the improved balance conditional
         );
     }
 

@@ -31,7 +31,9 @@ public class ReverseBalance extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putBoolean("BALANCING", true);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -39,13 +41,13 @@ public class ReverseBalance extends CommandBase {
 
   // sets angle to roll: angle the balence beam can rotate.
  this.currentAngle = m_drivetrain.getPitch();
-if(currentAngle > 12 ){
+if(currentAngle > 12.5 ){
   m_drivetrain.driveArcade(0.3, 0);
 
-}else if(currentAngle < -7){
+}else if(currentAngle < -6){
   m_drivetrain.driveArcade(-0.4, 0);
 
-}else if(currentAngle <= 12 && currentAngle >= -7){
+}else if(currentAngle <= 12.5 && currentAngle >= -6){
   m_drivetrain.driveArcade(0.0, 0);
 
 }
@@ -64,7 +66,9 @@ if(currentAngle > 12 ){
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("BALANCING", false);
+  }
 
   // Returns true when the command should end.
   @Override
