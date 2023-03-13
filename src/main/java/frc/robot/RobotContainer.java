@@ -38,6 +38,7 @@ public class RobotContainer {
 
 
   public static final Field2d field2d = new Field2d();
+  //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
 
   public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
@@ -51,8 +52,11 @@ public class RobotContainer {
   
   private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+  
 
-  private static final int kJoystickPorts = 2;
+  private JoystickButton d_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton d_aButton = new JoystickButton(controller, 1);
+  private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
   private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
@@ -61,8 +65,8 @@ public class RobotContainer {
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
   private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
-  JoystickButton c0_yButton = new JoystickButton(controller, 4);
-  JoystickButton c0_bButton = new JoystickButton(controller, 2);
+  JoystickButton d_yButton = new JoystickButton(controller, 4);
+  JoystickButton d_xButton = new JoystickButton(controller, 3);
 
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -75,7 +79,7 @@ public class RobotContainer {
    * @return The state of the buttons on the joystick.
    */
   public static int getStickButtons(final int stick) {
-    if (stick < 0 || stick >= kJoystickPorts) {
+    if (stick < 0 || stick >= 2) {
       throw new IllegalArgumentException("Joystick index is out of range, should be 0-3");
     }
 
@@ -86,10 +90,23 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    CameraServer.startAutomaticCapture(0)
-    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 180));
+    CameraServer.startAutomaticCapture()
+    .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
-    AutoChooser.setDefaultOption("Red 1 - One Game Piece", autos.red1_1GP);
+    AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
+    AutoChooser.addOption("Red 1 - One Cone DriveBack", autos.Red1_Cone_DB());
+    AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
+    AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
+    AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+
+   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
+    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
+    AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
+    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+
+
+
 
     DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);
@@ -103,15 +120,25 @@ public class RobotContainer {
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
 
+    // AutoBalanceStopAngleChooser.addOption("7", 7.0);
+    // AutoBalanceStopAngleChooser.addOption("8", 8.0);
+    // AutoBalanceStopAngleChooser.addOption("9", 9.0);
+    // AutoBalanceStopAngleChooser.addOption("10", 10.0);
+    // AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
+    // AutoBalanceStopAngleChooser.addOption("11", 11.0);
+    // AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
+    // AutoBalanceStopAngleChooser.addOption("12", 12.0);
+    // AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
+
+
     SmartDashboard.putData("Auto Chooser", AutoChooser);
     SmartDashboard.putData("Delay Chooser", DelayChooser);
+    //SmartDashboard.putData("AutoBalanceStopAngleChooser",AutoBalanceStopAngleChooser);
 
 
 
     configureBindings();
     limelight.setLed(1);
-    
-    
 
   }
 
@@ -128,8 +155,8 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    c0_yButton.onTrue(LimeSequential);
-    c0_bButton.onTrue(AprilSequential);
+    d_yButton.onTrue(LimeSequential);
+    d_xButton.onTrue(AprilSequential);
     
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
@@ -142,6 +169,14 @@ public class RobotContainer {
     .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
     */
 
+    d_rBumper
+    .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
+
+    d_aButton
+      .onTrue(new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kBalancePosition, tower)));    
+      d_bButton
+      .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
     // buttons, move arm forward and backward
@@ -151,7 +186,11 @@ public class RobotContainer {
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
    c_yButton
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)));
+      .onTrue(new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(0.25), 
+          new InstantCommand(() -> gripper.openCubeGripper(), gripper))));
     c_xButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
@@ -171,13 +210,16 @@ public class RobotContainer {
         () ->
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
-
-    // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-
-
+  
+   /*
+   drivetrain.setDefaultCommand((new RunCommand(
+    ()-> 
+      drivetrain.setMotorsTank(
+        leftJoystick.getRawAxis(1), 
+        rightJoystick.getRawAxis(1)))));
+  
+  */
+  
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         drivetrain.driveArcade(
@@ -185,6 +227,8 @@ public class RobotContainer {
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
   , drivetrain)
     );
+
+    
   }
 
   public static void robotPeriodic() {

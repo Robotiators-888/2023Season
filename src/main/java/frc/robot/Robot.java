@@ -91,6 +91,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    //RobotContainer.drivetrain.setBrakeMode(true); need this?
   }
 
   @Override
@@ -103,6 +104,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void autonomousInit() {
+    RobotContainer.drivetrain.setBrakeMode(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -125,7 +127,9 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-  }
+
+    RobotContainer.drivetrain.setBrakeMode(false);
+  }     
 
   /** This function is called periodically during operator control. */
   @Override
