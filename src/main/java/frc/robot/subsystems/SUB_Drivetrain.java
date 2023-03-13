@@ -16,6 +16,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
@@ -25,23 +26,23 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.util.sendable.Sendable;
 
 
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
-  private CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-  private RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
-  private RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
-  private RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
-  private RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
+  public CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  public RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
+  public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
+  public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
+  public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
+   //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
    private Field2d field2d;
@@ -59,10 +60,17 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   boolean brake = false;
 
+  public PIDController turnPID = new PIDController(0.02,0,0);
+  
+
   //navx
   // private AHRS navx = new AHRS();
 
   public SUB_Drivetrain(Field2d input) {
+    turnPID.enableContinuousInput(-180, 180);
+    navx.calibrate();
+    navx.resetDisplacement();
+    navx.reset();
     this.field2d = input;
     SmartDashboard.putData(field2d);
     zeroHeading();
@@ -70,39 +78,40 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    leftPrimary.setIdleMode(IdleMode.kCoast);
+    leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
     rightPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-    rightPrimary.setIdleMode(IdleMode.kCoast);
+    rightPrimary.setIdleMode(IdleMode.kBrake);
     rightPrimary.burnFlash();
   
       
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      leftSecondary.setIdleMode(IdleMode.kCoast);
+      leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
   
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      rightSecondary.setIdleMode(IdleMode.kCoast);
+      rightSecondary.setIdleMode(IdleMode.kBrake);
       rightSecondary.burnFlash();
-
-      setBrakeMode(true);
+      
       
   }
 
   public void setBrakeMode(boolean brake){
      
     if(brake){
+      
         leftPrimary.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
         rightPrimary.setIdleMode(IdleMode.kBrake);
         rightSecondary.setIdleMode(IdleMode.kBrake);
     }else{
+      
         leftPrimary.setIdleMode(IdleMode.kCoast);
         leftSecondary.setIdleMode(IdleMode.kCoast);
         rightPrimary.setIdleMode(IdleMode.kCoast);
@@ -155,7 +164,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setMotorsArcade(double forwardSpeed, int turnSpeed) {
-    //driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
+    driveTrain.arcadeDrive(forwardSpeed, turnSpeed);
   }
 
   public void setMotorsTank(Supplier<Double> lSpeed, Supplier<Double> rSpeed) {
@@ -165,7 +174,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     
     groupLeft.set(leftSpeed);
     groupRight.set(rightSpeed);
-    driveTrain.feedWatchdog();
+    //driveTrain.feedWatchdog();
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed){
@@ -321,24 +330,38 @@ public class SUB_Drivetrain extends SubsystemBase {
   // Switches it?
 
   public void turn180Degree(){
-    double degree = getYaw();
+    double degree = -getYaw();
     //posative turn is left
-    if (degree < 180) { // turn left
-      double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.265);
-      this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-      SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    } else if (degree > 180){ // turn right
-        double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.265);
-        this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-        SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    }
+
+    // if (degree < 180) { // turn left
+    //   double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.365);
+    //   this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+    //   SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
+    // } else if (degree > 180){ // turn right
+    //     double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.365);
+    //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+    //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
+    // }
+    double speed = turnPID.calculate(degree, -180);
+    
+    
+    speed = Math.max(-0.6,Math.min(0.6,speed));
+    this.driveArcade(0,speed);
+    SmartDashboard.putNumber("180 turn speed", speed);
+    SmartDashboard.putBoolean("Is turning", true);
+
+
   }
 
   public void toggleBrake(){
     if(brake){
       brake = false;
+      setBrakeMode(false);
+
+      
     }else{
       brake = true;
+      setBrakeMode(true);
     }
   }
 
@@ -356,13 +379,18 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 
     field2d.setRobotPose(driveOdometry.getPoseMeters());
-    setBrakeMode(brake);
+    //setBrakeMode(brake);
 
+  }
+
+  public double getNavxDisplacement(){
+    return navx.getDisplacementY();
   }
 }
 

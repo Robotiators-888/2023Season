@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -9,18 +10,21 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ReverseBalance;
 import frc.robot.subsystems.*;
 
 
@@ -30,9 +34,10 @@ public class Autonomous{
     final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
+    edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
 
  // ====================================================================
- // Trajectories
+ // Trajectory Config
  // ====================================================================
     TrajectoryConfig configReversed = new TrajectoryConfig(Constants.Autonomous.kMaxSpeedMetersPerSecond,
         Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Autonomous.kDriveKinematics)
@@ -67,7 +72,14 @@ public class Autonomous{
         Trajectory red1_p1 = getTrajectory("paths/output/Red1_p1.wpilib.json");
         Trajectory red1_p2 = getTrajectory("paths/output/Red1_p2.wpilib.json");
         Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
+        Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
 
+        //One Cone Reverse
+        Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
+        Trajectory red3_Backwards = getTrajectory("paths/output/Red3_DriveBack.wpilib.json");
+        Trajectory blue1_Backwards = getTrajectory("paths/output/Blue1_DriveBack.wpilib.json");
+        Trajectory blue3_Backwards = getTrajectory("paths/output/Blue3_DriveBack.wpilib.json");
+        
 
     // ====================================================================
     //                          Auto Sequences
@@ -90,6 +102,18 @@ public class Autonomous{
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 drivetrain::tankDriveVolts, drivetrain);
+    }
+
+    public Command balancing(){ 
+       // drivetrain.setBrakeMode(true);  
+        return new ParallelDeadlineGroup(
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.35, 0); balanceTime.start();}, drivetrain)
+                .until(()->(drivetrain.getNavxDisplacement() >= Units.inchesToMeters(16)))
+                    .andThen(new RunCommand(()->drivetrain.setMotorsArcade(0.1, 0), drivetrain))
+                //.getInterruptionBehavior(()->(drivetrain.getPitch() > -3 && drivetrain.getPitch() < 3))
+        );
+
+        
     }
     
     public Command buildScoringSequence(){
@@ -125,20 +149,29 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-        new RunCommand(()->{drivetrain.driveArcade(0.5,0.0);System.out.println("auto balance drive");}, drivetrain)
-        .until(()->(drivetrain.getPitch() >= 9)),
-        new AutoBalance(drivetrain));
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1.5),
+            new ReverseBalance(drivetrain)
+        );
     }
-    Command autoBalanceSequence = new SequentialCommandGroup(
-        new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
-        .until(()->(drivetrain.getRoll() >= 9)),
-        new AutoBalance(drivetrain)
-    );
+
+    public Command buildReverseAutoBalanceSequence(){
+        return new SequentialCommandGroup(
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.75, 0);}, drivetrain).withTimeout(1.5),
+            new ReverseBalance(drivetrain)
+        );
+    }
+    // Command autoBalanceSequence = new SequentialCommandGroup(
+    //     new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
+    //     .until(()->(drivetrain.getPitch() <= -9 && drivetrain.getPitch() > ) )
+        
+    // );
 
     
     Command turn180Degree() {
+        
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
-        .until(()->(drivetrain.getYaw() > 179.5 &&  drivetrain.getYaw() < 180.5));
+        .until(()->(drivetrain.getAngle() < -175 || drivetrain.getAngle() > 175))
+        .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
 
     // ==================================================================== 
@@ -166,14 +199,82 @@ public class Autonomous{
             getRamsete(dummyPath));
     }
     
-    Command scoreThenAutoBalance(){
+    Command forwardsScoreThenAutoBalance(){
+        drivetrain.resetAngle();
         return new SequentialCommandGroup(
             buildScoringSequence(),
+            new WaitCommand(1),
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(0.2),
             turn180Degree(),
             buildAutoBalanceSequence()
         );
     }
 
+    Command backwardsScoreThenAutoBalance(){
+        drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
+        drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
+        drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
+        drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
+        return new SequentialCommandGroup(
+            new ParallelCommandGroup(
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+         new SequentialCommandGroup(
+          new WaitCommand(2.5), 
+          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new SequentialCommandGroup(
+            new WaitCommand(1), 
+            new InstantCommand(()->gripper.closeConeGripper())),
+        new SequentialCommandGroup(
+            //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
+           new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),
+           //buildAutoBalanceSequence()
+           buildReverseAutoBalanceSequence()
+        );
+        
+    }
+
+    Command Red1_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(red1_Backwards.getInitialPose())),
+            getRamsete(red1_Backwards)
+        );
+    }
+
+    Command Blue1_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(blue1_Backwards.getInitialPose())),
+            getRamsete(blue1_Backwards)
+        );
+    }
+
+    Command Blue3_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(blue3_Backwards.getInitialPose())),
+            getRamsete(blue3_Backwards)
+        );
+    }
+    Command Red3_Cone_DB(){
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(red3_Backwards.getInitialPose())),
+            getRamsete(red3_Backwards)
+        );
+    }
+
+    Command Cone_AutoBalance(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->SmartDashboard.putBoolean("Is turning", false)),
+
+            new InstantCommand(()->drivetrain.zeroHeading()),
+            buildScoringSequence(),
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
+            turn180Degree(),
+            buildAutoBalanceSequence() //This is the improved balance conditional
+        );
+    }
 
 
 
