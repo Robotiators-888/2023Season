@@ -37,6 +37,7 @@ public class RobotContainer {
 
 
   public static final Field2d field2d = new Field2d();
+  //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
 
   public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
@@ -72,7 +73,6 @@ public class RobotContainer {
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
-
  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -80,18 +80,19 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture()
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
-    AutoChooser.setDefaultOption("Play 1 forward", autos.play1_forwad());
-    AutoChooser.addOption("Drive Back", autos.driveBack());
-    AutoChooser.addOption("Red 1 - One Game Piece", autos.red1_Score1());
-    AutoChooser.addOption("Auto Balance Only", autos.buildAutoBalanceSequence());
-    AutoChooser.addOption("Drive Back", autos.driveBack());
-    AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
-    AutoChooser.addOption("Auto Balance Only", autos.buildAutoBalanceSequence());
-    AutoChooser.addOption("Score Then AutoBalance", autos.scoreThenAutoBalance());
-    AutoChooser.addOption("turn180",autos.turn180Degree());
-    AutoChooser.addOption("Mid auto",autos.red3_Mid_2GP());
-    AutoChooser.addOption("Play 1", autos.play1());
-    //AutoChooser.addOption("Play 1 forward", autos.play1_forwad());
+    AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
+    AutoChooser.addOption("Red 1 - One Cone DriveBack", autos.Red1_Cone_DB());
+    AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
+    AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
+    AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+
+   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
+    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
+    AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
+    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+
+
 
 
     DelayChooser.setDefaultOption("0 sec", 0);
@@ -106,8 +107,20 @@ public class RobotContainer {
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
 
+    // AutoBalanceStopAngleChooser.addOption("7", 7.0);
+    // AutoBalanceStopAngleChooser.addOption("8", 8.0);
+    // AutoBalanceStopAngleChooser.addOption("9", 9.0);
+    // AutoBalanceStopAngleChooser.addOption("10", 10.0);
+    // AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
+    // AutoBalanceStopAngleChooser.addOption("11", 11.0);
+    // AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
+    // AutoBalanceStopAngleChooser.addOption("12", 12.0);
+    // AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
+
+
     SmartDashboard.putData("Auto Chooser", AutoChooser);
     SmartDashboard.putData("Delay Chooser", DelayChooser);
+    //SmartDashboard.putData("AutoBalanceStopAngleChooser",AutoBalanceStopAngleChooser);
 
 
 
