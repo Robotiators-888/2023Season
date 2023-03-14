@@ -377,7 +377,7 @@ public double invertEncoderVal(double currentVal){
     double degree = getYaw();
     //posative turn is left
     if (degree < 180) { // turn left
-      double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.265);
+      double turnSpeed = -Math.min(Math.max(degree * -0.3, -0.3),-0.265);
       this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
       SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
     } else if (degree > 180){ // turn right
@@ -411,6 +411,7 @@ public double invertEncoderVal(double currentVal){
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("Heading", getGyroHeading().getDegrees());
+    SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
 
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
