@@ -50,8 +50,8 @@ public class RobotContainer {
   private static final Autonomous autos = new Autonomous();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   
-  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+  private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
   
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
@@ -90,6 +90,8 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+   
+
     CameraServer.startAutomaticCapture()
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
@@ -232,8 +234,7 @@ public class RobotContainer {
   }
 
   public static void robotPeriodic() {
-    Logger.getInstance().recordOutput("Joystick", getStickButtons(0));
-    Logger.getInstance().recordOutput("Joystick", getStickButtons(1));
+    logDriverData();
   }
 
   /**
@@ -249,19 +250,25 @@ public class RobotContainer {
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
 }
 
-public void logDriverController() {
+public static void logDriverController() {
   Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
   Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
   Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
 
 }
 
-public void logOperatorController() {
+public static void logOperatorController() {
   Logger.getInstance().recordOutput("Driver2Controller/AButton", controller2.getRawButtonPressed(1));
   Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
   Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
   Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
   Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
+}
+
+public static void logDriverData(){
+  logDriverController();
+  logOperatorController();
+
 }
 
 }

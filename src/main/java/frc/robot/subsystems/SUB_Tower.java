@@ -166,7 +166,8 @@ public class SUB_Tower extends SubsystemBase {
         Logger.getInstance().recordOutput("Arm/time", m_timer.get());
         Logger.getInstance().recordOutput("Arm/feedfoward", feedforward);
         Logger.getInstance().recordOutput("Arm/manualValue", manualValue);
-        Logger.getInstance().recordOutput("Arm/encoderPositiion", m_encoder.getPosition());
+        Logger.getInstance().recordOutput("Arm/ActualPositiion", m_encoder.getPosition());
+        Logger.getInstance().recordOutput("Arm/IntendedPosition", setpoint);
         Logger.getInstance().recordOutput("Arm/encoderVelocity", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Arm/encoderRev", m_encoder.getCountsPerRevolution());
     }
