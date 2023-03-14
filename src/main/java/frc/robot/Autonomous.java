@@ -36,8 +36,8 @@ public class Autonomous{
     final SUB_Tower tower = RobotContainer.tower;
     final SUB_AprilTag aprilTag = RobotContainer.apriltag;
     final SUB_Limelight limelight = RobotContainer.limelight;
+   // PIDController 
 
-    edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
 
  // ====================================================================
  // Trajectory Config
@@ -126,18 +126,6 @@ public class Autonomous{
                     new PIDController(0, 0, 0),
                     drivetrain::tankDriveVolts, drivetrain);
                 */
-    }
-
-    public Command balancing(){ 
-       // drivetrain.setBrakeMode(true);  
-        return new ParallelDeadlineGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.35, 0); balanceTime.start();}, drivetrain)
-                .until(()->(drivetrain.getNavxDisplacement() >= Units.inchesToMeters(16)))
-                    .andThen(new RunCommand(()->drivetrain.setMotorsArcade(0.1, 0), drivetrain))
-                //.getInterruptionBehavior(()->(drivetrain.getPitch() > -3 && drivetrain.getPitch() < 3))
-        );
-
-        
     }
     
     public Command buildScoringSequence(){
