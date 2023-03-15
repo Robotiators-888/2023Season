@@ -210,28 +210,7 @@ public class RobotContainer {
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
   
-   /*
-   drivetrain.setDefaultCommand((new RunCommand(
-    ()-> 
-      drivetrain.setMotorsTank(
-        leftJoystick.getRawAxis(1), 
-        rightJoystick.getRawAxis(1)))));
-  
-    //gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-   //lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
-
-   //While held this will close the gripper using a run command that executes the mehtod manually
-   //rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
-
-   defaultAllianceColor();
-
-   //abutton.onTrue(m_blinkin.solidRedCommand());
-   c0_xButton.onTrue(m_blinkin.solidVioletCommand());
-   c0_aButton.onTrue(m_blinkin.solidOrangeCommand());
-   //ybutton.onTrue(m_blinkin.allianceColorCommand());
-  */
+ 
   
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
