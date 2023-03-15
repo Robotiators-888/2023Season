@@ -27,6 +27,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+import org.littletonrobotics.junction.Logger;
+
 
 public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
@@ -39,7 +41,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
-
+  private Pose2d odometryPose = new Pose2d(); 
    // The gyro sensor
    private static AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
@@ -104,6 +106,15 @@ public class SUB_Drivetrain extends SubsystemBase {
       rightSecondary.burnFlash();
       
       
+  }
+
+  //Gets encoder position in # of rotations of motor
+  public double getLeftEncoder(){
+    return leftPrimary.getEncoder().getPosition();
+  }
+
+  public double getRightEncoder(){
+    return rightPrimary.getEncoder().getPosition();
   }
 
   public void setBrakeMode(boolean brake){
@@ -389,6 +400,37 @@ public double invertEncoderVal(double currentVal){
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("Heading", getGyroHeading().getDegrees());
     SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
+
+    //Advantage Kit
+
+    //Odometry
+    Logger.getInstance().recordOutput("Odometry", getPose());
+
+    //Positions
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftSecondaryEncoder.getPosition());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getPosition());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getPosition());
+
+    //Voltages & Currents
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftPrimary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Current", leftPrimary.getOutputCurrent());
+
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", leftSecondary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Current", leftSecondary.getOutputCurrent());
+
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightPrimary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Current", rightPrimary.getOutputCurrent());
+
+    Logger.getInstance().recordOutput("Drivetrain/Voltage", rightSecondary.getBusVoltage());
+    Logger.getInstance().recordOutput("Drivetrain/Current", rightSecondary.getOutputCurrent());
+
+    //Speeds
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getVelocity());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", leftSecondaryEncoder.getVelocity());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getVelocity());
+    Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
+
 
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
