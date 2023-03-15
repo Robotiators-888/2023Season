@@ -1,10 +1,18 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.SUB_Drivetrain;
+import frc.robot.subsystems.SUB_Gripper;
+import frc.robot.subsystems.SUB_Tower;
 
 public class StateManager extends SubsystemBase{
 
     Gamepiece gp = Gamepiece.cone;
+    final Field2d field2d = RobotContainer.field2d;
+    final SUB_Gripper gripper = RobotContainer.gripper;
+    final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
+    final SUB_Tower tower = RobotContainer.tower;
 
     public StateManager(){
     }
@@ -39,7 +47,7 @@ public class StateManager extends SubsystemBase{
     //Arm
     public double kScoringPosition(){
         if (gp == Gamepiece.cone) {
-            return Constants.Arm.kScoringPosition;
+            return Constants.Arm.kScoringConePosition;
         }
         else {
            return 0;

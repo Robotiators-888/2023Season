@@ -90,7 +90,7 @@ public class Autonomous{
     Command red1_1GP = new SequentialCommandGroup(
         new InstantCommand(() -> {stateManager.setCone();}, stateManager),
         new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(2.5), 
           new InstantCommand(() -> gripper.openGripper(), gripper))),
