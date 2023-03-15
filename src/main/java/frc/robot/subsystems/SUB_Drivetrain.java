@@ -306,7 +306,7 @@ public double invertEncoderVal(double currentVal){
   /**
    * sets current heading to zero
    */
-  public static void zeroHeading() {
+  public void zeroHeading() {
     navx.calibrate();
     navx.reset();
   }
@@ -385,6 +385,9 @@ public double invertEncoderVal(double currentVal){
 
   @Override
   public void periodic() {
+
+    
+
     // This method will be called once per scheduler run
     SmartDashboard.putData("Field",field2d);
     SmartDashboard.putBoolean("BREAK MODE", brake);
@@ -405,6 +408,7 @@ public double invertEncoderVal(double currentVal){
 
     //Odometry
     Logger.getInstance().recordOutput("Odometry", getPose());
+    Logger.getInstance().recordOutput("Robot Pose", field2d.getRobotPose());
 
     //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());

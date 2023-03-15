@@ -82,6 +82,8 @@ public class Autonomous{
         Trajectory play1_forwad = getTrajectory("paths/output/play1_forwad.wpilib.json");
         Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
 
+        Trajectory driveToGP_path = getTrajectory("paths/output/DriveToGP.wpilib.json");
+
         //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
         Trajectory red3_Backwards = getTrajectory("paths/output/Red3_DriveBack.wpilib.json");
@@ -347,7 +349,12 @@ public class Autonomous{
         );
     }
 
-
+    Command DriveToGamePiece(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
+            getRamsete(driveToGP_path)
+        );
+    }
 
 
 
