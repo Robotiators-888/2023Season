@@ -40,7 +40,6 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
-  //TODO: Adjust buttons and button numbers as needed
 
   public static final Field2d field2d = new Field2d();
   //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
@@ -130,16 +129,6 @@ public class RobotContainer {
     DelayChooser.addOption("8 sec", 8);
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
-
-    // AutoBalanceStopAngleChooser.addOption("7", 7.0);
-    // AutoBalanceStopAngleChooser.addOption("8", 8.0);
-    // AutoBalanceStopAngleChooser.addOption("9", 9.0);
-    // AutoBalanceStopAngleChooser.addOption("10", 10.0);
-    // AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
-    // AutoBalanceStopAngleChooser.addOption("11", 11.0);
-    // AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
-    // AutoBalanceStopAngleChooser.addOption("12", 12.0);
-    // AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
 
 
     SmartDashboard.putData("Auto Chooser", AutoChooser);
