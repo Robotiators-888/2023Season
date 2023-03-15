@@ -5,11 +5,15 @@
 package frc.robot;
 
 
+import org.littletonrobotics.junction.inputs.LoggedDriverStation;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -49,6 +53,8 @@ public class RobotContainer {
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
+  public final static SUB_Blinkin m_blinkin = new SUB_Blinkin(Constants.KBLINKIN);
+
   
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
@@ -65,8 +71,10 @@ public class RobotContainer {
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
   private JoystickButton c_xButton = new JoystickButton(controller2, 3);
 
-  JoystickButton d_yButton = new JoystickButton(controller, 4);
-  JoystickButton d_xButton = new JoystickButton(controller, 3);
+  JoystickButton c0_yButton = new JoystickButton(controller, 4);
+  JoystickButton c0_bButton = new JoystickButton(controller, 2);
+  JoystickButton c0_xButton = new JoystickButton(controller, 3);
+  JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -122,16 +130,6 @@ public class RobotContainer {
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
 
-    // AutoBalanceStopAngleChooser.addOption("7", 7.0);
-    // AutoBalanceStopAngleChooser.addOption("8", 8.0);
-    // AutoBalanceStopAngleChooser.addOption("9", 9.0);
-    // AutoBalanceStopAngleChooser.addOption("10", 10.0);
-    // AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
-    // AutoBalanceStopAngleChooser.addOption("11", 11.0);
-    // AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
-    // AutoBalanceStopAngleChooser.addOption("12", 12.0);
-    // AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
-
 
     SmartDashboard.putData("Auto Chooser", AutoChooser);
     SmartDashboard.putData("Delay Chooser", DelayChooser);
@@ -157,8 +155,9 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    d_yButton.onTrue(LimeSequential);
-    d_xButton.onTrue(AprilSequential);
+    c0_yButton.onTrue(LimeSequential);
+    c0_bButton.onTrue(AprilSequential);
+    
     
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
@@ -218,6 +217,20 @@ public class RobotContainer {
         leftJoystick.getRawAxis(1), 
         rightJoystick.getRawAxis(1)))));
   
+    //gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
+
+   //While held this will open the gripper using a run command that executes the mehtod manually
+   //lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
+
+   //While held this will close the gripper using a run command that executes the mehtod manually
+   //rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
+
+   defaultAllianceColor();
+
+   //abutton.onTrue(m_blinkin.solidRedCommand());
+   c0_xButton.onTrue(m_blinkin.solidVioletCommand());
+   c0_aButton.onTrue(m_blinkin.solidOrangeCommand());
+   //ybutton.onTrue(m_blinkin.allianceColorCommand());
   */
   
     drivetrain.setDefaultCommand(new RunCommand(
@@ -231,6 +244,19 @@ public class RobotContainer {
     
   }
 
+  public double defaultAllianceColor(){
+    boolean isRed = (DriverStation.getAlliance() == Alliance.Red);
+    if (isRed){
+      
+      return-0.35;
+      
+    } else {
+      return 0.87;
+      
+    }
+  }
+  
+
   public static void robotPeriodic() {
     logDriverData();
   }
@@ -241,12 +267,18 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
     drivetrain.zeroEncoders();
     drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
-}
+  }
+
+
+   
+
+
 
 public static void logDriverController() {
   Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));

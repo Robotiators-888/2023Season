@@ -29,7 +29,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  */
 public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
-
   private RobotContainer m_robotContainer;
 
   /**
@@ -91,8 +90,9 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    //RobotContainer.drivetrain.setBrakeMode(true); need this?
+    RobotContainer.m_blinkin.allianceColor();
   }
+ 
 
   @Override
   public void disabledPeriodic() {
@@ -124,6 +124,8 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
+    RobotContainer.m_blinkin.allianceColor();
+
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -134,7 +136,11 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
+ 
+    
   }
+
+  
 
   @Override
   public void testInit() {
@@ -145,6 +151,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+    
   }
 
   /** This function is called once when the robot is first started up. */

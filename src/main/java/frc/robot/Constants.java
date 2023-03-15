@@ -107,6 +107,14 @@ public final class Constants {
   public static final double FF_Velocity = 1.0;
   public static final double FF_Accel = 1.0;
 
+  
+
+  //Gripper CANIDS
+  public static final int GRIPPER_SPARKMAX_CANID = 11;
+
+
+  public static final int KBLINKIN=1;
+
   //Manipulator Constants
 
   public static final int TOWER_SPARKMAX_CANID = 10;
