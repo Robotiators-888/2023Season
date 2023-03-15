@@ -41,16 +41,15 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
 
    // The gyro sensor
-   private AHRS navx = new AHRS(SerialPort.Port.kMXP);
+   private static AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
    private Field2d field2d;
 
+   
    // Odometry class for tracking robot pose
-   DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), leftPrimaryEncoder.getPosition(), 
-   rightSecondaryEncoder.getPosition(),
-   new Pose2d(0, 0, new Rotation2d()));
+   DifferentialDriveOdometry driveOdometry;
 
   // create a speed controller group for each side
   private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -75,6 +74,10 @@ public class SUB_Drivetrain extends SubsystemBase {
     this.field2d = input;
     zeroHeading();
     navx.setAngleAdjustment(0.0);
+
+    driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), leftPrimaryEncoder.getPosition(), 
+    rightSecondaryEncoder.getPosition(),
+    new Pose2d());
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
@@ -197,14 +200,6 @@ public double invertEncoderVal(double currentVal){
     //driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
-  /* Encoders getting position
-  public double getLeftEncoder(){
-    return leftPrimary.getEncoder().getPosition();
-  }
-  public double getRightEncoder(){
-    return rightPrimary.getEncoder().getPosition();
-  }
-*/
 
  /**
    * Returns the currently-estimated pose of the robot.
@@ -288,23 +283,29 @@ public double invertEncoderVal(double currentVal){
     //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
     //new Pose2d(0, 0, new Rotation2d()));
     zeroEncoders();
-    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(), position);
+    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getVelocity(), rightPrimaryEncoder.getVelocity(), position);
 
   }
 
+  public void resetOdometry(Pose2d pose) {
+    zeroEncoders();
+    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(),
+        pose);
+  }
   /**
    * sets current heading to zero
    */
-  public void zeroHeading() {
-    navx.zeroYaw();
+  public static void zeroHeading() {
+    navx.calibrate();
+    navx.reset();
   }
 
   /**
    * zeros the encoder rotations
    */
   public void zeroEncoders() {
-    leftPrimaryEncoder.setPosition(0);
-    rightPrimaryEncoder.setPosition(0);
+    leftPrimaryEncoder.setPosition(0.0);
+    rightPrimaryEncoder.setPosition(0.0);
   }
 
 
