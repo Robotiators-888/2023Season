@@ -51,10 +51,11 @@ public class SUB_Roller extends SubsystemBase {
         return m_encoder.getPosition() > Constants.Roller.kSafePosition;
       }
 
+    // Rolls the roller forward, to intake the piece
     public void toggleRollerForward() {
         m_roller.set(0.1);
     }
-
+    // Rolls the roller backward, to sort of shoot out the piece
     public void toggleRollerBackward() {
         m_roller.set(-0.1);
     }

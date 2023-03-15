@@ -53,6 +53,7 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
+  public static final SUB_Roller roller = new SUB_Roller();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin m_blinkin = new SUB_Blinkin(Constants.KBLINKIN);
 
@@ -65,8 +66,8 @@ public class RobotContainer {
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
-  private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
-  private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_rBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_lBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_aButton = new JoystickButton(controller2, 1);
   private JoystickButton c_bButton = new JoystickButton(controller2, 2);
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
@@ -166,8 +167,10 @@ public class RobotContainer {
     
     
     c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    .toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerForward();},roller));
+    
+    c_rBumper
+    .toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerBackward();}, roller));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 

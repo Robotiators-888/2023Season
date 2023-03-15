@@ -62,7 +62,7 @@ public class StateManager extends SubsystemBase{
         }
     }
 
-    //Gripper
+    //Gripper in case the roller fails
     public double kClosePosition(){
         if (gp == Gamepiece.cone) {
             //for cones
