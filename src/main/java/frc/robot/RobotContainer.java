@@ -23,7 +23,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
+import org.littletonrobotics.junction.inputs.LoggedDriverStation;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -47,14 +48,11 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
+  private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   
-  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+  private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
   
-
-  
-  //private final Joystick leftJoystick = new Joystick(Constants.JOYSTICK_PORT);
-  //private final Joystick rightJoystick = new Joystick(Constants.JOYSTICK_PORT1);  
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
@@ -73,10 +71,27 @@ public class RobotContainer {
  // Auto objects
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
+
+ /**
+   * The state of the buttons on the joystick.
+   *
+   * @param stick The joystick to read.
+   * @return The state of the buttons on the joystick.
+   */
+  public static int getStickButtons(final int stick) {
+    if (stick < 0 || stick >= 2) {
+      throw new IllegalArgumentException("Joystick index is out of range, should be 0-3");
+    }
+
+    return (int) logDS.getJoystickData(stick).buttonValues;
+  }
+
  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+   
+
     CameraServer.startAutomaticCapture()
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
@@ -216,6 +231,10 @@ public class RobotContainer {
     
   }
 
+  public static void robotPeriodic() {
+    logDriverData();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -228,4 +247,26 @@ public class RobotContainer {
     drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
 }
+
+public static void logDriverController() {
+  Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
+  Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
+  Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
+
+}
+
+public static void logOperatorController() {
+  Logger.getInstance().recordOutput("Driver2Controller/AButton", controller2.getRawButtonPressed(1));
+  Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
+  Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
+  Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
+  Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
+}
+
+public static void logDriverData(){
+  logDriverController();
+  logOperatorController();
+
+}
+
 }
