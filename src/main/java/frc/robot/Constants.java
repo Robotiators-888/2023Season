@@ -116,6 +116,18 @@ public final class Constants {
     public static final int kCurrentLimit = 10;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
   }
+  public static final class Roller {
+    public static final int kRollerCanId = 11;
+    public static final double kSoftLimitReverse = -20.0;
+    public static final double kSoftLimitForward = 22.0;
+    public static final double kCloseConePosition = 0.0;
+    public static final double kCloseCubePosition = 10.0;
+    public static final double kConePosition = 19.0;
+    public static final double kCubePosition = 21.0;
+    public static final double kSafePosition = 27.0;
+    public static final int kCurrentLimit = 10;
+    public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
+  }
   
     public static final class Arm {
     public static final int kArmCanId = 10;
