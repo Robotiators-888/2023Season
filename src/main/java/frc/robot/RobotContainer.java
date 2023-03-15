@@ -5,10 +5,13 @@
 package frc.robot;
 
 
+import org.littletonrobotics.junction.inputs.LoggedDriverStation;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.VideoMode;
 import edu.wpi.first.math.MathUtil;
 import frc.robot.subsystems.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -23,11 +26,9 @@ import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.DriverStation;
-import frc.robot.subsystems.blinkin;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
+import org.littletonrobotics.junction.inputs.LoggedDriverStation;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,6 +43,7 @@ public class RobotContainer {
   //TODO: Adjust buttons and button numbers as needed
 
   public static final Field2d field2d = new Field2d();
+  //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
 
   public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
@@ -51,15 +53,13 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
-  public final static blinkin m_blinkin = new blinkin(Constants.KBLINKIN);
-  
-  private final Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
-  private final Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
-  
+  private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
+  public final static SUB_Blinkin m_blinkin = new SUB_Blinkin(Constants.KBLINKIN);
 
   
-  //private final Joystick leftJoystick = new Joystick(Constants.JOYSTICK_PORT);
-  //private final Joystick rightJoystick = new Joystick(Constants.JOYSTICK_PORT1);  
+  private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
+  private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
+  
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
@@ -81,18 +81,41 @@ public class RobotContainer {
  SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
+ /**
+   * The state of the buttons on the joystick.
+   *
+   * @param stick The joystick to read.
+   * @return The state of the buttons on the joystick.
+   */
+  public static int getStickButtons(final int stick) {
+    if (stick < 0 || stick >= 2) {
+      throw new IllegalArgumentException("Joystick index is out of range, should be 0-3");
+    }
+
+    return (int) logDS.getJoystickData(stick).buttonValues;
+  }
+
  
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+   
+
     CameraServer.startAutomaticCapture()
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
     AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
-    AutoChooser.addOption("Red 1 - One Game Piece", autos.red1_Score1());
-    AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("Drive Back", autos.driveBack());
-    AutoChooser.addOption("scoreThenAutoBalance", autos.scoreThenAutoBalance());
+    AutoChooser.addOption("Red 1 - One Cone DriveBack", autos.Red1_Cone_DB());
+    AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
+    AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
+    AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+
+   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
+    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
+    AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
+    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+
 
 
 
@@ -108,8 +131,20 @@ public class RobotContainer {
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
 
+    // AutoBalanceStopAngleChooser.addOption("7", 7.0);
+    // AutoBalanceStopAngleChooser.addOption("8", 8.0);
+    // AutoBalanceStopAngleChooser.addOption("9", 9.0);
+    // AutoBalanceStopAngleChooser.addOption("10", 10.0);
+    // AutoBalanceStopAngleChooser.addOption("10.5", 10.5);
+    // AutoBalanceStopAngleChooser.addOption("11", 11.0);
+    // AutoBalanceStopAngleChooser.addOption("11.5", 11.5);
+    // AutoBalanceStopAngleChooser.addOption("12", 12.0);
+    // AutoBalanceStopAngleChooser.addOption("12.5", 12.5);
+
+
     SmartDashboard.putData("Auto Chooser", AutoChooser);
     SmartDashboard.putData("Delay Chooser", DelayChooser);
+    //SmartDashboard.putData("AutoBalanceStopAngleChooser",AutoBalanceStopAngleChooser);
 
 
 
@@ -149,9 +184,7 @@ public class RobotContainer {
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
-    d_aButton
-      .onTrue(new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kBalancePosition, tower)));    
-      d_bButton
+   d_bButton
       .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
 
     // default case, balances arm without changing position.
@@ -235,6 +268,10 @@ public class RobotContainer {
   }
   
 
+  public static void robotPeriodic() {
+    logDriverData();
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -251,5 +288,28 @@ public class RobotContainer {
 
 
    
+
+
+
+public static void logDriverController() {
+  Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
+  Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
+  Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
+
+}
+
+public static void logOperatorController() {
+  Logger.getInstance().recordOutput("Driver2Controller/AButton", controller2.getRawButtonPressed(1));
+  Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
+  Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
+  Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
+  Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
+}
+
+public static void logDriverData(){
+  logDriverController();
+  logOperatorController();
+
+}
 
 }
