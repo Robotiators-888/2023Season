@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.libs.PIDGains;
 import frc.robot.Constants;
+import org.littletonrobotics.junction.Logger;
 import frc.robot.StateManager;
 
 public class SUB_Gripper extends SubsystemBase {
@@ -30,7 +31,7 @@ public class SUB_Gripper extends SubsystemBase {
   private double m_prevSetpoint;
 
   DataLog log = DataLogManager.getLog();
-  DoubleLogEntry gripperMotorOutput = new DoubleLogEntry(log, "/gripper/motorOutput");
+  DoubleLogEntry gripperMotorOutput = new DoubleLogEntry(log, "/Gripper/motorOutput");
 
   /** Creates a new GripperSubsystem. */
   public SUB_Gripper() {
@@ -91,6 +92,10 @@ public class SUB_Gripper extends SubsystemBase {
       }
       m_prevSetpoint = m_setpoint;
 
+    Logger.getInstance().recordOutput("Gripper/IntendedPosition", getSetPosition());
+    Logger.getInstance().recordOutput("Gripper/ActualPosition", m_encoder.getPosition());
+    Logger.getInstance().recordOutput("Gripper/Voltage", GripperSparkMax.getBusVoltage());
+    Logger.getInstance().recordOutput("Gripper/Output", GripperSparkMax.getAppliedOutput());
   }
 
   
