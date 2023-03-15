@@ -42,6 +42,14 @@ public class StateManager extends SubsystemBase{
         gp = Gamepiece.cone;
     }
 
+    public void toggleGP(){
+        if(gp.equals(Gamepiece.cone)){
+            gp = Gamepiece.cube;
+        }else{
+            gp = Gamepiece.cone;
+        }
+    }
+
     //VALUES FOR CUBES ARE ALL ARBITRARY CURRENTLY
 
     //Arm

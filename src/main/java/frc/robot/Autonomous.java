@@ -105,39 +105,27 @@ public class Autonomous{
                 drivetrain::tankDriveVolts, drivetrain);
     }
 
-    public Command balancing(){ 
-       // drivetrain.setBrakeMode(true);  
-        return new ParallelDeadlineGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.35, 0); balanceTime.start();}, drivetrain)
-                .until(()->(drivetrain.getNavxDisplacement() >= Units.inchesToMeters(16)))
-                    .andThen(new RunCommand(()->drivetrain.setMotorsArcade(0.1, 0), drivetrain))
-                //.getInterruptionBehavior(()->(drivetrain.getPitch() > -3 && drivetrain.getPitch() < 3))
-        );
 
-        
-    }
-    
-    public Command buildScoringSequence(){
-     return new SequentialCommandGroup(
+
 
     // ====================================================================
     //                          Auto Sequences
     // ====================================================================
 
-    Command red1_1GP = new SequentialCommandGroup(
-        new InstantCommand(() -> {stateManager.setCone();}, stateManager),
-        new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
-         new SequentialCommandGroup(
-          new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openGripper(), gripper))),
-          new SequentialCommandGroup(
-            new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeGripper())), 
+    public Command buildScoringSequence(){
+        return new SequentialCommandGroup(
+           new ParallelCommandGroup(
+           new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
             new SequentialCommandGroup(
-                new WaitCommand(0.5), 
-                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
-    }
+             new WaitCommand(2.5), 
+             new InstantCommand(() -> gripper.openGripper(), gripper))),
+             new SequentialCommandGroup(
+               new WaitCommand(1), 
+               new InstantCommand(()->gripper.closeGripper())), 
+               new SequentialCommandGroup(
+                   new WaitCommand(0.5), 
+                   new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
+       }
 
     public Command buildPickUpSequence(){
         return new SequentialCommandGroup(
@@ -145,11 +133,11 @@ public class Autonomous{
                 new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
                 new SequentialCommandGroup(
                     new WaitCommand(1.5),
-                    new InstantCommand(()->gripper.openConeGripper())
+                    new InstantCommand(()->gripper.openGripper())
                 )
             ),
             new WaitCommand(1.5),
-            new InstantCommand(()->gripper.closeConeGripper()),
+            new InstantCommand(()->gripper.closeGripper()),
             new WaitCommand(0.5),
             new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
         );
@@ -225,13 +213,13 @@ public class Autonomous{
         drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new InstantCommand(() -> gripper.openGripper(), gripper))),
           new SequentialCommandGroup(
             new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeConeGripper())),
+            new InstantCommand(()->gripper.closeGripper())),
         new SequentialCommandGroup(
             //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
            new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),

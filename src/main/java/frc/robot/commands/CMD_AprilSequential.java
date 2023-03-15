@@ -38,10 +38,10 @@ public class CMD_AprilSequential extends SequentialCommandGroup {
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+          new InstantCommand(() -> gripper.openGripper(), gripper))),
           new SequentialCommandGroup(
             new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeConeGripper()))),
+            new InstantCommand(()->gripper.closeGripper()))),
             new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
     }
 } 
