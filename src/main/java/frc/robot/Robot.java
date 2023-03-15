@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.blinkin;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 
@@ -91,12 +90,9 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-<<<<<<< HEAD
     RobotContainer.m_blinkin.allianceColor();
-=======
-    //RobotContainer.drivetrain.setBrakeMode(true); need this?
->>>>>>> main
   }
+ 
 
   @Override
   public void disabledPeriodic() {
@@ -140,14 +136,11 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-<<<<<<< HEAD
  
     
   }
 
-=======
-  }
->>>>>>> main
+  
 
   @Override
   public void testInit() {
@@ -158,10 +151,7 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-<<<<<<< HEAD
     
-=======
->>>>>>> main
   }
 
   /** This function is called once when the robot is first started up. */

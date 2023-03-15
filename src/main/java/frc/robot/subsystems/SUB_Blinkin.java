@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
 
-public class blinkin extends SubsystemBase {
+public class SUB_Blinkin extends SubsystemBase {
 
   /* Rev Robotics Blinkin takes a PWM signal from 1000-2000us
    * This is identical to a SparkMax motor. 
@@ -31,7 +31,7 @@ public class blinkin extends SubsystemBase {
    * 
    * @param pwmPort  The PWM port the Blinkin is connected to.
    */
-  public blinkin(int pwmPort) {
+  public SUB_Blinkin(int pwmPort) {
     m_blinkin = new Spark(pwmPort);
     
   }
