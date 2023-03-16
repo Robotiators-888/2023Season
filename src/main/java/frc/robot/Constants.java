@@ -112,6 +112,9 @@ public final class Constants {
 
   public static final int TOWER_SPARKMAX_CANID = 10;
 
+  /**
+   *  Constants class for REVerybot Gripper
+   */
   public static final class Gripper {
     public static final int kGripperCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
@@ -124,6 +127,10 @@ public final class Constants {
     public static final int kCurrentLimit = 10;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
   }
+
+  /**
+   *  Constants class for Everybot Roller
+   */
   public static final class Roller {
     public static final int kRollerCanId = 11;
     public static final double kSoftLimitReverse = -20.0;
@@ -133,8 +140,11 @@ public final class Constants {
     public static final double kConePosition = 19.0;
     public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
-    public static final int kCurrentLimit = 10;
+    public static final int kCurrentLimit = 20;
+    public static final int kHoldLimit = 5;
+    public static final double kHoldPower = 0.07;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
+
   }
   
     public static final class Arm {
