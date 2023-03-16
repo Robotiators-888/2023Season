@@ -88,7 +88,7 @@ public class RobotContainer {
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_Turn180_AutoBalance());
-    AutoChooser.addOption("Driveforward Auto Balance", autos.Driveforward_AutoBalance());
+    AutoChooser.addOption("Driveforward Auto Balance", autos.DriveForward_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.Cone_Turn180_AutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildForwardAutoBalanceSequence()); 
     

@@ -38,7 +38,7 @@ public class ReverseBalance extends CommandBase {
   public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
 
   // sets angle to roll: angle the balence beam can rotate.
- this.currentAngle = -m_drivetrain.getPitch();
+ this.currentAngle = m_drivetrain.getPitch();
 if(currentAngle > 12 ){
   m_drivetrain.driveArcade(0.4, 0);
 

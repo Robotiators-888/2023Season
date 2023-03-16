@@ -329,7 +329,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   // Switches it?
 
-  public void turn180Degree(){
+  public void turnTo180Degree(){
     double degree = -getYaw();
     //posative turn is left
 

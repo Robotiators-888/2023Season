@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ForwardBalance;
 import frc.robot.commands.ReverseBalance;
 import frc.robot.subsystems.*;
