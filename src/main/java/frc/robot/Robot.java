@@ -90,7 +90,7 @@ public class Robot extends LoggedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    RobotContainer.m_blinkin.allianceColor();
+    RobotContainer.blinkin.allianceColor();
   }
  
 
@@ -124,7 +124,7 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    RobotContainer.m_blinkin.allianceColor();
+    RobotContainer.blinkin.allianceColor();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();

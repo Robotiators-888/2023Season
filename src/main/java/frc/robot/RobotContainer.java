@@ -55,7 +55,7 @@ public class RobotContainer {
   private static final Autonomous autos = new Autonomous();
   public static final SUB_Roller roller = new SUB_Roller();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
-  public final static SUB_Blinkin m_blinkin = new SUB_Blinkin(Constants.KBLINKIN);
+  public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
 
   
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
@@ -167,10 +167,12 @@ public class RobotContainer {
     
     
     c_lBumper
-    .toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerForward();},roller));
+    .toggleOnTrue(new InstantCommand(() -> {stateManager.toggleGP();}));
     
     c_rBumper
-    .toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerBackward();}, roller));
+    .toggleOnTrue(new InstantCommand(()->roller.driveRoller(stateManager.startRoller()), roller))
+    .toggleOnFalse(new InstantCommand(()->roller.driveRoller(0)));
+    //.toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerBackward();}, roller));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     
     /* 
@@ -238,10 +240,10 @@ public class RobotContainer {
 
    defaultAllianceColor();
 
-   //abutton.onTrue(m_blinkin.solidRedCommand());
-   c0_xButton.onTrue(m_blinkin.solidVioletCommand());
-   c0_aButton.onTrue(m_blinkin.solidOrangeCommand());
-   //ybutton.onTrue(m_blinkin.allianceColorCommand());
+   //abutton.onTrue(blinkin.solidRedCommand());
+   c0_xButton.onTrue(blinkin.solidVioletCommand());
+   c0_aButton.onTrue(blinkin.solidOrangeCommand());
+   //ybutton.onTrue(blinkin.allianceColorCommand());
   */
   
     drivetrain.setDefaultCommand(new RunCommand(

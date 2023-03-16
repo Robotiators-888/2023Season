@@ -24,8 +24,6 @@ public class SUB_Roller extends SubsystemBase {
     private CANSparkMax m_roller;
     private RelativeEncoder m_encoder;
     private SparkMaxPIDController m_controller;
-    private double m_setpoint;
-    private double m_prevSetpoint;
 
     public SUB_Roller() {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -43,8 +41,7 @@ public class SUB_Roller extends SubsystemBase {
         PIDGains.setSparkMaxGains(m_controller, Constants.Roller.kPositionPIDGains);
     
         m_roller.burnFlash();
-    
-        m_setpoint = Constants.Roller.kCloseConePosition;
+
     }
 
     public boolean isSafe() {
@@ -52,17 +49,13 @@ public class SUB_Roller extends SubsystemBase {
       }
 
     // Rolls the roller forward, to intake the piece
-    public void toggleRollerForward() {
-        m_roller.set(0.1);
-    }
-    // Rolls the roller backward, to sort of shoot out the piece
-    public void toggleRollerBackward() {
-        m_roller.set(-0.1);
+    public void driveRoller(double speed) {
+        m_roller.set(speed);
     }
     
     public void periodic(){
 
-        
+        Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Roller/Voltage", m_roller.getBusVoltage());
         Logger.getInstance().recordOutput("Roller/Output", m_roller.getAppliedOutput());
     }
