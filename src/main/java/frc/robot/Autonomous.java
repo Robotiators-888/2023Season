@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoBalance;
+import frc.robot.commands.ForwardBalance;
 import frc.robot.commands.ReverseBalance;
 import frc.robot.subsystems.*;
 
@@ -104,18 +105,6 @@ public class Autonomous{
                 drivetrain::tankDriveVolts, drivetrain);
     }
 
-    public Command balancing(){ 
-       // drivetrain.setBrakeMode(true);  
-        return new ParallelDeadlineGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.35, 0); balanceTime.start();}, drivetrain)
-                .until(()->(drivetrain.getNavxDisplacement() >= Units.inchesToMeters(16)))
-                    .andThen(new RunCommand(()->drivetrain.setMotorsArcade(0.1, 0), drivetrain))
-                //.getInterruptionBehavior(()->(drivetrain.getPitch() > -3 && drivetrain.getPitch() < 3))
-        );
-
-        
-    }
-    
     public Command buildScoringSequence(){
      return new SequentialCommandGroup(
         new ParallelCommandGroup(
@@ -147,29 +136,25 @@ public class Autonomous{
         );
     }
 
-    public Command buildAutoBalanceSequence(){
+    //Drives forward onto charge station then auto balances
+    public Command buildForwardAutoBalanceSequence(){
         return new SequentialCommandGroup(
             new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1.5),
-            new ReverseBalance(drivetrain)
+            new ForwardBalance(drivetrain)
         );
     }
-
-    public Command buildReverseAutoBalanceSequence(){
-        return new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.75, 0);}, drivetrain).withTimeout(1.5),
-            new ReverseBalance(drivetrain)
-        );
-    }
-    // Command autoBalanceSequence = new SequentialCommandGroup(
-    //     new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
-    //     .until(()->(drivetrain.getPitch() <= -9 && drivetrain.getPitch() > ) )
-        
-    // );
 
     
-    Command turn180Degree() {
-        
-        return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
+    // public Command buildReverseAutoBalanceSequence(){
+    //     return new SequentialCommandGroup(
+    //         new RunCommand(()->{drivetrain.setMotorsArcade(-0.75, 0);}, drivetrain).withTimeout(1.5),
+    //         new ReverseBalance(drivetrain)
+    //     );
+    // }
+    
+    // turns a little less than 180 degrees for AutoBalance to get ont charge station at slight angle
+    Command buildTurnTo180DegreeSequence() {
+        return new RunCommand(()->drivetrain.turnTo180Degree(), drivetrain)
         .until(()->(drivetrain.getAngle() < -175 || drivetrain.getAngle() > 175))
         .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
@@ -199,39 +184,7 @@ public class Autonomous{
             getRamsete(dummyPath));
     }
     
-    Command forwardsScoreThenAutoBalance(){
-        drivetrain.resetAngle();
-        return new SequentialCommandGroup(
-            buildScoringSequence(),
-            new WaitCommand(1),
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(0.2),
-            turn180Degree(),
-            buildAutoBalanceSequence()
-        );
-    }
-
-    Command backwardsScoreThenAutoBalance(){
-        drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
-        drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
-        drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
-        drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
-        return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
-         new SequentialCommandGroup(
-          new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
-          new SequentialCommandGroup(
-            new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeConeGripper())),
-        new SequentialCommandGroup(
-            //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
-           new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),
-           //buildAutoBalanceSequence()
-           buildReverseAutoBalanceSequence()
-        );
-        
-    }
+    
 
     Command Red1_Cone_DB(){
         return new SequentialCommandGroup(
@@ -264,19 +217,52 @@ public class Autonomous{
         );
     }
 
-    Command Cone_AutoBalance(){
+    Command Cone_Turn180_AutoBalance(){
         return new SequentialCommandGroup(
             new InstantCommand(()->SmartDashboard.putBoolean("Is turning", false)),
-
             new InstantCommand(()->drivetrain.zeroHeading()),
             buildScoringSequence(),
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
-            turn180Degree(),
-            buildAutoBalanceSequence() //This is the improved balance conditional
+            new WaitCommand(0.5), 
+            buildTurnTo180DegreeSequence(),
+            buildForwardAutoBalanceSequence() //This is the improved balance conditional
         );
     }
 
+    Command DriveForward_AutoBalance(){
+        drivetrain.resetAngle();
+        return new SequentialCommandGroup(
+            buildTurnTo180DegreeSequence(),
+            buildForwardAutoBalanceSequence()
+        );
+    }
 
+    // Command backwardsScoreThenAutoBalance(){
+    //     drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
+    //     drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
+    //     drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
+    //     drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
+    //     return new SequentialCommandGroup(
+    //         new ParallelCommandGroup(
+    //     new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
+    //      new SequentialCommandGroup(
+    //       new WaitCommand(2.5), 
+    //       new InstantCommand(() -> gripper.openConeGripper(), gripper))),
+    //       new SequentialCommandGroup(
+    //         new WaitCommand(1), 
+    //         new InstantCommand(()->gripper.closeConeGripper())),
+    //     new SequentialCommandGroup(
+    //         //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
+    //        new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),
+    //        //buildAutoBalanceSequence()
+    //        buildReverseAutoBalanceSequence()
+    //     );
+        
+    // }
+
+    // Driveforward AutoBalance
+    // Cone Turn180 AutoBalance
+    // DriveBackwards AutoBalance Backwards
 
 
 

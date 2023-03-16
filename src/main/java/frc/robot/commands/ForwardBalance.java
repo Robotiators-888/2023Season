@@ -12,14 +12,7 @@ public class ForwardBalance extends CommandBase {
   /** Creates a new ReverseBalance. */
   SUB_Drivetrain m_drivetrain;
 
-    private double error;
     private double currentAngle;
-    private double lastAngle = 0;
-    private double drivePower;
-    private long balanceTimeMili = 0;
-    private double ForwardMult = 1.5; // must have its own max speed
-    private double maxSpeed = 0.5;
-    private double diferenceInAngle;
     double stopAngle = 10.0;
     boolean driveBackwards;
 
@@ -31,7 +24,9 @@ public class ForwardBalance extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    SmartDashboard.putBoolean("BALANCING", true);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -39,32 +34,25 @@ public class ForwardBalance extends CommandBase {
 
   // sets angle to roll: angle the balence beam can rotate.
  this.currentAngle = m_drivetrain.getPitch();
-if(currentAngle > 12 ){
-  m_drivetrain.driveArcade(0.4, 0);
+if(currentAngle > 12.5 ){
+  m_drivetrain.driveArcade(0.3, 0);
 
-}else if(currentAngle < -7){
-  m_drivetrain.driveArcade(-0.3, 0);
+}else if(currentAngle < -6){
+  m_drivetrain.driveArcade(-0.4, 0);
 
-}else if(currentAngle <= 12 && currentAngle >= -7){
+}else if(currentAngle <= 12.5 && currentAngle >= -6){
   m_drivetrain.driveArcade(0.0, 0);
 
 }
- //m_drivetrain.driveArcade(0.3, 0);
 
- //System.out.println("drivePower*FM: "+(drivePower*ForwardMult)+"angle: "+currentAngle+" ForwardMult:"+ForwardMult+" difInAngle: "+diferenceInAngle+" maxSpeed: "+maxSpeed);
- SmartDashboard.putNumber("drivePower*FM", (drivePower*ForwardMult));
  SmartDashboard.putNumber("pitch balance angle",currentAngle);
- SmartDashboard.putNumber("ForwardMult",ForwardMult);
- SmartDashboard.putNumber("difInAngle", diferenceInAngle);
- SmartDashboard.putNumber("AutoBalance maxSpeed", maxSpeed);
- SmartDashboard.putBoolean("balancing", true);
- 
- this.lastAngle = currentAngle;
 }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    SmartDashboard.putBoolean("BALANCING", false);
+  }
 
   // Returns true when the command should end.
   @Override

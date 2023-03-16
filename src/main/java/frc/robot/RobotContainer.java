@@ -87,9 +87,11 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
-    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
-    AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
+    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_Turn180_AutoBalance());
+    AutoChooser.addOption("Driveforward Auto Balance", autos.Driveforward_AutoBalance());
+    AutoChooser.addOption("score Then AutoBalance Backwards", autos.Cone_Turn180_AutoBalance());
+    AutoChooser.addOption("Test Auto Balance", autos.buildForwardAutoBalanceSequence()); 
+    
     //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
 
 
