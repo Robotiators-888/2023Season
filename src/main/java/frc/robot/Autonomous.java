@@ -83,6 +83,7 @@ public class Autonomous{
         Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
 
         Trajectory driveToGP_path = getTrajectory("paths/output/DriveToGP.wpilib.json");
+        Trajectory curvy_DTP_path = getTrajectory("paths/output/Curvy_DTP.wpilib.json");
 
         //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
@@ -353,6 +354,13 @@ public class Autonomous{
         return new SequentialCommandGroup(
             new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
             getRamsete(driveToGP_path)
+        );
+    }
+
+    Command Curvy_DTP(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(curvy_DTP_path.getInitialPose())),
+            getRamsete(curvy_DTP_path)
         );
     }
 

@@ -109,6 +109,7 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
     AutoChooser.addOption("Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
