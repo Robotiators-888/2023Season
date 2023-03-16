@@ -93,6 +93,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void disabledInit() {
     RobotContainer.m_blinkin.allianceColor();
+    pdh.setSwitchableChannel(false);
   }
  
 
