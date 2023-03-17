@@ -48,8 +48,6 @@ public class SUB_Tower extends SubsystemBase {
     //Counteract Gravity on Arm, Currently lbsArm is arbitrary (For kG of FF)
     double lbsArm = 30.0;
     double gravitional_force_in_Kg = (lbsArm*4.44822162)/9.8;
-    // Create a new ElevatorFeedforward with gains kS, kG, kV, and kA
-    //ArmFeedforward feedforward = new ArmFeedforward(Constants.FF_kS, Constants.FF_kG, Constants.FF_kV, Constants.FF_kA);
     
     public SUB_Tower(){
         //resetEncoder();
@@ -76,28 +74,28 @@ public class SUB_Tower extends SubsystemBase {
         m_setpoint = Constants.Arm.kHomePosition;
 
         m_timer = new Timer();
-    m_timer.start();
-    m_timer.reset();
+        m_timer.start();
+        m_timer.reset();
 
-    updateMotionProfile();
+        updateMotionProfile();
     }
 
     public void setTargetPosition(double _setpoint, SUB_Tower _tower) {
 
-        if (_setpoint != m_setpoint) {
-          m_setpoint = _setpoint;
-          updateMotionProfile();
-        }
+      if (_setpoint != m_setpoint) {
+        m_setpoint = _setpoint;
+        updateMotionProfile();
       }
+    }
 
-      private void updateMotionProfile() {
+    private void updateMotionProfile() {
         TrapezoidProfile.State state = new TrapezoidProfile.State(m_encoder.getPosition(), m_encoder.getVelocity());
         TrapezoidProfile.State goal = new TrapezoidProfile.State(m_setpoint, 0.0);
         m_profile = new TrapezoidProfile(Constants.Arm.kArmMotionConstraint, goal, state);
         m_timer.reset();
-      }
+    }
 
-      public void runAutomatic() {
+    public void runAutomatic() {
         double elapsedTime = m_timer.get();
         if (m_profile.isFinished(elapsedTime)) {
           targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
@@ -108,8 +106,9 @@ public class SUB_Tower extends SubsystemBase {
     
         feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
         m_controller.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
-      }
-      public void runManual(double _power) {
+    }
+    
+    public void runManual(double _power) {
         //reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and passively
         m_setpoint = m_encoder.getPosition();
         targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
@@ -118,29 +117,28 @@ public class SUB_Tower extends SubsystemBase {
         feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
         armMotor.set(_power + (feedforward / 12.0));
         manualValue = _power;
-      }
+    }
 
     // set power and position limits
     public void setLimits(){
-        //set soft limits and current limits for how far the manip can move
-        armMotor.setSmartCurrentLimit(40, 20);
+      //set soft limits and current limits for how far the manip can move
+      armMotor.setSmartCurrentLimit(40, 20);
         
-        armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
-        armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
+      armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kForward, true);
+      armMotor.enableSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, true);
 
-        // stops motor at 130 encoder clicks, (touching the ground)
-        armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 130);
-        // stops motor at 0 encoder clicks when reversing, (touching the robot)
-        armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
+      // stops motor at 130 encoder clicks, (touching the ground)
+      armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kForward, 130);
+      // stops motor at 0 encoder clicks when reversing, (touching the robot)
+      armMotor.setSoftLimit(CANSparkMax.SoftLimitDirection.kReverse, 0);
     }
+    
     // not used
     public void armMove(double speed) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
         armMotor.set(speed);
         //System.out.println("feedforward: "+feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
     }
-
-    
 
     public void periodic() {
         towerMotorOutput.append(armMotor.get());
