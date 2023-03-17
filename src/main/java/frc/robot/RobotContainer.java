@@ -76,11 +76,11 @@ public class RobotContainer {
   JoystickButton c0_xButton = new JoystickButton(controller, 3);
   JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
- // Auto objects
- SendableChooser<Command> AutoChooser = new SendableChooser<>();
- SendableChooser<Integer> DelayChooser = new SendableChooser<>();
+  // Auto objects
+  SendableChooser<Command> AutoChooser = new SendableChooser<>();
+  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
- /**
+  /**
    * The state of the buttons on the joystick.
    *
    * @param stick The joystick to read.
@@ -109,14 +109,9 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
 
-   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
-    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
-
-
-
 
     DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);
@@ -130,12 +125,8 @@ public class RobotContainer {
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
 
-
     SmartDashboard.putData("Auto Chooser", AutoChooser);
     SmartDashboard.putData("Delay Chooser", DelayChooser);
-    //SmartDashboard.putData("AutoBalanceStopAngleChooser",AutoBalanceStopAngleChooser);
-
-
 
     configureBindings();
     limelight.setLed(1);
@@ -162,19 +153,12 @@ public class RobotContainer {
     c_lBumper
     .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
     .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
-    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
-    
-    /* 
-    c_rBumper
-    .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
-    .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
-    */
 
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
-   d_bButton
-      .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+    d_bButton
+    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
 
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
@@ -184,7 +168,7 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
-   c_yButton
+    c_yButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
          new SequentialCommandGroup(
@@ -217,7 +201,7 @@ public class RobotContainer {
         drivetrain.driveArcade(
           MathUtil.applyDeadband(- controller.getRawAxis(1), Constants.OperatorConstants.kDriveDeadband),
           MathUtil.applyDeadband(controller.getRawAxis(4)*Constants.Drivetrain.kTurningScale, Constants.OperatorConstants.kDriveDeadband))
-  , drivetrain)
+    , drivetrain)
     );
 
     
@@ -254,30 +238,23 @@ public class RobotContainer {
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
   }
 
+  public static void logDriverController() {
+    Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
+    Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
+    Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
+  }
 
-   
+  public static void logOperatorController() {
+    Logger.getInstance().recordOutput("Driver2Controller/AButton", controller2.getRawButtonPressed(1));
+    Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
+    Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
+    Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
+    Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
+  }
 
-
-
-public static void logDriverController() {
-  Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
-  Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
-  Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
-
-}
-
-public static void logOperatorController() {
-  Logger.getInstance().recordOutput("Driver2Controller/AButton", controller2.getRawButtonPressed(1));
-  Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
-  Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
-  Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
-  Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
-}
-
-public static void logDriverData(){
-  logDriverController();
-  logOperatorController();
-
-}
+  public static void logDriverData(){
+    logDriverController();
+    logOperatorController();
+  }
 
 }
