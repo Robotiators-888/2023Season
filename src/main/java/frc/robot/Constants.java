@@ -49,7 +49,6 @@ public final class Constants {
     public static final double BEAM_BALANCED_GOAL_DEGREES = 0;
     public static final double BEAM_BALANCED_ANGLE_TRESHOLD_DEGREES = 1;
     public static final double BACKWARDS_BALANCING_EXTRA_POWER_MULTIPLIER = 1;
-  
   }
 
   public static class OperatorConstants {
@@ -76,7 +75,7 @@ public final class Constants {
     public static final double kTurningScale = -0.7;
   }
 
-//Joystick Constants
+ //Joystick Constants
  public static final int JOYSTICK_PORT = 0;
  public static final int JOYSTICK_PORT1 = 1;
  public static final int JOYSTICK_PORT2 = 1;
@@ -97,7 +96,7 @@ public final class Constants {
  public static final double TELESPEED = 0.45;
 
   //PID ID's
- public static final double PID_kP = 0.227;//0.227 0-4v
+  public static final double PID_kP = 0.227;//0.227 0-4v
   public static final int PID_kI = 0;
   public static final double PID_kD = 0.1;
   public static final double FF_kA = 0.0;
@@ -112,11 +111,9 @@ public final class Constants {
   //Gripper CANIDS
   public static final int GRIPPER_SPARKMAX_CANID = 11;
 
-
   public static final int KBLINKIN=1;
 
   //Manipulator Constants
-
   public static final int TOWER_SPARKMAX_CANID = 10;
 
   public static final class Gripper {
@@ -132,7 +129,7 @@ public final class Constants {
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
   }
   
-    public static final class Arm {
+  public static final class Arm {
     public static final int kArmCanId = 10;
     public static final boolean kArmInverted = false;
     public static final int kCurrentLimit = 40;
@@ -148,11 +145,9 @@ public final class Constants {
 
     public static final double kBalancePosition = 4.47;
     public static final double kHomePosition = .15;
-    //public static final double kScoringPosition = 2.95;
     public static final double kScoringPosition = 2.89;
     public static final double kIntakePosition = 4.32;
-    public static final double kFeederPosition = 2.46;
-    
-}
+    public static final double kFeederPosition = 2.46;  
+  }
 
 }
