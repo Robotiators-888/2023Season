@@ -141,8 +141,10 @@ public final class Constants {
     public static final double kCubePosition = 21.0;
     public static final double kSafePosition = 27.0;
     public static final int kCurrentLimit = 20;
+    public static final int kCurrentStall = 12;
     public static final int kHoldLimit = 5;
-    public static final double kHoldPower = 0.07;
+    public static final double kHoldSpeed = 0.07;
+    public static final double kDriveSpeed = 0.75;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
 
   }

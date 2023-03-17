@@ -10,6 +10,7 @@ import frc.robot.subsystems.SUB_Tower;
 public class StateManager extends SubsystemBase{
 
     Gamepiece gp;
+    boolean haveGP = false;
     final Field2d field2d = RobotContainer.field2d;
     final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
@@ -96,6 +97,18 @@ public class StateManager extends SubsystemBase{
         }else{
             return -0.50;
         }
+    }
+
+    public void grabGP(){
+        haveGP = true;
+    }
+
+    public void dropGp(){
+        haveGP = false;
+    }
+
+    public boolean securedGP(){
+        return haveGP;
     }
     
 }

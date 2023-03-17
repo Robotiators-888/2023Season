@@ -11,7 +11,10 @@ import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import frc.libs.PIDGains;
+import frc.libs.RunningAverageQueue;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
+
 import org.littletonrobotics.junction.Logger;
 import frc.robot.StateManager;
 
@@ -21,8 +24,7 @@ public class SUB_Roller extends SubsystemBase {
     private CANSparkMax m_roller;
     private RelativeEncoder m_encoder;
     private SparkMaxPIDController m_controller;
-    private Queue<Double> currentOutputQueue = new ArrayDeque<Double>();
-    private double runningTotal = 0;
+    private RunningAverageQueue queue = new RunningAverageQueue(10);
 
     public SUB_Roller() {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -43,10 +45,6 @@ public class SUB_Roller extends SubsystemBase {
 
     }
 
-    public boolean isSafe() {
-        return m_encoder.getPosition() > Constants.Roller.kSafePosition;
-      }
-
     public boolean isCurrentLimit(){
 
         return m_roller.getOutputCurrent() > Constants.Roller.kHoldLimit;
@@ -60,7 +58,19 @@ public class SUB_Roller extends SubsystemBase {
     
     public void periodic(){
 
-    
+        queue.insert(m_roller.getOutputCurrent());
+        if((queue.getRunningAverage() < 1 || queue.getRunningAverage() > -1) || 
+            (RobotContainer.tower.setpoint == Constants.Arm.kHomePosition)){
+                driveRoller(0.0);
+       
+         }else if(queue.getRunningAverage() > Constants.Roller.kCurrentStall){
+            driveRoller(Constants.Roller.kHoldSpeed);
+            sm.grabGP();
+        }else if(queue.getRunningAverage() < Constants.Roller.kCurrentStall && 
+            queue.getRunningAverage() > 1){
+                driveRoller(Constants.Roller.kDriveSpeed);
+                sm.dropGp();
+        }
 
         Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Roller/Voltage", m_roller.getBusVoltage());
