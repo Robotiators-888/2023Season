@@ -115,7 +115,7 @@ public class RobotContainer {
     AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
-    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
 
 
 
@@ -251,8 +251,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
-    drivetrain.zeroEncoders();
-    drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
   }
 

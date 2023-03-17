@@ -84,6 +84,7 @@ public class Autonomous{
 
         Trajectory driveToGP_path = getTrajectory("paths/output/DriveToGP.wpilib.json");
         Trajectory curvy_DTP_path = getTrajectory("paths/output/Curvy_DTP.wpilib.json");
+        Trajectory forward_GP_path = getTrajectory("paths/output/Forward_GP.wpilib.json");
 
         //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
@@ -353,7 +354,9 @@ public class Autonomous{
     Command DriveToGamePiece(){
         return new SequentialCommandGroup(
             new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
-            getRamsete(driveToGP_path)
+            getRamsete(driveToGP_path),
+            turn180Degree(),
+            getRamsete(forward_GP_path)
         );
     }
 

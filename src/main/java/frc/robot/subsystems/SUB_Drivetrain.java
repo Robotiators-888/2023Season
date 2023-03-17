@@ -76,7 +76,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     this.field2d = input;
     zeroHeading();
     navx.setAngleAdjustment(0.0);
-
+    zeroEncoders();
     driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), leftPrimaryEncoder.getPosition(), 
     rightSecondaryEncoder.getPosition(),
     new Pose2d());
@@ -293,13 +293,13 @@ public double invertEncoderVal(double currentVal){
   public void setPosition(Pose2d position) {
     //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
     //new Pose2d(0, 0, new Rotation2d()));
-    zeroEncoders();
-    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getVelocity(), rightPrimaryEncoder.getVelocity(), position);
+    //zeroEncoders();
+    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(), position);
 
   }
 
   public void resetOdometry(Pose2d pose) {
-    zeroEncoders();
+    //zeroEncoders();
     driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(),
         pose);
   }
