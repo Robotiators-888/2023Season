@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -9,15 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotContainer;
 import org.littletonrobotics.junction.Logger;
 
-
 public class SUB_Limelight extends SubsystemBase{
     NetworkTable table;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
 
-
     public SUB_Limelight() {
-        table = NetworkTableInstance.getDefault().getTable("limelight");
-        
+        table = NetworkTableInstance.getDefault().getTable("limelight");      
     }
     
     public void switchapipeline(int pipelineNumber){
@@ -38,6 +34,7 @@ public class SUB_Limelight extends SubsystemBase{
             return false;
         }
     }
+    
     /**
    * Crosshair offset to target y-value
    * 
@@ -56,6 +53,7 @@ public class SUB_Limelight extends SubsystemBase{
 
         return distance;
     }
+    
     // turns on limelight(mainly used for) (force on)
     public void setLed(int value) {
         table.getEntry("ledMode").setNumber(value);
