@@ -42,16 +42,16 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
   private Pose2d odometryPose = new Pose2d(); 
-   // The gyro sensor
-   private AHRS navx = new AHRS(SerialPort.Port.kMXP);
-   //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
+  // The gyro sensor
+  private AHRS navx = new AHRS(SerialPort.Port.kMXP);
+  //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
-   //Field Map
-   private Field2d field2d;
+  //Field Map
+  private Field2d field2d;
 
-   // Odometry class for tracking robot pose
-   DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
-   new Pose2d(0, 0, new Rotation2d()));
+  // Odometry class for tracking robot pose
+  DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
+  new Pose2d(0, 0, new Rotation2d()));
 
   // create a speed controller group for each side
   private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -62,8 +62,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   boolean brake = false;
 
-  public PIDController turnPID = new PIDController(0.02,0,0);
-  
+  public PIDController turnPID = new PIDController(0.02,0,0); 
 
   //navx
   // private AHRS navx = new AHRS();
@@ -90,18 +89,16 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightPrimary.burnFlash();
   
       
-      leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
-      leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      leftSecondary.setIdleMode(IdleMode.kBrake);
-      leftSecondary.burnFlash();
+    leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
+    leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    leftSecondary.setIdleMode(IdleMode.kBrake);
+    leftSecondary.burnFlash();
   
       
-      rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
-      rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
-      rightSecondary.setIdleMode(IdleMode.kBrake);
-      rightSecondary.burnFlash();
-      
-      
+    rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
+    rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    rightSecondary.setIdleMode(IdleMode.kBrake);
+    rightSecondary.burnFlash();  
   }
 
   //Gets encoder position in # of rotations of motor
@@ -114,27 +111,18 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setBrakeMode(boolean brake){
-     
-    if(brake){
-      
-        leftPrimary.setIdleMode(IdleMode.kBrake);
-        leftSecondary.setIdleMode(IdleMode.kBrake);
-        rightPrimary.setIdleMode(IdleMode.kBrake);
-        rightSecondary.setIdleMode(IdleMode.kBrake);
-    }else{
-      
-        leftPrimary.setIdleMode(IdleMode.kCoast);
-        leftSecondary.setIdleMode(IdleMode.kCoast);
-        rightPrimary.setIdleMode(IdleMode.kCoast);
-        rightSecondary.setIdleMode(IdleMode.kCoast);
+    if(brake) {
+      leftPrimary.setIdleMode(IdleMode.kBrake);
+      leftSecondary.setIdleMode(IdleMode.kBrake);
+      rightPrimary.setIdleMode(IdleMode.kBrake);
+      rightSecondary.setIdleMode(IdleMode.kBrake);
+    } else{
+      leftPrimary.setIdleMode(IdleMode.kCoast);
+      leftSecondary.setIdleMode(IdleMode.kCoast);
+      rightPrimary.setIdleMode(IdleMode.kCoast);
+      rightSecondary.setIdleMode(IdleMode.kCoast);
     }
-    
   }
-
-  // public void putNumber(int num) {
-  //   // This method will be called once per scheduler run
-  //   SmartDashboard.putNumber("Drive Mode", num); 
-  // }
 
   // The different drivetrains
   public void driveArcade(double _straight, double _turn) {
@@ -142,17 +130,14 @@ public class SUB_Drivetrain extends SubsystemBase {
    _straight=  Math.copySign(Math.pow(_straight, 2), _straight);
    _turn=  Math.copySign(Math.pow(_turn, 2), _turn);
 
-
     double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
     double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
-
 
     leftPrimary.set(left);
     rightPrimary.set(right);
     leftSecondary.set(left);
     rightSecondary.set(right);
     driveTrain.feedWatchdog();
-
   }
 
   /**
@@ -165,7 +150,6 @@ public class SUB_Drivetrain extends SubsystemBase {
     groupLeft.setVoltage(leftVolts);
     groupRight.setVoltage(rightVolts);
     driveTrain.feedWatchdog();
-
   }
 
   
@@ -179,17 +163,14 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setMotorsTank(Supplier<Double> lSpeed, Supplier<Double> rSpeed) {
-    
     double leftSpeed = Math.copySign(Math.pow(lSpeed.get(), 2), lSpeed.get());
     double rightSpeed = Math.copySign(Math.pow(rSpeed.get(), 2), rSpeed.get());
     
     groupLeft.set(leftSpeed);
     groupRight.set(rightSpeed);
-    //driveTrain.feedWatchdog();
   }
 
   public void setMotorsTank(double leftSpeed, double rightSpeed){
-
      leftSpeed = Math.copySign(Math.pow(leftSpeed, 2), leftSpeed);
      rightSpeed = Math.copySign(Math.pow(rightSpeed, 2), rightSpeed);
 
@@ -198,17 +179,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   }
 
   public void setMotorsCurvature(double xSpeed, double zRotation, boolean isQuickTurn){
-    //driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
-
-  /* Encoders getting position
-  public double getLeftEncoder(){
-    return leftPrimary.getEncoder().getPosition();
-  }
-  public double getRightEncoder(){
-    return rightPrimary.getEncoder().getPosition();
-  }
-*/
 
  /**
    * Returns the currently-estimated pose of the robot.
@@ -246,7 +217,6 @@ public class SUB_Drivetrain extends SubsystemBase {
     double wheelCirc = (2 * Math.PI * Constants.Autonomous.WHEEL_RADIUS);
     double rotationsPerInch = wheelCirc / Constants.Autonomous.GEARRATIO;
     return Units.inchesToMeters(rotationsPerInch * input);
-
   }
 
   /**
@@ -333,26 +303,8 @@ public class SUB_Drivetrain extends SubsystemBase {
      return navx.getRoll();
   }
 
-  // Gets the number from the smart dashboard to change drive
-  // public int driveMode(){
-  //   return (int) SmartDashboard.getNumber("Drive Mode", 0);
-  // }
-
-  // Switches it?
-
   public void turn180Degree(){
     double degree = -getYaw();
-    //posative turn is left
-
-    // if (degree < 180) { // turn left
-    //   double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.365);
-    //   this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //   SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // } else if (degree > 180){ // turn right
-    //     double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.365);
-    //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // }
     double speed = turnPID.calculate(degree, -180);
     
     
@@ -360,17 +312,13 @@ public class SUB_Drivetrain extends SubsystemBase {
     this.driveArcade(0,speed);
     SmartDashboard.putNumber("180 turn speed", speed);
     SmartDashboard.putBoolean("Is turning", true);
-
-
   }
 
   public void toggleBrake(){
     if(brake){
       brake = false;
       setBrakeMode(false);
-
-      
-    }else{
+    } else{
       brake = true;
       setBrakeMode(true);
     }
