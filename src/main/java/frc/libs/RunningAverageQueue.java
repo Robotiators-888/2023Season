@@ -19,6 +19,11 @@ public class RunningAverageQueue {
     }
 
     public void insert(double addVal){
+        
+        if(queue.size() >= size){
+            total -= queue.pop().doubleValue();
+        }
+
         queue.add(addVal);
         total += addVal;
     }
@@ -32,8 +37,6 @@ public class RunningAverageQueue {
             return 0.0;
         } else if(queue.size() < size ){
             return (total/(double)queue.size());
-        }else if(queue.size() >= size){
-            return shrinkQueue();
         }else{
             return total/(double)(size);
         }
@@ -41,6 +44,7 @@ public class RunningAverageQueue {
         
     }
 
+    //Unused as of yet, keeping this here until final check over
     private double shrinkQueue(){
         /* 
         keep constrained to size var
