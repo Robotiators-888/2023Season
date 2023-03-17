@@ -29,23 +29,22 @@ import frc.robot.subsystems.*;
 
 
 public class Autonomous{
+  final Field2d field2d = RobotContainer.field2d;
+  final SUB_Gripper gripper = RobotContainer.gripper;
+  final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
+  final SUB_Tower tower = RobotContainer.tower;
+  edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
 
-    final Field2d field2d = RobotContainer.field2d;
-    final SUB_Gripper gripper = RobotContainer.gripper;
-    final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
-    final SUB_Tower tower = RobotContainer.tower;
-    edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
-
- // ====================================================================
- // Trajectory Config
- // ====================================================================
-    TrajectoryConfig configReversed = new TrajectoryConfig(Constants.Autonomous.kMaxSpeedMetersPerSecond,
+  // ====================================================================
+  // Trajectory Config
+  // ====================================================================
+  TrajectoryConfig configReversed = new TrajectoryConfig(Constants.Autonomous.kMaxSpeedMetersPerSecond,
         Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Autonomous.kDriveKinematics)
                  .setReversed(true);
 
     TrajectoryConfig configForward = new TrajectoryConfig(Constants.Autonomous.kMaxSpeedMetersPerSecond,
         Constants.Autonomous.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Autonomous.kDriveKinematics);
- /** 
+   /** 
      * opens and converts path wever file to a trajectory
      * 
      * @param weaverFile sting path to path weaver *.wpilib.json file
