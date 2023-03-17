@@ -49,8 +49,6 @@ public class Robot extends LoggedRobot {
       String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
       Logger.getInstance().setReplaySource(new WPILOGReader(logPath)); // Read replay log
       Logger.getInstance().addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save
-                                                                                                          // outputs to
-                                                                                                          // a new log
     }
 
     // Logger.getInstance().disableDeterministicTimestamps() // See "Deterministic
@@ -135,9 +133,7 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {
- 
-    
+  public void teleopPeriodic() {  
   }
 
   
