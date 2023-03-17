@@ -53,6 +53,7 @@ public class SUB_Blinkin extends SubsystemBase {
   public void rainbow() {
     set(-0.99);
   }
+  
   public void solidRed(){
     set(0.17);
   }
@@ -60,12 +61,15 @@ public class SUB_Blinkin extends SubsystemBase {
   public void solidViolet(){
     set(0.91);
   }
+  
   public void solidOrange() {
     set(0.65);
   }
+  
   public void off(){
     set(0);
   }
+  
   public void allianceColor() {
     boolean isRed = (DriverStation.getAlliance() == Alliance.Red);
     System.out.println("isRED: "+isRed);
@@ -78,20 +82,23 @@ public class SUB_Blinkin extends SubsystemBase {
     }
   }
 
-public Command solidVioletCommand(){
-  return new InstantCommand(
+  public Command solidVioletCommand(){
+    return new InstantCommand(
     ()->{solidViolet();});
-}
-public Command solidRedCommand(){
-  return new InstantCommand(
-()-> {solidRed();});
-}
-public Command solidOrangeCommand(){
-  return new InstantCommand(
-()-> {solidOrange();});
-}
-public Command allianceColorCommand(){
-  return new InstantCommand(
-()-> {allianceColor();}); 
-}
+  }
+  
+  public Command solidRedCommand(){
+    return new InstantCommand(
+    ()-> {solidRed();});
+  }
+    
+  public Command solidOrangeCommand(){
+    return new InstantCommand(
+    ()-> {solidOrange();});
+  }
+  
+  public Command allianceColorCommand(){
+    return new InstantCommand(
+    ()-> {allianceColor();}); 
+  }
 }
