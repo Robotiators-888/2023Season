@@ -40,7 +40,7 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
-  public static StateManager stateManager = new StateManager();
+ 
 
   public static final Field2d field2d = new Field2d();
   //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
@@ -53,10 +53,10 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
-  public static final SUB_Roller roller = new SUB_Roller();
+  //public static final SUB_Roller roller = new SUB_Roller();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
-
+  public static StateManager stateManager = new StateManager();
   
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
@@ -140,6 +140,7 @@ public class RobotContainer {
 
 
     configureBindings();
+    blinkin.allianceColor();
     limelight.setLed(1);
 
   }
@@ -169,9 +170,9 @@ public class RobotContainer {
     c_lBumper
     .toggleOnTrue(new InstantCommand(() -> {stateManager.toggleGP();}));
     
-    c_rBumper
-    .toggleOnTrue(new InstantCommand(()->roller.driveRoller(stateManager.startRoller()), roller))
-    .toggleOnFalse(new InstantCommand(()->roller.driveRoller(0)));
+    // c_rBumper
+    // .toggleOnTrue(new InstantCommand(()->roller.driveRoller(stateManager.startRoller()), roller))
+    // .toggleOnFalse(new InstantCommand(()->roller.driveRoller(0)));
     //.toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerBackward();}, roller));
     //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
     

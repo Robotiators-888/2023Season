@@ -6,7 +6,7 @@ package frc.libs;
 
 import java.util.ArrayDeque;
 
-/** Add your docs here. */
+/** Class used to keep track of a running total  */
 public class RunningAverageQueue {
 
     int size = 1;

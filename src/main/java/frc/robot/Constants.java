@@ -106,7 +106,7 @@ public final class Constants {
   public static final int GRIPPER_SPARKMAX_CANID = 11;
 
 
-  public static final int KBLINKIN=1;
+  public static final int KBLINKIN=0;
 
   //Manipulator Constants
 
@@ -132,7 +132,7 @@ public final class Constants {
    *  Constants class for Everybot Roller
    */
   public static final class Roller {
-    public static final int kRollerCanId = 11;
+    public static final int kRollerCanId = 12;
     public static final double kSoftLimitReverse = -20.0;
     public static final double kSoftLimitForward = 22.0;
     public static final double kCloseConePosition = 0.0;

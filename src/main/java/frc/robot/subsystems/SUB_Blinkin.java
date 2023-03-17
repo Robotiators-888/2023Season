@@ -68,13 +68,11 @@ public class SUB_Blinkin extends SubsystemBase {
   }
   public void allianceColor() {
     boolean isRed = (DriverStation.getAlliance() == Alliance.Red);
-    System.out.println("isRED: "+isRed);
     if (isRed){
       set(-0.01);
-      System.out.println("led RED");
+      
     } else {
       set(0.87);
-      System.out.println("led BLUE");
     }
   }
 
@@ -94,4 +92,12 @@ public Command allianceColorCommand(){
   return new InstantCommand(
 ()-> {allianceColor();}); 
 }
+
+
+  @Override
+  public void periodic(){
+    //System.out.println("LED: " + m_blinkin.get());
+
+  }
+
 }

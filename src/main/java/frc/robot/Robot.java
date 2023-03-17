@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 
@@ -62,6 +63,8 @@ public class Robot extends LoggedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    
+   //m_robotContainer.blinkin.allianceColor();
   }
 
   /**
@@ -84,18 +87,19 @@ public class Robot extends LoggedRobot {
     // robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    RobotContainer.robotPeriodic();
+    RobotContainer.robotPeriodic();   
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
-    RobotContainer.blinkin.allianceColor();
+    //RobotContainer.blinkin.allianceColor();
   }
  
 
   @Override
   public void disabledPeriodic() {
+    //RobotContainer.blinkin.allianceColor();
   }
 
   /**
@@ -125,7 +129,6 @@ public class Robot extends LoggedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     RobotContainer.blinkin.allianceColor();
-
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
@@ -136,11 +139,9 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
- 
+    //RobotContainer.blinkin.allianceColor();
     
   }
-
-  
 
   @Override
   public void testInit() {
