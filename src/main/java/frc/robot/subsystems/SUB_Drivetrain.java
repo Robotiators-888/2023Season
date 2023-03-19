@@ -386,7 +386,10 @@ public double invertEncoderVal(double currentVal){
   @Override
   public void periodic() {
 
-    
+    driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
+    this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
+
+    field2d.setRobotPose(driveOdometry.getPoseMeters());
 
     // This method will be called once per scheduler run
     SmartDashboard.putData("Field",field2d);
@@ -436,10 +439,7 @@ public double invertEncoderVal(double currentVal){
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
 
 
-    driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
-    this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
-
-    field2d.setRobotPose(driveOdometry.getPoseMeters());
+   
     //setBrakeMode(brake);
 
   }

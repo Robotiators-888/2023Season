@@ -68,6 +68,7 @@ public class Autonomous{
         return trajectory;
     }
 
+
     
     // ====================================================================
     //                          Trajectories
@@ -165,7 +166,7 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1.5),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
             new ReverseBalance(drivetrain)
         );
     }

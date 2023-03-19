@@ -23,6 +23,10 @@ public class ReverseBalance extends CommandBase {
     double stopAngle = 10.0;
     boolean driveBackwards;
 
+
+    private double forwardLimit = 10.5;
+    private double backwardLimit = -6;
+
   public ReverseBalance(SUB_Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_drivetrain = drivetrain;
@@ -39,15 +43,14 @@ public class ReverseBalance extends CommandBase {
   @Override
   public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
 
-  // sets angle to roll: angle the balence beam can rotate.
- this.currentAngle = m_drivetrain.getPitch();
-if(currentAngle > 12.5 ){
-  m_drivetrain.driveArcade(0.3, 0);
+this.currentAngle = m_drivetrain.getPitch();
+if(currentAngle > forwardLimit ){
+  m_drivetrain.driveArcade(0.4, 0);
 
-}else if(currentAngle < -6){
+}else if(currentAngle < backwardLimit){
   m_drivetrain.driveArcade(-0.4, 0);
 
-}else if(currentAngle <= 12.5 && currentAngle >= -6){
+}else if(currentAngle <= forwardLimit && currentAngle >= backwardLimit){
   m_drivetrain.driveArcade(0.0, 0);
 
 }

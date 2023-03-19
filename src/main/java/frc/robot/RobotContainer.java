@@ -51,7 +51,7 @@ public class RobotContainer {
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
-  private static final Autonomous autos = new Autonomous();
+  public static final Autonomous autos = new Autonomous();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin m_blinkin = new SUB_Blinkin(Constants.KBLINKIN);
 
@@ -77,7 +77,7 @@ public class RobotContainer {
   JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
- SendableChooser<Command> AutoChooser = new SendableChooser<>();
+ public static SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
  /**
