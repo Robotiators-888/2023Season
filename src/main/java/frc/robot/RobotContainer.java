@@ -157,7 +157,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     // Cube|Cone Setter
-    d_aButton
+    c_lBumper
     .onTrue(new InstantCommand(() -> {stateManager.toggleGP();}, stateManager));
 
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
@@ -167,7 +167,7 @@ public class RobotContainer {
     c0_bButton.onTrue(AprilSequential);
     
     
-    c_lBumper
+    d_bButton
     .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));
     
@@ -178,9 +178,9 @@ public class RobotContainer {
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
-   d_bButton
-     // .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
-     .onTrue(new InstantCommand(()->stateManager.intakeRoller()));
+  //  d_bButton
+  //    // .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+  //    .onTrue(new InstantCommand(()->stateManager.intakeRoller()));
 
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));

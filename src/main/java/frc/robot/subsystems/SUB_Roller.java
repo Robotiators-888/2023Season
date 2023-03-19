@@ -56,18 +56,14 @@ public class SUB_Roller extends SubsystemBase {
     public void periodic(){
 
         queue.insert(m_roller.getOutputCurrent());
-        // if((queue.getRunningAverage() < 1 || queue.getRunningAverage() > -1) || 
-        //     (RobotContainer.tower.setpoint == Constants.Arm.kHomePosition)){
-        //         driveRoller(0.0);
-       
-        //  }else if(queue.getRunningAverage() > Constants.Roller.kCurrentStall){
-        //     driveRoller(Constants.Roller.kHoldSpeed);
-        //     sm.grabGP();
-        // }else if(queue.getRunningAverage() < Constants.Roller.kCurrentStall && 
-        //     queue.getRunningAverage() > 1){
-        //         driveRoller(Constants.Roller.kDriveSpeed);
-        //         sm.dropGp();
-        // }
+        if(queue.getRunningAverage() > Constants.Roller.kCurrentStall){
+            driveRoller(Constants.Roller.kHoldSpeed);
+          //  sm.grabGP();
+        }else if(queue.getRunningAverage() < Constants.Roller.kCurrentStall && 
+            queue.getRunningAverage() > 1){
+                driveRoller(Constants.Roller.kDriveSpeed);
+              //  sm.dropGp();
+        }
 
         SmartDashboard.putNumber("Average Roller Current", queue.getRunningAverage());
         Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
@@ -75,5 +71,5 @@ public class SUB_Roller extends SubsystemBase {
         Logger.getInstance().recordOutput("Roller/Output", m_roller.getAppliedOutput());
     }
 
-    
+    //TODO Write test off bot for current sensing with JAVA Test
 }
