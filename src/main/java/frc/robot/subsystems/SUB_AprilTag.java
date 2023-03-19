@@ -34,6 +34,16 @@ public class SUB_AprilTag extends SubsystemBase{
             return false;
         }
     }
+
+    /**
+   * April tag ID
+   * 
+   * @return Current April Tag ID
+   */
+    public int getID(){
+        return (int) table.getEntry("tid").getDouble(0);
+    }
+    
     /**
    * Crosshair offset to target y-value
    * 
