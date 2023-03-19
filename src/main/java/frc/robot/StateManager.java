@@ -109,6 +109,10 @@ public class StateManager extends SubsystemBase{
         }
     }
 
+    public void stopRoller(){
+        roller.driveRoller(0.0);
+    }
+
     public void grabGP(){
         haveGP = true;
     }

@@ -168,16 +168,12 @@ public class RobotContainer {
     
     
     c_lBumper
-    .toggleOnTrue(new InstantCommand(() -> {stateManager.toggleGP();}));
+    .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
+    .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));
     
     c_rBumper
-    .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller(), roller))
-    .toggleOnFalse(new InstantCommand(()->roller.driveRoller(0)));  
-    /* 
-    c_rBumper
-    .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
-    .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
-    */
+    .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller()))
+    .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));  
 
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));

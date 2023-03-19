@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -55,19 +56,20 @@ public class SUB_Roller extends SubsystemBase {
     public void periodic(){
 
         queue.insert(m_roller.getOutputCurrent());
-        if((queue.getRunningAverage() < 1 || queue.getRunningAverage() > -1) || 
-            (RobotContainer.tower.setpoint == Constants.Arm.kHomePosition)){
-                driveRoller(0.0);
+        // if((queue.getRunningAverage() < 1 || queue.getRunningAverage() > -1) || 
+        //     (RobotContainer.tower.setpoint == Constants.Arm.kHomePosition)){
+        //         driveRoller(0.0);
        
-         }else if(queue.getRunningAverage() > Constants.Roller.kCurrentStall){
-            driveRoller(Constants.Roller.kHoldSpeed);
-            sm.grabGP();
-        }else if(queue.getRunningAverage() < Constants.Roller.kCurrentStall && 
-            queue.getRunningAverage() > 1){
-                driveRoller(Constants.Roller.kDriveSpeed);
-                sm.dropGp();
-        }
+        //  }else if(queue.getRunningAverage() > Constants.Roller.kCurrentStall){
+        //     driveRoller(Constants.Roller.kHoldSpeed);
+        //     sm.grabGP();
+        // }else if(queue.getRunningAverage() < Constants.Roller.kCurrentStall && 
+        //     queue.getRunningAverage() > 1){
+        //         driveRoller(Constants.Roller.kDriveSpeed);
+        //         sm.dropGp();
+        // }
 
+        SmartDashboard.putNumber("Average Roller Current", queue.getRunningAverage());
         Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Roller/Voltage", m_roller.getBusVoltage());
         Logger.getInstance().recordOutput("Roller/Output", m_roller.getAppliedOutput());
