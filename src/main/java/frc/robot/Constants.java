@@ -146,6 +146,13 @@ public final class Constants {
     public static final double kHoldSpeed = 0.07;
     public static final double kDriveSpeed = 0.75;
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
+    // 4.58 Cube ground
+    // 4.55 Cone ground
+    // 2.88 Cone score high
+    // 3.07 cube score Mid
+    // 3.11 cone feedre 
+    // 3.12 cube feeder
+
 
   }
   
