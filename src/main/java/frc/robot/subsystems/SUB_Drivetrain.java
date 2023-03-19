@@ -340,6 +340,10 @@ public double invertEncoderVal(double currentVal){
      return navx.getRoll();
   }
 
+  public double getHeading(){
+    return getGyroHeading().getDegrees();
+  }
+
   // Gets the number from the smart dashboard to change drive
   // public int driveMode(){
   //   return (int) SmartDashboard.getNumber("Drive Mode", 0);

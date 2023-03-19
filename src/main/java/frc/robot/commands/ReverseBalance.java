@@ -23,8 +23,10 @@ public class ReverseBalance extends CommandBase {
     double stopAngle = 10.0;
     boolean driveBackwards;
 
-
+    //Limits when the robot should stop on the charge station going towards the drivers
     private double forwardLimit = 10.5;
+
+    // Limits when the robot should stop on the charge station going away from the drivers
     private double backwardLimit = -6;
 
   public ReverseBalance(SUB_Drivetrain drivetrain) {

@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ReverseBalance;
 import frc.robot.subsystems.*;
 
@@ -177,18 +176,13 @@ public class Autonomous{
             new ReverseBalance(drivetrain)
         );
     }
-    // Command autoBalanceSequence = new SequentialCommandGroup(
-    //     new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
-    //     .until(()->(drivetrain.getPitch() <= -9 && drivetrain.getPitch() > ) )
-        
-    // );
 
     
     Command turn180Degree() {
         
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
-        .until(()->(drivetrain.getAngle() < -175 || drivetrain.getAngle() > 175))
-        .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
+        .until(()->(drivetrain.getHeading() < -180 || drivetrain.getHeading() > 180))
+        .withTimeout(1.5).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
 
     public Command buildAprilTagPlacementSequence(){
@@ -365,6 +359,18 @@ public class Autonomous{
         return new SequentialCommandGroup(
             new InstantCommand(()->drivetrain.setPosition(curvy_DTP_path.getInitialPose())),
             getRamsete(curvy_DTP_path)
+        );
+    }
+
+    Command UpAndOver(){
+        //drivetrain.zeroHeading();
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.zeroHeading()),
+            turn180Degree(),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.7, 0)).until(()->(drivetrain.getPitch() > -2 && 
+                    drivetrain.rotationsToMeters(((drivetrain.getLeftEncoder() + drivetrain.getRightEncoder())/2.0)) > 3.5)),
+            turn180Degree()
         );
     }
 
