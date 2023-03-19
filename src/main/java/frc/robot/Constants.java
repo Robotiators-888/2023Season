@@ -164,8 +164,9 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
     public static final double kHomePosition = .2;
-    //public static final double kScoringPosition = 2.95;
-    public static final double kScoringConePosition = 2.89;
+    public static final double kScoringHighCone = 2.69;
+    public static final double kScoringHighCube = 2.75;
+    public static final double kScoringConeMidPosition = 2.89;
     public static final double kIntakePosition = 4.32;
     public static final double kFeederPosition = 2.42;
 }

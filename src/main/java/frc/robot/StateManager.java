@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.SUB_Blinkin;
 import frc.robot.subsystems.SUB_Drivetrain;
 import frc.robot.subsystems.SUB_Gripper;
+import frc.robot.subsystems.SUB_Roller;
 import frc.robot.subsystems.SUB_Tower;
 
 public class StateManager extends SubsystemBase{
@@ -12,10 +13,11 @@ public class StateManager extends SubsystemBase{
     Gamepiece gp;
     boolean haveGP = false;
     final Field2d field2d = RobotContainer.field2d;
-    final SUB_Gripper gripper = RobotContainer.gripper;
+    //final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
     final SUB_Blinkin blinkin = RobotContainer.blinkin;
+    final SUB_Roller roller = RobotContainer.roller;
 
     public StateManager(){
         gp = Gamepiece.cone;
@@ -63,10 +65,10 @@ public class StateManager extends SubsystemBase{
     //Arm
     public double kScoringPosition(){
         if (gp == Gamepiece.cone) {
-            return Constants.Arm.kScoringConePosition;
+            return Constants.Arm.kScoringHighCone;
         }
         else {
-           return 0;
+           return Constants.Arm.kScoringHighCube;
         }
     }
 
@@ -91,11 +93,19 @@ public class StateManager extends SubsystemBase{
         }
     }
 
-    public double startRoller(){
+    public void intakeRoller(){
         if(gp.equals(Gamepiece.cone)){ 
-            return 0.50;
+            roller.driveRoller(0.50);
         }else{
-            return -0.50;
+            roller.driveRoller(-0.50);
+        }
+    }
+
+    public void outtakeRoller(){
+        if(gp.equals(Gamepiece.cone)){ 
+            roller.driveRoller(-0.50);
+        }else{
+            roller.driveRoller(0.50);
         }
     }
 

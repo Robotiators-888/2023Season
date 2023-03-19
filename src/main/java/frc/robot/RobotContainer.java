@@ -45,7 +45,7 @@ public class RobotContainer {
   public static final Field2d field2d = new Field2d();
   //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
 
-  public static final SUB_Gripper gripper = new SUB_Gripper();
+  //public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
   public static final SUB_Tower tower = new SUB_Tower();
   public static SUB_Limelight limelight = new SUB_Limelight();
@@ -53,7 +53,7 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   private static final Autonomous autos = new Autonomous();
- // public static final SUB_Roller roller = new SUB_Roller();
+  public static final SUB_Roller roller = new SUB_Roller();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
@@ -170,12 +170,9 @@ public class RobotContainer {
     c_lBumper
     .toggleOnTrue(new InstantCommand(() -> {stateManager.toggleGP();}));
     
-    // c_rBumper
-    // .toggleOnTrue(new InstantCommand(()->roller.driveRoller(stateManager.startRoller()), roller))
-    // .toggleOnFalse(new InstantCommand(()->roller.driveRoller(0)));
-    //.toggleOnTrue(new InstantCommand(() -> {roller.toggleRollerBackward();}, roller));
-    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
-    
+    c_rBumper
+    .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller(), roller))
+    .toggleOnFalse(new InstantCommand(()->roller.driveRoller(0)));  
     /* 
     c_rBumper
     .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
@@ -186,7 +183,8 @@ public class RobotContainer {
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
    d_bButton
-      .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+     // .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+     .onTrue(new InstantCommand(()->stateManager.intakeRoller()));
 
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
@@ -203,13 +201,15 @@ public class RobotContainer {
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(0.25), 
-          new InstantCommand(() -> gripper.openGripper(), gripper))));
+          new InstantCommand(()-> stateManager.intakeRoller()))));
+          //new InstantCommand(() -> gripper.openGripper(), gripper))));
     c_xButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
          new SequentialCommandGroup(
           new WaitCommand(0.25), 
-          new InstantCommand(() -> gripper.openGripper(), gripper))));
+          new InstantCommand(()-> stateManager.intakeRoller()))));
+          //new InstantCommand(() -> gripper.openGripper(), gripper))));
 
     //Creates a default command for runing the tower down using the right trigger
     tower.setDefaultCommand(new RunCommand(
@@ -223,29 +223,6 @@ public class RobotContainer {
         () ->
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
-  
-   /*
-   drivetrain.setDefaultCommand((new RunCommand(
-    ()-> 
-      drivetrain.setMotorsTank(
-        leftJoystick.getRawAxis(1), 
-        rightJoystick.getRawAxis(1)))));
-  
-    //gripper.setDefaultCommand(new RunCommand(() -> {gripper.setMotors(0);},gripper));
-
-   //While held this will open the gripper using a run command that executes the mehtod manually
-   //lBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(-0.1);}, gripper));
-
-   //While held this will close the gripper using a run command that executes the mehtod manually
-   //rBumper.whileTrue(new RunCommand(() -> {gripper.setMotors(0.1);}, gripper));
-
-   defaultAllianceColor();
-
-   //abutton.onTrue(blinkin.solidRedCommand());
-   c0_xButton.onTrue(blinkin.solidVioletCommand());
-   c0_aButton.onTrue(blinkin.solidOrangeCommand());
-   //ybutton.onTrue(blinkin.allianceColorCommand());
-  */
   
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 

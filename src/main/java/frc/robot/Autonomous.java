@@ -31,9 +31,10 @@ import frc.robot.subsystems.*;
 public class Autonomous{
 
     final Field2d field2d = RobotContainer.field2d;
-    final SUB_Gripper gripper = RobotContainer.gripper;
+    //final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
+    final SUB_Roller roller = RobotContainer.roller;
     final StateManager stateManager = RobotContainer.stateManager;
     edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
 
@@ -112,36 +113,48 @@ public class Autonomous{
     //                          Auto Sequences
     // ====================================================================
 
+    // public Command buildScoringSequence(){
+    //     return new SequentialCommandGroup(
+    //        new ParallelCommandGroup(
+    //        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
+    //         new SequentialCommandGroup(
+    //          new WaitCommand(2.5), 
+    //          new InstantCommand(() -> gripper.openGripper(), gripper))),
+    //          new SequentialCommandGroup(
+    //            new WaitCommand(1), 
+    //            new InstantCommand(()->gripper.closeGripper())), 
+    //            new SequentialCommandGroup(
+    //                new WaitCommand(0.5), 
+    //                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
+    //    }
+
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
-           new ParallelCommandGroup(
-           new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
-            new SequentialCommandGroup(
-             new WaitCommand(2.5), 
-             new InstantCommand(() -> gripper.openGripper(), gripper))),
-             new SequentialCommandGroup(
-               new WaitCommand(1), 
-               new InstantCommand(()->gripper.closeGripper())), 
-               new SequentialCommandGroup(
-                   new WaitCommand(0.5), 
-                   new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
-       }
-
-    public Command buildPickUpSequence(){
-        return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-                new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+                    new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                    new InstantCommand(()-> stateManager.intakeRoller()),
                 new SequentialCommandGroup(
-                    new WaitCommand(1.5),
-                    new InstantCommand(()->gripper.openGripper())
-                )
-            ),
-            new WaitCommand(1.5),
-            new InstantCommand(()->gripper.closeGripper()),
-            new WaitCommand(0.5),
-            new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
-        );
+                   new WaitCommand(1),
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
+                    );
+
+        
     }
+
+    // public Command buildPickUpSequence(){
+    //     return new SequentialCommandGroup(
+    //         new ParallelCommandGroup(
+    //             new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+    //             new SequentialCommandGroup(
+    //                 new WaitCommand(1.5),
+    //                 new InstantCommand(()->gripper.openGripper())
+    //             )
+    //         ),
+    //         new WaitCommand(1.5),
+    //         new InstantCommand(()->gripper.closeGripper()),
+    //         new WaitCommand(0.5),
+    //         new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
+    //     );
+    // }
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
@@ -181,7 +194,7 @@ public class Autonomous{
            new InstantCommand(()->drivetrain.setPosition(red1_p1.getInitialPose())),
             buildScoringSequence(),
             getRamsete(red1_p1),
-            buildPickUpSequence(),
+            //buildPickUpSequence(),
             new InstantCommand(()->field2d.getObject("trajectory").setTrajectory(red1_p2)            ),
             getRamsete(red1_p2),
             buildScoringSequence()
@@ -213,19 +226,19 @@ public class Autonomous{
         drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringHighCone, tower)),
          new SequentialCommandGroup(
           new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openGripper(), gripper))),
           new SequentialCommandGroup(
-            new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeGripper())),
+            new WaitCommand(1) 
+            //new InstantCommand(()->gripper.closeGripper()
+            )),
         new SequentialCommandGroup(
             //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
            new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),
            //buildAutoBalanceSequence()
            buildReverseAutoBalanceSequence()
-        );
+        ));
         
     }
 
