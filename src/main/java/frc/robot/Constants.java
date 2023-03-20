@@ -67,7 +67,7 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
 
-    public static final double kTurningScale = -0.5;
+    public static final double kTurningScale = -0.8;
   }
 
 //Joystick Constants
@@ -156,7 +156,7 @@ public final class Constants {
     public static final int kCurrentLimit = 40;
 
     public static final double kSoftLimitReverse = 0.0;
-    public static final double kSoftLimitForward = 4.6;
+    public static final double kSoftLimitForward = 4.7;
 
     public static final double kArmGearRatio = 1.0 / (48.0 * 4.0) * 2.0 * Math.PI; //multiply SM value by this number and get arm position in radians
     public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
@@ -166,12 +166,12 @@ public final class Constants {
 
     public static final double kHomePosition = 0.0;
    
-    public static final double kGroundCubePosition = 4.58;
-    public static final double kGroundConePosition = 4.55;
+    public static final double kGroundCubePosition = 4.65;
+    public static final double kGroundConePosition = 4.65;
     public static final double kScoreCubePosition = 2.88;
-    public static final double kScoreConePosition = 3.07;
-    public static final double kFeederCubePosition = 3.12;
-    public static final double kFeederConePosition = 3.11;
+    public static final double kScoreConePosition = 3.00;
+    public static final double kFeederCubePosition = 3.15;
+    public static final double kFeederConePosition = 3.13;
 
 }
 

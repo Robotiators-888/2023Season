@@ -129,11 +129,14 @@ public class Autonomous{
     //    }
 
     public Command buildScoringSequence(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-                    new InstantCommand(()-> stateManager.intakeRoller()),
+                    new WaitCommand(2),
+                    new InstantCommand(()-> stateManager.outtakeRoller()),
                 new SequentialCommandGroup(
                    new WaitCommand(1),
+                   new InstantCommand(()->stateManager.stopRoller()),
                     new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
                     );
 
@@ -179,7 +182,7 @@ public class Autonomous{
     Command turn180Degree() {
         
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
-        .until(()->(drivetrain.getAngle() < -175 || drivetrain.getAngle() > 175))
+        .until(()->(drivetrain.getAngle() < -180 || drivetrain.getAngle() > 180))
         .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
 
@@ -280,6 +283,7 @@ public class Autonomous{
             new InstantCommand(()->drivetrain.zeroHeading()),
             buildScoringSequence(),
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
+            new WaitCommand(.5),
             turn180Degree(),
             buildAutoBalanceSequence() //This is the improved balance conditional
         );

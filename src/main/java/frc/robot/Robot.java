@@ -110,7 +110,7 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     RobotContainer.drivetrain.setBrakeMode(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    RobotContainer.blinkin.allianceColor();
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -128,7 +128,8 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    RobotContainer.blinkin.allianceColor();
+    
+    RobotContainer.stateManager.getState();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }

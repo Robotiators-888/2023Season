@@ -52,11 +52,11 @@ public class RobotContainer {
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
-  private static final Autonomous autos = new Autonomous();
   public static final SUB_Roller roller = new SUB_Roller();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
+  private static final Autonomous autos = new Autonomous();
 
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
