@@ -194,17 +194,15 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
    c_yButton
       .onTrue(new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
          new SequentialCommandGroup(
-          new WaitCommand(0.25), 
-          new InstantCommand(()-> stateManager.intakeRoller()))));
+          new WaitCommand(0.25))));
           //new InstantCommand(() -> gripper.openGripper(), gripper))));
     c_xButton
       .onTrue(new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(stateManager.kFeederPosition(), tower)),
          new SequentialCommandGroup(
-          new WaitCommand(0.25), 
-          new InstantCommand(()-> stateManager.intakeRoller()))));
+          new WaitCommand(0.25))));
           //new InstantCommand(() -> gripper.openGripper(), gripper))));
 
     //Creates a default command for runing the tower down using the right trigger

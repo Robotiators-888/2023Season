@@ -65,31 +65,27 @@ public class StateManager extends SubsystemBase{
     //Arm
     public double kScoringPosition(){
         if (gp == Gamepiece.cone) {
-            return Constants.Arm.kScoringHighCone;
+            return Constants.Arm.kScoreConePosition;
         }
         else {
-           return Constants.Arm.kScoringHighCube;
+           return Constants.Arm.kScoreCubePosition;
         }
     }
 
-    //Gripper in case the roller fails
-    public double kClosePosition(){
+    public double kGroundPosition(){
         if (gp == Gamepiece.cone) {
-            //for cones
-            return Constants.Gripper.kCloseConePosition;
+            return Constants.Arm.kGroundConePosition;
         }
         else {
-            return Constants.Gripper.kCloseCubePosition;
+           return Constants.Arm.kGroundCubePosition;
         }
     }
-
-    public double kPosition(){
+    public double kFeederPosition(){
         if (gp == Gamepiece.cone) {
-            //for cones
-            return Constants.Gripper.kConePosition;
+            return Constants.Arm.kFeederConePosition;
         }
         else {
-           return Constants.Gripper.kCubePosition;
+           return Constants.Arm.kFeederCubePosition;
         }
     }
 

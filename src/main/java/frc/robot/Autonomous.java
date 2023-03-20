@@ -226,7 +226,7 @@ public class Autonomous{
         drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
         return new SequentialCommandGroup(
             new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringHighCone, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
          new SequentialCommandGroup(
           new WaitCommand(2.5), 
           new SequentialCommandGroup(

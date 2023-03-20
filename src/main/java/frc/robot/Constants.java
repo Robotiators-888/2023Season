@@ -133,13 +133,7 @@ public final class Constants {
    */
   public static final class Roller {
     public static final int kRollerCanId = 12;
-    public static final double kSoftLimitReverse = -20.0;
-    public static final double kSoftLimitForward = 22.0;
-    public static final double kCloseConePosition = 0.0;
-    public static final double kCloseCubePosition = 10.0;
-    public static final double kConePosition = 19.0;
-    public static final double kCubePosition = 21.0;
-    public static final double kSafePosition = 27.0;
+
     public static final int kCurrentLimit = 20;
     public static final int kCurrentStall = 12;
     public static final int kHoldLimit = 5;
@@ -149,7 +143,7 @@ public final class Constants {
     // 4.58 Cube ground
     // 4.55 Cone ground
     // 2.88 Cone score high
-    // 3.07 cube score Mid
+    // 3.07 cube score high
     // 3.11 cone feedre 
     // 3.12 cube feeder
 
@@ -170,12 +164,15 @@ public final class Constants {
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
     public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
-    public static final double kHomePosition = .2;
-    public static final double kScoringHighCone = 2.69;
-    public static final double kScoringHighCube = 2.75;
-    public static final double kScoringConeMidPosition = 2.89;
-    public static final double kIntakePosition = 4.32;
-    public static final double kFeederPosition = 2.42;
+    public static final double kHomePosition = 0.0;
+   
+    public static final double kGroundCubePosition = 4.58;
+    public static final double kGroundConePosition = 4.55;
+    public static final double kScoreCubePosition = 2.88;
+    public static final double kScoreConePosition = 3.07;
+    public static final double kFeederCubePosition = 3.12;
+    public static final double kFeederConePosition = 3.11;
+
 }
 
 }

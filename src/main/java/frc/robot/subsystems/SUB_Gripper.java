@@ -60,12 +60,12 @@ public class SUB_Gripper extends SubsystemBase {
 
   public void openGripper() {
     SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = sm.kPosition();
+   // m_setpoint = sm.kPosition();
   }
 
   public void closeGripper() {
     SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = sm.kClosePosition();
+   // m_setpoint = sm.kClosePosition();
   }
 
   public double getSetPosition(){
