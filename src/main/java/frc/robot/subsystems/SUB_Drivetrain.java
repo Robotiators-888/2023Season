@@ -47,7 +47,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
-   private Field2d field2d;
+   Field2d field2d;
 
    // Odometry class for tracking robot pose
    DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),

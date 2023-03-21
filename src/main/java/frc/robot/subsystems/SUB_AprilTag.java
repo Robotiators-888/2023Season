@@ -3,18 +3,21 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import java.lang.reflect.Array;
-
-import org.littletonrobotics.junction.Logger;
 
 public class SUB_AprilTag extends SubsystemBase{
     NetworkTable table;
     final SUB_Drivetrain drive = RobotContainer.drivetrain;
+    public Pose2d PoseAT = new Pose2d();
+    
     public SUB_AprilTag() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
     }
@@ -37,6 +40,21 @@ public class SUB_AprilTag extends SubsystemBase{
             return false;
         }
     }
+
+    /**
+   * April tag ID
+   * 
+   * @return Current April Tag ID
+   */
+    public int getID(){
+        return (int) table.getEntry("tid").getDouble(0);
+    }
+    
+
+    public double[] getPoseAT(){
+        return table.getEntry("botpose").getDoubleArray(new double[0]);
+    }
+
     /**
    * Crosshair offset to target y-value
    * 
@@ -56,9 +74,6 @@ public class SUB_AprilTag extends SubsystemBase{
         return distance;
     }
 
-    public double[] getBotPose() {
-        return table.getEntry("botpose").getDoubleArray(new double[6]);
-    }
     // Gets the angle offset on the x plane to know how far to align
     public double getX() {
         return table.getEntry("tx").getDouble(0.0);
@@ -75,7 +90,6 @@ public class SUB_AprilTag extends SubsystemBase{
             if(this.getDistance() > 12){
                 drive.driveArcadeSquared( 0.4, 0.0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
-                Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
             }
         }
     }
@@ -87,19 +101,14 @@ public class SUB_AprilTag extends SubsystemBase{
                 drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
-                Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
             } else if (this.getX() < -0.009){ // turn right
                 double turnSpeed = -Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
                 drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
-                Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
             }
             else{
                 SmartDashboard.putBoolean("aligning", false);
-                Logger.getInstance().recordOutput("AprilTag/AlignBool", false);
                 drive.setBrakeMode(true);
             }
             SmartDashboard.putBoolean("limeAlign", true);
@@ -108,6 +117,7 @@ public class SUB_AprilTag extends SubsystemBase{
 
     public void periodic() {
         //Sets all the method calls to the SmartDashboard
+        
         SmartDashboard.putNumber("ATY", this.getY());
         SmartDashboard.putBoolean("ATTarget", this.getTv());
         SmartDashboard.putNumber("ATX", this.getX());
@@ -115,12 +125,12 @@ public class SUB_AprilTag extends SubsystemBase{
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
-        Logger.getInstance().recordOutput("AprilTag/ATY", this.getY());
-        Logger.getInstance().recordOutput("AprilTag/ATTarget", this.getTv());
-        Logger.getInstance().recordOutput("AprilTag/ATX", this.getX());
-        Logger.getInstance().recordOutput("AprilTag/ATDistance", this.getDistance());
-        Logger.getInstance().recordOutput("AprilTag/a1", Math.toRadians(0));
-        Logger.getInstance().recordOutput("AprilTag/a2", Math.toRadians(this.getY()));
+        System.out.println(getPoseAT());
+        // Translation2d translationAT = new Translation2d(getPoseAT()[0], getPoseAT()[1]);
+        // Rotation2d rotationAT = new Rotation2d(getPoseAT()[2]);
+        // Pose2d PoseAT = new Pose2d(translationAT, rotationAT);
+        // drive.field2d.setRobotPose(PoseAT);
+
     }
-}
+}   
 
