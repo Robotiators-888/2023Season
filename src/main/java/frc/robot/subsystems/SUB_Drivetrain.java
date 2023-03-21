@@ -356,7 +356,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     double speed = turnPID.calculate(degree, -180);
     
     
-    speed = Math.max(-0.6,Math.min(0.6,speed));
+    speed = Math.max(-0.5,Math.min(0.5,speed));
     this.driveArcade(0,speed);
     SmartDashboard.putNumber("180 turn speed", speed);
     SmartDashboard.putBoolean("Is turning", true);

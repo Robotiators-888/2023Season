@@ -33,10 +33,11 @@ public final class Constants {
     public static final DifferentialDriveKinematics kDriveKinematics = 
          new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
 
-    public static final double ksVolts = 0.15437;
-    public static final double kvVoltsSecondsPerMeter = 0.86449;
-    public static final double kaVoltsSecondsSquaredPerMeter = 0.083814;
-    public static final double kpDriverVelocity = 1.028;
+     //  UNITS PER ROTATION ~0.4900 Meters
+     public static final double ksVolts = 0.096164;
+     public static final double kvVoltsSecondsPerMeter = 2.8131;
+     public static final double kaVoltsSecondsSquaredPerMeter = 0.27983;
+     public static final double kpDriverVelocity = 0.97592;
 
     public static final double kMaxSpeedMetersPerSecond = 0.0;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;

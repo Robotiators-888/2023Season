@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.CANSparkMax;
@@ -10,18 +7,14 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
-import com.revrobotics.CANSparkMax.SoftLimitDirection;
-import frc.libs.PIDGains;
+
 import frc.libs.RunningAverageQueue;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 
 import org.littletonrobotics.junction.Logger;
-import frc.robot.StateManager;
 
 public class SUB_Roller extends SubsystemBase {
 
-    private StateManager sm = new StateManager();
     private CANSparkMax m_roller;
     private RelativeEncoder m_encoder;
     private SparkMaxPIDController m_controller;

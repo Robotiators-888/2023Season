@@ -10,7 +10,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -18,12 +17,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.AutoBalance;
 import frc.robot.commands.ReverseBalance;
 import frc.robot.subsystems.*;
 
@@ -129,7 +126,6 @@ public class Autonomous{
     //    }
 
     public Command buildScoringSequence(){
-        stateManager.setCube();
         return new SequentialCommandGroup(
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
@@ -246,6 +242,7 @@ public class Autonomous{
     }
 
     Command Red1_Cone_DB(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(red1_Backwards.getInitialPose())),
@@ -254,6 +251,7 @@ public class Autonomous{
     }
 
     Command Blue1_Cone_DB(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(blue1_Backwards.getInitialPose())),
@@ -262,6 +260,7 @@ public class Autonomous{
     }
 
     Command Blue3_Cone_DB(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(blue3_Backwards.getInitialPose())),
@@ -269,6 +268,7 @@ public class Autonomous{
         );
     }
     Command Red3_Cone_DB(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(red3_Backwards.getInitialPose())),
@@ -276,7 +276,8 @@ public class Autonomous{
         );
     }
 
-    Command Cone_AutoBalance(){
+    Command Cube_AutoBalance(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
             new InstantCommand(()->SmartDashboard.putBoolean("Is turning", false)),
 
