@@ -7,6 +7,9 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.lang.reflect.Array;
+
 import org.littletonrobotics.junction.Logger;
 
 public class SUB_AprilTag extends SubsystemBase{
@@ -53,6 +56,9 @@ public class SUB_AprilTag extends SubsystemBase{
         return distance;
     }
 
+    public double[] getBotPose() {
+        return table.getEntry("botpose").getDoubleArray(new double[6]);
+    }
     // Gets the angle offset on the x plane to know how far to align
     public double getX() {
         return table.getEntry("tx").getDouble(0.0);

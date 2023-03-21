@@ -156,6 +156,8 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+    d_aButton.whileTrue(new RunCommand(() -> {apriltag.aprilAlign();}, apriltag).until(() -> (apriltag.getX() <= 0.05)));
+
     // Cube|Cone Setter
     c_lBumper
     .onTrue(new InstantCommand(() -> {stateManager.toggleGP();}, stateManager));

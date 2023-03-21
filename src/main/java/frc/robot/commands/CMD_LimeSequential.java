@@ -24,29 +24,37 @@ public class CMD_LimeSequential extends SequentialCommandGroup {
     // Drivers get a quick way to know april tag sequence is working
   }
     public Command limelightPlacement(){
-      // return new SequentialCommandGroup(
-      //   new InstantCommand(() -> {stateManager.setCone();}, stateManager),
-      //   new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
-      //   new RunCommand(() -> {limelight.setLed(3);}, limelight),
-      //   new WaitCommand(1),
-      //   new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
-      //   new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-      //   new RunCommand(() -> {limelight.limelightDrive();}, limelight).until(() -> (limelight.getDistance() <= 24.5)),
-      //   new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-      //   new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
-      //   new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-      //   new RunCommand(() -> {limelight.setLed(1);}, limelight),
-      //   new ParallelCommandGroup(
-      //     new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
-      //      new SequentialCommandGroup(
-      //       new WaitCommand(2.5), 
-      //       //new InstantCommand(() -> gripper.openGripper(), gripper))),
-      //       new SequentialCommandGroup(
-      //         new WaitCommand(1), 
-      //         new InstantCommand(()->gripper.closeGripper())), 
-      //         new SequentialCommandGroup(
-      //             new WaitCommand(0.5), 
-      //             new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
-      return null;
+      return new SequentialCommandGroup(
+        new InstantCommand(() -> {stateManager.setCone();}, stateManager),
+        new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
+        new RunCommand(() -> {limelight.setLed(3);}, limelight),
+        new WaitCommand(1),
+        new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
+        new RunCommand(() -> {limelight.limelightDrive();}, limelight).until(() -> (limelight.getDistance() <= 24.5)),
+        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
+        new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
+        new RunCommand(() -> {limelight.setLed(1);}, limelight),
+        new SequentialCommandGroup(
+                    new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                    new InstantCommand(()-> stateManager.intakeRoller()),
+                new SequentialCommandGroup(
+                   new WaitCommand(1),
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))))
+                    );
+
+                    // return new SequentialCommandGroup(
+                      //        new ParallelCommandGroup(
+                      //        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
+                      //         new SequentialCommandGroup(
+                      //          new WaitCommand(2.5), 
+                      //          new InstantCommand(() -> gripper.openGripper(), gripper))),
+                      //          new SequentialCommandGroup(
+                      //            new WaitCommand(1), 
+                      //            new InstantCommand(()->gripper.closeGripper())), 
+                      //            new SequentialCommandGroup(
+                      //                new WaitCommand(0.5), 
+                      //                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
     }
 } 
