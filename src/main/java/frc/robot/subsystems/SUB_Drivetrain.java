@@ -391,7 +391,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
     SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
-
+    SmartDashboard.putData(field2d);
     //Advantage Kit
 
     //Odometry
@@ -428,6 +428,7 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     field2d.setRobotPose(driveOdometry.getPoseMeters());
     //setBrakeMode(brake);
+    SmartDashboard.putData(field2d);
 
   }
 
