@@ -125,12 +125,13 @@ public class SUB_AprilTag extends SubsystemBase{
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
-        System.out.println(getPoseAT());
-        // Translation2d translationAT = new Translation2d(getPoseAT()[0], getPoseAT()[1]);
-        // Rotation2d rotationAT = new Rotation2d(getPoseAT()[2]);
-        // Pose2d PoseAT = new Pose2d(translationAT, rotationAT);
-        // drive.field2d.setRobotPose(PoseAT);
-
+        if(this.getTv()){
+            System.out.println(getPoseAT());
+            Translation2d translationAT = new Translation2d(getPoseAT()[0], getPoseAT()[1]);
+            Rotation2d rotationAT = new Rotation2d(getPoseAT()[2]);
+            Pose2d PoseAT = new Pose2d(translationAT, rotationAT);
+            drive.field2d.setRobotPose(PoseAT);
+        }
     }
 }   
 
