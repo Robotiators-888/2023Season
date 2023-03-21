@@ -24,11 +24,11 @@ public final class Constants {
     public static final double kmaxVelocity = 5.0;
     public static final double kmaxAcceleration = 2.0;
     
-    public static final double TRACKWIDTH = 35.5; // This is in inches 
+    public static final double TRACKWIDTH = 25; // This is in inches 
     //1.399in in width per wheel
     public static final double WHEEL_RADIUS = 3; // wheel radius in inches
     public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
-   
+    
 
     public static final DifferentialDriveKinematics kDriveKinematics = 
          new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));

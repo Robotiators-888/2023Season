@@ -43,15 +43,15 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
   private Pose2d odometryPose = new Pose2d(); 
    // The gyro sensor
-   private AHRS navx = new AHRS(SerialPort.Port.kMXP);
+   private static AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
    private Field2d field2d;
 
+   
    // Odometry class for tracking robot pose
-   DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
-   new Pose2d(0, 0, new Rotation2d()));
+   DifferentialDriveOdometry driveOdometry;
 
   // create a speed controller group for each side
   private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -74,14 +74,18 @@ public class SUB_Drivetrain extends SubsystemBase {
     navx.resetDisplacement();
     navx.reset();
     this.field2d = input;
-    SmartDashboard.putData(field2d);
     zeroHeading();
     navx.setAngleAdjustment(0.0);
+    zeroEncoders();
+    driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), leftPrimaryEncoder.getPosition(), 
+    rightSecondaryEncoder.getPosition(),
+    new Pose2d());
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
+    //leftPrimaryEncoder.setInverted(true);
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
@@ -94,7 +98,7 @@ public class SUB_Drivetrain extends SubsystemBase {
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
-  
+      //rightPrimaryEncoder.setInverted(true);
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
@@ -131,6 +135,12 @@ public class SUB_Drivetrain extends SubsystemBase {
     
   }
 
+public double invertEncoderVal(double currentVal){
+  return -currentVal;
+}
+
+  
+
   // public void putNumber(int num) {
   //   // This method will be called once per scheduler run
   //   SmartDashboard.putNumber("Drive Mode", num); 
@@ -162,8 +172,8 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    groupLeft.setVoltage(leftVolts);
-    groupRight.setVoltage(rightVolts);
+    groupLeft.setVoltage(rightVolts);
+    groupRight.setVoltage(leftVolts);
     driveTrain.feedWatchdog();
 
   }
@@ -201,14 +211,6 @@ public class SUB_Drivetrain extends SubsystemBase {
     //driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
-  /* Encoders getting position
-  public double getLeftEncoder(){
-    return leftPrimary.getEncoder().getPosition();
-  }
-  public double getRightEncoder(){
-    return rightPrimary.getEncoder().getPosition();
-  }
-*/
 
  /**
    * Returns the currently-estimated pose of the robot.
@@ -267,7 +269,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    */
   public Rotation2d getGyroHeading() {
     
-    return new Rotation2d(Math.toRadians(-1 * navx.getYaw()));
+    return new Rotation2d(-1*Math.toRadians(navx.getYaw()));
   }
 
    /**
@@ -291,25 +293,30 @@ public class SUB_Drivetrain extends SubsystemBase {
   public void setPosition(Pose2d position) {
     //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
     //new Pose2d(0, 0, new Rotation2d()));
-    zeroEncoders();
-    zeroHeading();
+    //zeroEncoders();
     driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(), position);
 
   }
 
+  public void resetOdometry(Pose2d pose) {
+    //zeroEncoders();
+    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(),
+        pose);
+  }
   /**
    * sets current heading to zero
    */
   public void zeroHeading() {
-    navx.zeroYaw();
+    navx.calibrate();
+    navx.reset();
   }
 
   /**
    * zeros the encoder rotations
    */
   public void zeroEncoders() {
-    leftPrimaryEncoder.setPosition(0);
-    rightPrimaryEncoder.setPosition(0);
+    leftPrimaryEncoder.setPosition(0.0);
+    rightPrimaryEncoder.setPosition(0.0);
   }
 
 
@@ -331,6 +338,10 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   public double getRoll(){
      return navx.getRoll();
+  }
+
+  public double getHeading(){
+    return getGyroHeading().getDegrees();
   }
 
   // Gets the number from the smart dashboard to change drive
@@ -378,7 +389,14 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
+    this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
+
+    field2d.setRobotPose(driveOdometry.getPoseMeters());
+
     // This method will be called once per scheduler run
+    SmartDashboard.putData("Field",field2d);
     SmartDashboard.putBoolean("BREAK MODE", brake);
     SmartDashboard.putNumber("Left Primary Encoder", leftPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Left Secondary Encoder", leftSecondaryEncoder.getPosition());
@@ -390,12 +408,14 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading", getGyroHeading().getDegrees());
     SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
 
     //Advantage Kit
 
     //Odometry
     Logger.getInstance().recordOutput("Odometry", getPose());
+    Logger.getInstance().recordOutput("Robot Pose", field2d.getRobotPose());
 
     //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
@@ -423,10 +443,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
 
 
-    driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
-    this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
-
-    field2d.setRobotPose(driveOdometry.getPoseMeters());
+   
     //setBrakeMode(brake);
 
   }

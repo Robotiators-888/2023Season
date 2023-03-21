@@ -53,6 +53,7 @@ public class RobotContainer {
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   public static final SUB_Roller roller = new SUB_Roller();
+
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
@@ -79,7 +80,7 @@ public class RobotContainer {
   JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
- SendableChooser<Command> AutoChooser = new SendableChooser<>();
+ public static SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
  /**
@@ -110,12 +111,15 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+    AutoChooser.addOption("Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
+    AutoChooser.addOption("Up and Over", autos.UpAndOver());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     AutoChooser.addOption("1 Cone Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
-    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
 
 
 
@@ -218,6 +222,8 @@ public class RobotContainer {
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
   
+ 
+  
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         drivetrain.driveArcade(
@@ -255,8 +261,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
-    drivetrain.zeroEncoders();
-    drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
   }
 

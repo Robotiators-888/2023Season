@@ -33,7 +33,6 @@ public class Autonomous{
     final SUB_Tower tower = RobotContainer.tower;
     final SUB_Roller roller = RobotContainer.roller;
     final StateManager stateManager = RobotContainer.stateManager;
-    edu.wpi.first.wpilibj.Timer balanceTime = new edu.wpi.first.wpilibj.Timer();
 
  // ====================================================================
  // Trajectory Config
@@ -64,14 +63,24 @@ public class Autonomous{
         return trajectory;
     }
 
+
     
     // ====================================================================
     //                          Trajectories
     // ====================================================================
-        Trajectory red1_p1 = getTrajectory("paths/output/Red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("paths/output/Red1_p2.wpilib.json");
+        Trajectory red1_p1 = getTrajectory("paths/output/red1_p1.wpilib.json");
+        Trajectory red1_p2 = getTrajectory("paths/output/red1_p2.wpilib.json");
         Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
+        Trajectory red3_p3 = getTrajectory("paths/output/Red3_p3.wpilib.json");
+        Trajectory red3_p4 = getTrajectory("paths/output/Red3_p4.wpilib.json");
+        Trajectory drive_back = getTrajectory("paths/output/DriveBack.wpilib.json");
+        Trajectory play1 = getTrajectory("paths/output/play1.wpilib.json");
+        Trajectory play1_forwad = getTrajectory("paths/output/play1_forwad.wpilib.json");
         Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
+
+        Trajectory driveToGP_path = getTrajectory("paths/output/DriveToGP.wpilib.json");
+        Trajectory curvy_DTP_path = getTrajectory("paths/output/Curvy_DTP.wpilib.json");
+        Trajectory forward_GP_path = getTrajectory("paths/output/Forward_GP.wpilib.json");
 
         //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
@@ -91,6 +100,7 @@ public class Autonomous{
      * @return ramsete controller to follow trajectory
      */
     public RamseteCommand getRamsete(Trajectory traj) {
+        
         return new RamseteCommand(
                 traj, 
                 drivetrain::getPose,
@@ -157,7 +167,7 @@ public class Autonomous{
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1.5),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
             new ReverseBalance(drivetrain)
         );
     }
@@ -168,11 +178,6 @@ public class Autonomous{
             new ReverseBalance(drivetrain)
         );
     }
-    // Command autoBalanceSequence = new SequentialCommandGroup(
-    //     new RunCommand(()->drivetrain.setMotorsTank(0.65, 0.65), drivetrain)
-    //     .until(()->(drivetrain.getPitch() <= -9 && drivetrain.getPitch() > ) )
-        
-    // );
 
     
     Command turn180Degree() {
@@ -181,6 +186,12 @@ public class Autonomous{
         .until(()->(drivetrain.getAngle() < -180 || drivetrain.getAngle() > 180))
         .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
+
+    
+
+      
+
+
 
     // ==================================================================== 
     //                          Auto Routines
@@ -201,8 +212,16 @@ public class Autonomous{
     } 
 
     Command driveBack(){
+        field2d.getObject("trajectory").setTrajectory(drive_back);   
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(drive_back.getInitialPose())),
+            getRamsete(drive_back));
+    }
+
+    Command scoreDriveBack(){
         field2d.getObject("trajectory").setTrajectory(dummyPath);   
         return new SequentialCommandGroup(
+            buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
             getRamsete(dummyPath));
     }
@@ -215,6 +234,14 @@ public class Autonomous{
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(0.2),
             turn180Degree(),
             buildAutoBalanceSequence()
+        );
+    }
+    Command red3_Mid_2GP(){
+       // field2d.getObject("trajectory").setTrajectory(red3_p3);   
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),
+            getRamsete(red3_p3)
         );
     }
 
@@ -290,7 +317,33 @@ public class Autonomous{
         );
     }
 
+    Command DriveToGamePiece(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
+            getRamsete(driveToGP_path),
+            turn180Degree(),
+            getRamsete(forward_GP_path)
+        );
+    }
 
+    Command Curvy_DTP(){
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.setPosition(curvy_DTP_path.getInitialPose())),
+            getRamsete(curvy_DTP_path)
+        );
+    }
+
+    Command UpAndOver(){
+        //drivetrain.zeroHeading();
+        return new SequentialCommandGroup(
+            new InstantCommand(()->drivetrain.zeroHeading()),
+            turn180Degree(),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.7, 0)).until(()->(drivetrain.getPitch() > -2 && 
+                    drivetrain.rotationsToMeters(((drivetrain.getLeftEncoder() + drivetrain.getRightEncoder())/2.0)) > 3.5)),
+            turn180Degree()
+        );
+    }
 
 
 
