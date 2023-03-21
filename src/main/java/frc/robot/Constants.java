@@ -135,7 +135,7 @@ public final class Constants {
   public static final class Roller {
     public static final int kRollerCanId = 12;
 
-    public static final int kCurrentLimit = 20;
+    public static final int kCurrentLimit = 12;
     public static final int kCurrentStall = 12;
     public static final int kHoldLimit = 5;
     public static final double kHoldSpeed = 0.07;
