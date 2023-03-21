@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 import com.kauailabs.navx.frc.*;
 import com.revrobotics.CANSparkMax;
+import frc.robot.RobotContainer; 
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -42,6 +43,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
   private Pose2d odometryPose = new Pose2d(); 
+  final SUB_AprilTag aprilTag = RobotContainer.apriltag; 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
@@ -423,12 +425,13 @@ public class SUB_Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
 
 
-    driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
+    if(!aprilTag.getTv()){
+      driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 
     field2d.setRobotPose(driveOdometry.getPoseMeters());
     //setBrakeMode(brake);
-
+    }
   }
 
   public double getNavxDisplacement(){
