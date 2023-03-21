@@ -397,7 +397,7 @@ public class SUB_Drivetrain extends SubsystemBase {
     //Advantage Kit
 
     //Odometry
-    Logger.getInstance().recordOutput("Odometry", getPose());
+    Logger.getInstance().recordOutput("Odometry/Pose", getPose());
 
     //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
@@ -427,11 +427,11 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     if(!aprilTag.getTv()){
       driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
-    this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
+      this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 
-    field2d.setRobotPose(driveOdometry.getPoseMeters());
-    //setBrakeMode(brake);
-    SmartDashboard.putData(field2d);
+      field2d.setRobotPose(driveOdometry.getPoseMeters());
+      // setBrakeMode(brake);
+      SmartDashboard.putData(field2d);
     }
 
   }

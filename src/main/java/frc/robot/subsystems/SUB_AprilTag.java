@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -117,7 +120,7 @@ public class SUB_AprilTag extends SubsystemBase{
 
     public void periodic() {
         //Sets all the method calls to the SmartDashboard
-        
+        SmartDashboard.putData(drive.field2d);
         SmartDashboard.putNumber("ATY", this.getY());
         SmartDashboard.putBoolean("ATTarget", this.getTv());
         SmartDashboard.putNumber("ATX", this.getX());
@@ -125,13 +128,19 @@ public class SUB_AprilTag extends SubsystemBase{
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
 
+        //EXTREMELY TENTATIVE NOT TESTED MAKE SURE TO TEST getPoseAT() TO SEE WHAT IT RETURNS AND WHAT THE ORIGIN IS
+        //BEFORE BEING ABLE TO DO IT
         if(this.getTv()){
             System.out.println(getPoseAT());
             Translation2d translationAT = new Translation2d(getPoseAT()[0], getPoseAT()[1]);
-            Rotation2d rotationAT = new Rotation2d(getPoseAT()[2]);
+            Rotation2d rotationAT = new Rotation2d(getPoseAT()[5]);
             Pose2d PoseAT = new Pose2d(translationAT, rotationAT);
             drive.field2d.setRobotPose(PoseAT);
+            SmartDashboard.putData(drive.field2d);
+            Logger.getInstance().recordOutput("Odometry/Pose", PoseAT);
         }
+
+        
     }
 }   
 
