@@ -42,7 +42,6 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
-  private Pose2d odometryPose = new Pose2d(); 
   final SUB_AprilTag aprilTag = RobotContainer.apriltag; 
    // The gyro sensor
    private AHRS navx = new AHRS(SerialPort.Port.kMXP);
