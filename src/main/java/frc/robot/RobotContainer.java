@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import org.littletonrobotics.junction.inputs.LoggedDriverStation;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -113,7 +112,7 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
     AutoChooser.addOption("Game Piece", autos.DriveToGamePiece());
     AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
-    AutoChooser.addOption("Up and Over", autos.UpAndOver());
+    //AutoChooser.addOption("Up and Over", autos.UpAndOver());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
     AutoChooser.addOption("1 Cone Auto Balance", autos.Cube_AutoBalance());

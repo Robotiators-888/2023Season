@@ -92,6 +92,9 @@ public class StateManager extends SubsystemBase{
            return Constants.Arm.kFeederCubePosition;
         }
     }
+    public double kHomePosition(){
+        return Constants.Arm.kHomePosition;
+    }
 
     public void intakeRoller(){
         if(gp.equals(Gamepiece.cone)){ 

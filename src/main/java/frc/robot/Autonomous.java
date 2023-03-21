@@ -149,21 +149,7 @@ public class Autonomous{
         
     }
 
-    // public Command buildPickUpSequence(){
-    //     return new SequentialCommandGroup(
-    //         new ParallelCommandGroup(
-    //             new InstantCommand(()->tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
-    //             new SequentialCommandGroup(
-    //                 new WaitCommand(1.5),
-    //                 new InstantCommand(()->gripper.openGripper())
-    //             )
-    //         ),
-    //         new WaitCommand(1.5),
-    //         new InstantCommand(()->gripper.closeGripper()),
-    //         new WaitCommand(0.5),
-    //         new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))
-    //     );
-    // }
+    
 
     public Command buildAutoBalanceSequence(){
         return new SequentialCommandGroup(
@@ -318,11 +304,22 @@ public class Autonomous{
     }
 
     Command DriveToGamePiece(){
+        stateManager.setCube();
+        drivetrain.zeroHeading();
         return new SequentialCommandGroup(
+            buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
             getRamsete(driveToGP_path),
             turn180Degree(),
-            getRamsete(forward_GP_path)
+            new SequentialCommandGroup(
+                new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
+                new InstantCommand(()->stateManager.intakeRoller()),
+                new WaitCommand(2)),
+            getRamsete(forward_GP_path),
+            new SequentialCommandGroup(
+                new WaitCommand(1),
+                new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
+                new InstantCommand(()->stateManager.intakeRoller())
         );
     }
 
@@ -333,17 +330,17 @@ public class Autonomous{
         );
     }
 
-    Command UpAndOver(){
-        //drivetrain.zeroHeading();
-        return new SequentialCommandGroup(
-            new InstantCommand(()->drivetrain.zeroHeading()),
-            turn180Degree(),
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.7, 0)).until(()->(drivetrain.getPitch() > -2 && 
-                    drivetrain.rotationsToMeters(((drivetrain.getLeftEncoder() + drivetrain.getRightEncoder())/2.0)) > 3.5)),
-            turn180Degree()
-        );
-    }
+    // Command UpAndOver(){
+    //     //drivetrain.zeroHeading();
+    //     return new SequentialCommandGroup(
+    //         new InstantCommand(()->drivetrain.zeroHeading()),
+    //         turn180Degree(),
+    //         new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
+    //         new RunCommand(()->drivetrain.setMotorsArcade(0.7, 0)).until(()->(drivetrain.getPitch() > -2 && 
+    //                 drivetrain.rotationsToMeters(((drivetrain.getLeftEncoder() + drivetrain.getRightEncoder())/2.0)) > 3.5)),
+    //         turn180Degree()
+    //     );
+    // }
 
 
 

@@ -133,6 +133,7 @@ public class Robot extends LoggedRobot {
     }
 
     RobotContainer.drivetrain.setBrakeMode(false);
+    RobotContainer.stateManager.setCone();
   }     
 
   /** This function is called periodically during operator control. */
