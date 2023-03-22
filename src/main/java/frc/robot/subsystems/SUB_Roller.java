@@ -24,7 +24,9 @@ public class SUB_Roller extends SubsystemBase {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
         m_roller.restoreFactoryDefaults();
         m_roller.setInverted(false);
-        m_roller.setSmartCurrentLimit(Constants.Roller.kCurrentLimit);
+       // m_roller.setSmartCurrentLimit(Constants.Roller.kCurrentLimit);
+        //m_roller.setSmartCurrentLimit(20, Constants.Roller.kCurrentLimit);
+        m_roller.setSmartCurrentLimit(20, 30);
     
         m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     
@@ -43,6 +45,7 @@ public class SUB_Roller extends SubsystemBase {
     // Rolls the roller forward, to intake the piece
     public void driveRoller(double speed) {
         m_roller.set(speed);
+        Logger.getInstance().recordOutput("Desired Speed", speed);
     }
 
     
@@ -59,6 +62,7 @@ public class SUB_Roller extends SubsystemBase {
         // }
 
         SmartDashboard.putNumber("Average Roller Current", queue.getRunningAverage());
+        Logger.getInstance().recordOutput("Roller/SparkMaxCurrent", m_roller.getOutputCurrent());
         Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Roller/Voltage", m_roller.getBusVoltage());
         Logger.getInstance().recordOutput("Roller/Output", m_roller.getAppliedOutput());

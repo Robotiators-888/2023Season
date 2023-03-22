@@ -311,6 +311,7 @@ public class Autonomous{
             new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
             getRamsete(driveToGP_path),
             turn180Degree(),
+            new WaitCommand(1.5),
             new SequentialCommandGroup(
                 new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
                 new InstantCommand(()->stateManager.intakeRoller()),
@@ -319,7 +320,7 @@ public class Autonomous{
             new SequentialCommandGroup(
                 new WaitCommand(1),
                 new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
-                new InstantCommand(()->stateManager.intakeRoller())
+                new InstantCommand(()->stateManager.stopRoller())
         );
     }
 
