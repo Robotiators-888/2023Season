@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import org.littletonrobotics.junction.inputs.LoggedDriverStation;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -40,22 +39,25 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
 
+ 
 
   public static final Field2d field2d = new Field2d();
   //public static SendableChooser<Double> AutoBalanceStopAngleChooser = new SendableChooser<>();
 
-  public static final SUB_Gripper gripper = new SUB_Gripper();
+  //public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
   public static final SUB_Tower tower = new SUB_Tower();
   public static SUB_Limelight limelight = new SUB_Limelight();
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
   public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
   public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
-  private static final Autonomous autos = new Autonomous();
-  private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
-  public final static SUB_Blinkin m_blinkin = new SUB_Blinkin(Constants.KBLINKIN);
+  public static final SUB_Roller roller = new SUB_Roller();
 
-  
+  private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
+  public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
+  public static StateManager stateManager = new StateManager();
+  private static final Autonomous autos = new Autonomous();
+
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
   
@@ -64,8 +66,8 @@ public class RobotContainer {
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
-  private JoystickButton c_rBumper = new JoystickButton(controller2, 5);
-  private JoystickButton c_lBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_rBumper = new JoystickButton(controller2, 6);
+  private JoystickButton c_lBumper = new JoystickButton(controller2, 5);
   private JoystickButton c_aButton = new JoystickButton(controller2, 1);
   private JoystickButton c_bButton = new JoystickButton(controller2, 2);
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
@@ -77,7 +79,7 @@ public class RobotContainer {
   JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
- SendableChooser<Command> AutoChooser = new SendableChooser<>();
+ public static SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
  /**
@@ -108,12 +110,15 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+    AutoChooser.addOption("Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
+    //AutoChooser.addOption("Up and Over", autos.UpAndOver());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
+    AutoChooser.addOption("1 Cone Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
-    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
 
 
 
@@ -138,6 +143,7 @@ public class RobotContainer {
 
 
     configureBindings();
+    blinkin.allianceColor();
     limelight.setLed(1);
 
   }
@@ -152,6 +158,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
+    // Cube|Cone Setter
+    c_lBumper
+    .onTrue(new InstantCommand(() -> {stateManager.toggleGP();}, stateManager));
+
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
@@ -159,22 +170,20 @@ public class RobotContainer {
     c0_bButton.onTrue(AprilSequential);
     
     
-    c_lBumper
-    .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}))
-    .onFalse(new InstantCommand(() -> {gripper.closeConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
-    //.onFalse(new InstantCommand(() -> {m_gripper.driveGripper(-0.25);SmartDashboard.putNumber("Gripper Status", m_gripper.getSetPosition());}));
+    d_bButton
+    .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
+    .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));
     
-    /* 
     c_rBumper
-    .onTrue(new RunCommand(()-> {gripper.openCubeGripper();}, gripper))
-    .onFalse(new RunCommand(()->{gripper.closeCubeGripper();}, gripper));
-    */
+    .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller()))
+    .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));  
 
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
-   d_bButton
-      .onTrue(new InstantCommand(() -> {gripper.openConeGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+  //  d_bButton
+  //    // .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
+  //    .onTrue(new InstantCommand(()->stateManager.intakeRoller()));
 
     // default case, balances arm without changing position.
     tower.setDefaultCommand(new RunCommand(() -> {tower.armMoveVoltage(0);},tower));
@@ -182,20 +191,22 @@ public class RobotContainer {
     //set up arm preset positions
     c_aButton
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
+
+    //Uses cubes or cones depending 
     c_bButton      
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)));
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
    c_yButton
       .onTrue(new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kIntakePosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
          new SequentialCommandGroup(
-          new WaitCommand(0.25), 
-          new InstantCommand(() -> gripper.openCubeGripper(), gripper))));
+          new WaitCommand(0.25))));
+          //new InstantCommand(() -> gripper.openGripper(), gripper))));
     c_xButton
       .onTrue(new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kFeederPosition, tower)),
+        new InstantCommand(() -> tower.setTargetPosition(stateManager.kFeederPosition(), tower)),
          new SequentialCommandGroup(
-          new WaitCommand(0.25), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))));
+          new WaitCommand(0.25))));
+          //new InstantCommand(() -> gripper.openGripper(), gripper))));
 
     //Creates a default command for runing the tower down using the right trigger
     tower.setDefaultCommand(new RunCommand(
@@ -249,8 +260,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
-    drivetrain.zeroEncoders();
-    drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
   }
 

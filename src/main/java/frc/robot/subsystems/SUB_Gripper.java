@@ -56,25 +56,16 @@ public class SUB_Gripper extends SubsystemBase {
     return m_encoder.getPosition() > Constants.Gripper.kSafePosition;
   }
 
-  public void openConeGripper() {
+  public void openGripper() {
     SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = Constants.Gripper.kConePosition;
+   // m_setpoint = sm.kPosition();
   }
 
-  public void closeConeGripper() {
+  public void closeGripper() {
     SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = Constants.Gripper.kCloseConePosition;
+   // m_setpoint = sm.kClosePosition();
   }
 
-  public void openCubeGripper() {
-    SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = Constants.Gripper.kCubePosition;
-  }
-
-  public void closeCubeGripper() {
-    SmartDashboard.putNumber("Gripper Status", getSetPosition());
-    m_setpoint = Constants.Gripper.kCloseCubePosition;
-  }
   public double getSetPosition(){
     return m_setpoint;
 

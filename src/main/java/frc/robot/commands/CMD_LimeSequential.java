@@ -10,38 +10,43 @@ import frc.robot.subsystems.*;
 import frc.robot.Autonomous;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.StateManager;
 
 // We're doing sequential in order to algin then drive towards it
 public class CMD_LimeSequential extends SequentialCommandGroup {
-  final SUB_Gripper gripper = RobotContainer.gripper;
+  //final SUB_Gripper gripper = RobotContainer.gripper;
   final SUB_Limelight limelight = RobotContainer.limelight;
   final SUB_Tower tower = RobotContainer.tower;
   final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
+  final StateManager stateManager = RobotContainer.stateManager;
   final Autonomous Autonomous = new frc.robot.Autonomous();
   public CMD_LimeSequential() {
     // Drivers get a quick way to know april tag sequence is working
   }
     public Command limelightPlacement(){
-      return new SequentialCommandGroup(
-        new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
-        new RunCommand(() -> {limelight.setLed(3);}, limelight),
-        new WaitCommand(1),
-        new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
-        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {limelight.limelightDrive();}, limelight).until(() -> (limelight.getDistance() <= 24.5)),
-        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
-        new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {limelight.setLed(1);}, limelight),
-        new SequentialCommandGroup(
-            new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringPosition, tower)),
-         new SequentialCommandGroup(
-          new WaitCommand(2.5), 
-          new InstantCommand(() -> gripper.openConeGripper(), gripper))),
-          new SequentialCommandGroup(
-            new WaitCommand(1), 
-            new InstantCommand(()->gripper.closeConeGripper()))),
-            new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)));
+      // return new SequentialCommandGroup(
+      //   new InstantCommand(() -> {stateManager.setCone();}, stateManager),
+      //   new RunCommand(() -> {limelight.switchapipeline(1);}, limelight),
+      //   new RunCommand(() -> {limelight.setLed(3);}, limelight),
+      //   new WaitCommand(1),
+      //   new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+      //   new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
+      //   new RunCommand(() -> {limelight.limelightDrive();}, limelight).until(() -> (limelight.getDistance() <= 24.5)),
+      //   new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
+      //   new RunCommand(() -> {limelight.limelightAlign();}, limelight).until(() -> (limelight.getX() <= 0.05)),
+      //   new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
+      //   new RunCommand(() -> {limelight.setLed(1);}, limelight),
+      //   new ParallelCommandGroup(
+      //     new InstantCommand(() -> tower.setTargetPosition(Constants.Arm.kScoringConePosition, tower)),
+      //      new SequentialCommandGroup(
+      //       new WaitCommand(2.5), 
+      //       //new InstantCommand(() -> gripper.openGripper(), gripper))),
+      //       new SequentialCommandGroup(
+      //         new WaitCommand(1), 
+      //         new InstantCommand(()->gripper.closeGripper())), 
+      //         new SequentialCommandGroup(
+      //             new WaitCommand(0.5), 
+      //             new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))));
+      return null;
     }
 } 
