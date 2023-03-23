@@ -209,11 +209,11 @@ public class RobotContainer {
           //new InstantCommand(() -> gripper.openGripper(), gripper))));
 
     //Creates a default command for runing the tower down using the right trigger
-    tower.setDefaultCommand(new RunCommand(
-      () ->
-      tower.runAutomatic()
-      , tower)
-    );
+    //tower.setDefaultCommand(new RunCommand(
+    //   () ->
+    //   tower.runAutomatic()
+    //   , tower)
+    // );
     new Trigger(() -> 
       Math.abs(Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) > Constants.OperatorConstants.kArmManualDeadband
       ).whileTrue(new RunCommand(

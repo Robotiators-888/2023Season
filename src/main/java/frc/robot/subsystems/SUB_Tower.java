@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.AlternateEncoderType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -32,7 +33,7 @@ public class SUB_Tower extends SubsystemBase {
     //declare encoders
     private SparkMaxPIDController m_controller;
     private double m_setpoint;
-    private AbsoluteEncoder m_encoder;
+    private SparkMaxAbsoluteEncoder m_encoder;
     private TrapezoidProfile.State targetState;
     private double feedforward;
     private double manualValue;
@@ -57,7 +58,6 @@ public class SUB_Tower extends SubsystemBase {
         setLimits();
         armMotor.setIdleMode(IdleMode.kBrake); // sets brake mode 
         armMotor.setOpenLoopRampRate(0.6); // motor takes 0.6 secs to reach desired power
-        armMotor.restoreFactoryDefaults();
         armMotor.setInverted(false);
         armMotor.setIdleMode(IdleMode.kBrake);
 
@@ -98,18 +98,18 @@ public class SUB_Tower extends SubsystemBase {
         m_timer.reset();
       }
 
-      public void runAutomatic() {
-        double elapsedTime = m_timer.get();
-        if (m_profile.isFinished(elapsedTime)) {
-          targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
-        }
-        else {
-          targetState = m_profile.calculate(elapsedTime);
-        }
+      // public void runAutomatic() {
+      //   double elapsedTime = m_timer.get();
+      //   if (m_profile.isFinished(elapsedTime)) {
+      //     targetState = new TrapezoidProfile.State(m_setpoint, 0.0);
+      //   }
+      //   else {
+      //     targetState = m_profile.calculate(elapsedTime);
+      //   }
     
-        feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
-        m_controller.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
-      }
+      //   feedforward = Constants.Arm.kArmFeedforward.calculate(m_encoder.getPosition()+Constants.Arm.kArmZeroCosineOffset, targetState.velocity);
+      //   m_controller.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
+      // }
       public void runManual(double _power) {
         //reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and passively
         m_setpoint = m_encoder.getPosition();
@@ -171,7 +171,7 @@ public class SUB_Tower extends SubsystemBase {
         Logger.getInstance().recordOutput("Arm/encoderVelocity", m_encoder.getVelocity());
     }
 
-    // balances the arm using feedforward, then adds on volts to move the arm.
+    //balances the arm using feedforward, then adds on volts to move the arm.
     public void armMoveVoltage(double volts) {
         //towerMotor.set(pid.calculate(getRotations(), setpoint) + feedforward.calculate(Constants.FF_Velocity, Constants.FF_Accel));
         armMotor.setVoltage(volts+getAutoBalanceVolts());// sets voltage of arm -12 to 12 volts
