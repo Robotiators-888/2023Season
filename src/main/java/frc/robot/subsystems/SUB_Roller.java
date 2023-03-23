@@ -27,7 +27,7 @@ public class SUB_Roller extends SubsystemBase {
         m_roller.setInverted(false);
        // m_roller.setSmartCurrentLimit(Constants.Roller.kCurrentLimit);
         //m_roller.setSmartCurrentLimit(20, Constants.Roller.kCurrentLimit);
-        m_roller.setSmartCurrentLimit(20, 80);
+        m_roller.setSmartCurrentLimit(25, 80);
     
         m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     
@@ -48,6 +48,10 @@ public class SUB_Roller extends SubsystemBase {
         m_roller.set(speed);
         //m_roller.
         Logger.getInstance().recordOutput("Desired Speed", speed);
+    }
+
+    public void currentRoller(){
+        
     }
 
     
