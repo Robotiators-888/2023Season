@@ -98,17 +98,17 @@ public class StateManager extends SubsystemBase{
 
     public void intakeRoller(){
         if(gp.equals(Gamepiece.cone)){ 
-            roller.driveRoller(0.75);
+            roller.driveRoller(1);
         }else{
-            roller.driveRoller(-0.75);
+            roller.driveRoller(-1);
         }
     }
 
     public void outtakeRoller(){
         if(gp.equals(Gamepiece.cone)){ 
-            roller.driveRoller(-0.75);
+            roller.driveRoller(-1);
         }else{
-            roller.driveRoller(0.75);
+            roller.driveRoller(1);
         }
     }
 

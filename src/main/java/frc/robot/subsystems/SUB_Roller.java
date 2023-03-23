@@ -19,6 +19,7 @@ public class SUB_Roller extends SubsystemBase {
     private RelativeEncoder m_encoder;
     private SparkMaxPIDController m_controller;
     private RunningAverageQueue queue = new RunningAverageQueue(10);
+    boolean isCone;
 
     public SUB_Roller() {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -26,7 +27,7 @@ public class SUB_Roller extends SubsystemBase {
         m_roller.setInverted(false);
        // m_roller.setSmartCurrentLimit(Constants.Roller.kCurrentLimit);
         //m_roller.setSmartCurrentLimit(20, Constants.Roller.kCurrentLimit);
-        m_roller.setSmartCurrentLimit(20, 30);
+        m_roller.setSmartCurrentLimit(20, 80);
     
         m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     
@@ -45,6 +46,7 @@ public class SUB_Roller extends SubsystemBase {
     // Rolls the roller forward, to intake the piece
     public void driveRoller(double speed) {
         m_roller.set(speed);
+        //m_roller.
         Logger.getInstance().recordOutput("Desired Speed", speed);
     }
 
@@ -61,11 +63,13 @@ public class SUB_Roller extends SubsystemBase {
         //       //  sm.dropGp();
         // }
 
+
         SmartDashboard.putNumber("Average Roller Current", queue.getRunningAverage());
         Logger.getInstance().recordOutput("Roller/SparkMaxCurrent", m_roller.getOutputCurrent());
         Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Roller/Voltage", m_roller.getBusVoltage());
         Logger.getInstance().recordOutput("Roller/Output", m_roller.getAppliedOutput());
+        
     }
 
     //TODO Write test off bot for current sensing with JAVA Test
