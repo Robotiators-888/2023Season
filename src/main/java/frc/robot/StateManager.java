@@ -114,9 +114,9 @@ public class StateManager extends SubsystemBase{
 
     public void stopRoller(){
         if(gp.equals(Gamepiece.cone)){ 
-            roller.driveRoller(0.15);
+            roller.driveRoller(0.1);
         }else{
-            roller.driveRoller(-0.15);
+            roller.driveRoller(-0.1);
         }
     }
 
