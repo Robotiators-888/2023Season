@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.SparkMaxRelativeEncoder;
@@ -7,7 +8,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
-
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.libs.PIDGains;
 import frc.robot.Constants;
@@ -31,7 +32,7 @@ public class SUB_Tower extends SubsystemBase {
     //declare encoders
     private SparkMaxPIDController m_controller;
     private double m_setpoint;
-    private RelativeEncoder m_encoder;
+    private AbsoluteEncoder m_encoder;
     private TrapezoidProfile.State targetState;
     private double feedforward;
     private double manualValue;
@@ -66,7 +67,7 @@ public class SUB_Tower extends SubsystemBase {
         armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Arm.kSoftLimitForward);
         armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Arm.kSoftLimitReverse);
         
-        m_encoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+        m_encoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         m_encoder.setPositionConversionFactor(Constants.Arm.kArmGearRatio);
         m_encoder.setVelocityConversionFactor(Constants.Arm.kArmGearRatio);
 
@@ -156,7 +157,6 @@ public class SUB_Tower extends SubsystemBase {
         SmartDashboard.putNumber("manual value", manualValue);
         SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition());
         SmartDashboard.putNumber("encoder velocity", m_encoder.getVelocity());
-        SmartDashboard.putNumber("encoder counts/rev", m_encoder.getCountsPerRevolution());
 
         Logger.getInstance().recordOutput("Arm/CurrentRotations: ", getRotations());
         Logger.getInstance().recordOutput("Arm/degreesRotation", calculateDegreesRotation());
@@ -169,7 +169,6 @@ public class SUB_Tower extends SubsystemBase {
         Logger.getInstance().recordOutput("Arm/ActualPositiion", m_encoder.getPosition());
         Logger.getInstance().recordOutput("Arm/IntendedPosition", setpoint);
         Logger.getInstance().recordOutput("Arm/encoderVelocity", m_encoder.getVelocity());
-        Logger.getInstance().recordOutput("Arm/encoderRev", m_encoder.getCountsPerRevolution());
     }
 
     // balances the arm using feedforward, then adds on volts to move the arm.
@@ -199,9 +198,5 @@ public class SUB_Tower extends SubsystemBase {
       
         //gets position
         return m_encoder.getPosition();
-    }
-
-    public void resetEncoder(){
-        m_encoder.setPosition(0);
     }
 }
