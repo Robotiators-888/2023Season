@@ -12,11 +12,9 @@ public class ForwardBalance extends CommandBase {
   /** Creates a new ReverseBalance. */
   SUB_Drivetrain m_drivetrain;
 
-    private double error;
     private double currentAngle;
     private double lastAngle = 0;
     private double drivePower;
-    private long balanceTimeMili = 0;
     private double ForwardMult = 1.5; // must have its own max speed
     private double maxSpeed = 0.5;
     private double diferenceInAngle;

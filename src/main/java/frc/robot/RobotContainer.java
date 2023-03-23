@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -49,8 +48,6 @@ public class RobotContainer {
   public static final SUB_Tower tower = new SUB_Tower();
   public static SUB_Limelight limelight = new SUB_Limelight();
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
-  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
-  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   public static final SUB_Roller roller = new SUB_Roller();
 
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
@@ -166,8 +163,6 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    c0_yButton.onTrue(LimeSequential);
-    c0_bButton.onTrue(AprilSequential);
     
     
     d_bButton
