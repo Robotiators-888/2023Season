@@ -25,7 +25,7 @@ public class SUB_Roller extends SubsystemBase {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
         m_roller.restoreFactoryDefaults();
         m_roller.setInverted(false);
-        //m_roller.setSmartCurrentLimit(25, 80);
+        m_roller.setSmartCurrentLimit(50, 80);
         m_roller.setOpenLoopRampRate(0.25);
         
     
