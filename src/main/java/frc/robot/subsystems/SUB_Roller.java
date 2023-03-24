@@ -25,11 +25,11 @@ public class SUB_Roller extends SubsystemBase {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
         m_roller.restoreFactoryDefaults();
         m_roller.setInverted(false);
-        m_roller.setSmartCurrentLimit(25, 80);
+        //m_roller.setSmartCurrentLimit(25, 80);
         m_roller.setOpenLoopRampRate(0.25);
         
     
-       m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 42);
+       m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     
         m_controller = m_roller.getPIDController();
         //PIDGains.setSparkMaxGains(m_controller, Constants.Roller.kPositionPIDGains);

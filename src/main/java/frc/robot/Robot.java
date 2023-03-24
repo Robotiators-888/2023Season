@@ -108,11 +108,12 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     RobotContainer.drivetrain.setBrakeMode(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    RobotContainer.blinkin.allianceColor();
+    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    RobotContainer.blinkin.allianceColor();
   }
 
   /** This function is called periodically during autonomous. */

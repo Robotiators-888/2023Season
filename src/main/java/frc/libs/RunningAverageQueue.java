@@ -13,11 +13,19 @@ public class RunningAverageQueue {
     double total = 0;
     ArrayDeque<Double> queue;
 
+    /**
+     * 
+     * @param size of queue
+     */
     public RunningAverageQueue(int size){
         this.size = size;
         queue = new ArrayDeque<Double>();
     }
 
+    /**
+     *  Method that adds values to the queue
+     * @param addVal value being added to the queue
+     */
     public void insert(double addVal){
         
         if(queue.size() >= size){
@@ -28,6 +36,10 @@ public class RunningAverageQueue {
         total += addVal;
     }
 
+    /**
+     * 
+     * @return Running average of the dataset 
+     */
     public double getRunningAverage(){
         
         /*
