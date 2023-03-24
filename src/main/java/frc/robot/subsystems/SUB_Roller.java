@@ -25,11 +25,11 @@ public class SUB_Roller extends SubsystemBase {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
         m_roller.restoreFactoryDefaults();
         m_roller.setInverted(false);
-       // m_roller.setSmartCurrentLimit(Constants.Roller.kCurrentLimit);
-        //m_roller.setSmartCurrentLimit(20, Constants.Roller.kCurrentLimit);
         m_roller.setSmartCurrentLimit(25, 80);
+        m_roller.setOpenLoopRampRate(0.25);
+        
     
-        m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+       m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kQuadrature, 42);
     
         m_controller = m_roller.getPIDController();
         //PIDGains.setSparkMaxGains(m_controller, Constants.Roller.kPositionPIDGains);
@@ -50,8 +50,20 @@ public class SUB_Roller extends SubsystemBase {
         Logger.getInstance().recordOutput("Desired Speed", speed);
     }
 
-    public void currentRoller(){
-        
+
+       /**
+     * sets the PID values of the shooter control loop
+     * @param P double P gain
+     * @param I double I gain
+     * @param D double D gain
+     * @param F double feed forward
+     */
+    public void setPIDF(double P, double I, double D, double F) {
+        m_controller.setP(P);
+        m_controller.setI(I);
+        m_controller.setD(D);
+        m_controller.setFF(F);
+
     }
 
     
