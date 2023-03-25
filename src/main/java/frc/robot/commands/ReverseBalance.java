@@ -44,13 +44,13 @@ public class ReverseBalance extends CommandBase {
   public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
 
 this.currentAngle = m_drivetrain.getPitch();
-if(currentAngle > forwardLimit ){
-  m_drivetrain.driveArcade(0.4, 0);
+if(currentAngle > 12.5 ){
+  m_drivetrain.driveArcade(0.3, 0);
 
-}else if(currentAngle < backwardLimit){
+}else if(currentAngle < -6){
   m_drivetrain.driveArcade(-0.4, 0);
 
-}else if(currentAngle <= forwardLimit && currentAngle >= backwardLimit){
+}else if(currentAngle <= 12.5 && currentAngle >= -6){
   m_drivetrain.driveArcade(0.0, 0);
 
 }
