@@ -45,12 +45,12 @@ public class ReverseBalance extends CommandBase {
 
 this.currentAngle = m_drivetrain.getPitch();
 if(currentAngle > 12.5 ){
-  m_drivetrain.driveArcade(0.3, 0);
+  m_drivetrain.driveArcade(0.25, 0);
 
-}else if(currentAngle < -6){
-  m_drivetrain.driveArcade(-0.4, 0);
+}else if(currentAngle < -7){
+  m_drivetrain.driveArcade(-0.35, 0);
 
-}else if(currentAngle <= 12.5 && currentAngle >= -6){
+}else if(currentAngle <= 12.5 && currentAngle >= -7){
   m_drivetrain.driveArcade(0.0, 0);
 
 }

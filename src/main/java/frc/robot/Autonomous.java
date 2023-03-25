@@ -81,6 +81,7 @@ public class Autonomous{
         Trajectory driveToGP_path = getTrajectory("paths/output/DriveToGP.wpilib.json");
         Trajectory curvy_DTP_path = getTrajectory("paths/output/Curvy_DTP.wpilib.json");
         Trajectory forward_GP_path = getTrajectory("paths/output/Forward_GP.wpilib.json");
+        Trajectory driveToBalance_path = getTrajectory("paths/output/DriveToBalance.wpilib.json");
 
         //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
@@ -170,7 +171,7 @@ public class Autonomous{
         
         return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
         .until(()->(drivetrain.getAngle() < -180 || drivetrain.getAngle() > 180))
-        .withTimeout(2).andThen(()->SmartDashboard.putBoolean("Is turning", false));
+        .withTimeout(2.5).andThen(()->SmartDashboard.putBoolean("Is turning", false));
     }
 
     
@@ -307,8 +308,10 @@ public class Autonomous{
         stateManager.setCube();
         drivetrain.zeroHeading();
         return new SequentialCommandGroup(
+            new InstantCommand(()->stateManager.setCube()),
             buildScoringSequence(),
             new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
+            new WaitCommand(1.5),
             getRamsete(driveToGP_path),
             turn180Degree(),
             new WaitCommand(1.5),
@@ -343,7 +346,13 @@ public class Autonomous{
     //     );
     // }
 
-
+    Command TwoPieceBalance(){
+        return new SequentialCommandGroup(
+            DriveToGamePiece(),
+            getRamsete(driveToBalance_path),
+            buildAutoBalanceSequence()
+        );
+    }
 
 
 }

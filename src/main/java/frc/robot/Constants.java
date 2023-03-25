@@ -171,8 +171,14 @@ public final class Constants {
     public static final double kGroundConePosition = 4.65;
     public static final double kScoreCubePosition = 2.88;
     public static final double kScoreConePosition = 3.00;
-    public static final double kFeederCubePosition = 3.15;
-    public static final double kFeederConePosition = 3.13;
+    public static final double kFeederCubePosition = 3.110;
+    public static final double kFeederConePosition = 3.005;
+
+    //cone feeder 2.965
+    // 3.005
+    //cube feeder 3.090
+
+
 
 }
 

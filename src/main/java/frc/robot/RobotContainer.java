@@ -49,7 +49,7 @@ public class RobotContainer {
   public static SUB_Limelight limelight = new SUB_Limelight();
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
   public static final SUB_Roller roller = new SUB_Roller();
-
+  public static final SUB_Ultrasonic ultrasonic = new SUB_Ultrasonic();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
@@ -107,12 +107,13 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
-    AutoChooser.addOption("Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("2 Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("2 Cube Balance", autos.TwoPieceBalance());
     AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
     //AutoChooser.addOption("Up and Over", autos.UpAndOver());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("1 Cone Auto Balance", autos.Cube_AutoBalance());
+    AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
     AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
