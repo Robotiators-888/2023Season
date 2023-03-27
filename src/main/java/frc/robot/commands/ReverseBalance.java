@@ -12,11 +12,9 @@ public class ReverseBalance extends CommandBase {
   /** Creates a new ReverseBalance. */
   SUB_Drivetrain m_drivetrain;
 
-    private double error;
     private double currentAngle;
     private double lastAngle = 0;
     private double drivePower;
-    private long balanceTimeMili = 0;
     private double ForwardMult = 1.5; // must have its own max speed
     private double maxSpeed = 0.5;
     private double diferenceInAngle;
@@ -46,13 +44,13 @@ public class ReverseBalance extends CommandBase {
   public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
 
 this.currentAngle = m_drivetrain.getPitch();
-if(currentAngle > forwardLimit ){
-  m_drivetrain.driveArcade(0.4, 0);
+if(currentAngle > 12.5 ){
+  m_drivetrain.driveArcade(0.25, 0);
 
-}else if(currentAngle < backwardLimit){
-  m_drivetrain.driveArcade(-0.4, 0);
+}else if(currentAngle < -7){
+  m_drivetrain.driveArcade(-0.35, 0);
 
-}else if(currentAngle <= forwardLimit && currentAngle >= backwardLimit){
+}else if(currentAngle <= 12.5 && currentAngle >= -7){
   m_drivetrain.driveArcade(0.0, 0);
 
 }

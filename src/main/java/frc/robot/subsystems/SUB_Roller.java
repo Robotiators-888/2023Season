@@ -19,16 +19,17 @@ public class SUB_Roller extends SubsystemBase {
     private RelativeEncoder m_encoder;
     private SparkMaxPIDController m_controller;
     private RunningAverageQueue queue = new RunningAverageQueue(10);
+    boolean isCone;
 
     public SUB_Roller() {
         m_roller = new CANSparkMax(Constants.Roller.kRollerCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
         m_roller.restoreFactoryDefaults();
         m_roller.setInverted(false);
-       // m_roller.setSmartCurrentLimit(Constants.Roller.kCurrentLimit);
-        //m_roller.setSmartCurrentLimit(20, Constants.Roller.kCurrentLimit);
-        m_roller.setSmartCurrentLimit(20, 30);
+        m_roller.setSmartCurrentLimit(50, 80);
+        m_roller.setOpenLoopRampRate(0.25);
+        
     
-        m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+       m_encoder = m_roller.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     
         m_controller = m_roller.getPIDController();
         //PIDGains.setSparkMaxGains(m_controller, Constants.Roller.kPositionPIDGains);
@@ -45,7 +46,24 @@ public class SUB_Roller extends SubsystemBase {
     // Rolls the roller forward, to intake the piece
     public void driveRoller(double speed) {
         m_roller.set(speed);
+        //m_roller.
         Logger.getInstance().recordOutput("Desired Speed", speed);
+    }
+
+
+       /**
+     * sets the PID values of the shooter control loop
+     * @param P double P gain
+     * @param I double I gain
+     * @param D double D gain
+     * @param F double feed forward
+     */
+    public void setPIDF(double P, double I, double D, double F) {
+        m_controller.setP(P);
+        m_controller.setI(I);
+        m_controller.setD(D);
+        m_controller.setFF(F);
+
     }
 
     
@@ -61,11 +79,13 @@ public class SUB_Roller extends SubsystemBase {
         //       //  sm.dropGp();
         // }
 
+
         SmartDashboard.putNumber("Average Roller Current", queue.getRunningAverage());
         Logger.getInstance().recordOutput("Roller/SparkMaxCurrent", m_roller.getOutputCurrent());
         Logger.getInstance().recordOutput("Roller/Speed", m_encoder.getVelocity());
         Logger.getInstance().recordOutput("Roller/Voltage", m_roller.getBusVoltage());
         Logger.getInstance().recordOutput("Roller/Output", m_roller.getAppliedOutput());
+        
     }
 
     //TODO Write test off bot for current sensing with JAVA Test

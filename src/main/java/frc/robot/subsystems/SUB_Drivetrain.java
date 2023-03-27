@@ -442,7 +442,7 @@ public double invertEncoderVal(double currentVal){
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getVelocity());
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
 
-
+    
    
     //setBrakeMode(brake);
 

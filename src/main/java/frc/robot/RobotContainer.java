@@ -22,7 +22,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -49,10 +48,8 @@ public class RobotContainer {
   public static final SUB_Tower tower = new SUB_Tower();
   public static SUB_Limelight limelight = new SUB_Limelight();
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
-  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
-  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
   public static final SUB_Roller roller = new SUB_Roller();
-
+  public static final SUB_Ultrasonic ultrasonic = new SUB_Ultrasonic();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
@@ -110,12 +107,13 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
-    AutoChooser.addOption("Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("2 Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("2 Cube Balance", autos.TwoPieceBalance());
     AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
     //AutoChooser.addOption("Up and Over", autos.UpAndOver());
 
    // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("1 Cone Auto Balance", autos.Cube_AutoBalance());
+    AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
     AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
@@ -144,7 +142,7 @@ public class RobotContainer {
 
     configureBindings();
     blinkin.allianceColor();
-    limelight.setLed(1);
+  
 
   }
 
@@ -166,8 +164,6 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    c0_yButton.onTrue(LimeSequential);
-    c0_bButton.onTrue(AprilSequential);
     
     
     d_bButton
@@ -272,6 +268,7 @@ public static void logDriverController() {
   Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
   Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
   Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
+  Logger.getInstance().recordOutput("Driver1Controller/BButton", controller.getRawButtonPressed(2));
 
 }
 
@@ -280,6 +277,7 @@ public static void logOperatorController() {
   Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
   Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
   Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
+  Logger.getInstance().recordOutput("Driver2Controller/LeftShoulderButton", controller2.getRawButtonPressed(5));
   Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
 }
 
