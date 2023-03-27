@@ -66,7 +66,7 @@ public class SUB_Tower extends SubsystemBase {
         armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
         armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.Arm.kSoftLimitForward);
         armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.Arm.kSoftLimitReverse);
-        
+
         m_encoder = armMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
         m_encoder.setPositionConversionFactor(Constants.Arm.kArmGearRatio);
         m_encoder.setVelocityConversionFactor(Constants.Arm.kArmGearRatio);
@@ -155,7 +155,7 @@ public class SUB_Tower extends SubsystemBase {
         SmartDashboard.putNumber("time", m_timer.get());
         SmartDashboard.putNumber("feedfoward", feedforward);
         SmartDashboard.putNumber("manual value", manualValue);
-        SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition());
+        SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition() * m_encoder.getPositionConversionFactor());
         SmartDashboard.putNumber("encoder velocity", m_encoder.getVelocity());
 
         Logger.getInstance().recordOutput("Arm/CurrentRotations: ", getRotations());
@@ -166,7 +166,7 @@ public class SUB_Tower extends SubsystemBase {
         Logger.getInstance().recordOutput("Arm/time", m_timer.get());
         Logger.getInstance().recordOutput("Arm/feedfoward", feedforward);
         Logger.getInstance().recordOutput("Arm/manualValue", manualValue);
-        Logger.getInstance().recordOutput("Arm/ActualPositiion", m_encoder.getPosition());
+        Logger.getInstance().recordOutput("Arm/ActualPositiion", m_encoder.getPosition() * m_encoder.getPositionConversionFactor());
         Logger.getInstance().recordOutput("Arm/IntendedPosition", setpoint);
         Logger.getInstance().recordOutput("Arm/encoderVelocity", m_encoder.getVelocity());
     }
