@@ -110,9 +110,7 @@ public class RobotContainer {
     AutoChooser.addOption("2 Game Piece", autos.DriveToGamePiece());
     AutoChooser.addOption("2 Cube Balance", autos.TwoPieceBalance());
     AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
-    //AutoChooser.addOption("Up and Over", autos.UpAndOver());
-
-   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("Up and Over", autos.UpAndOver());
     AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 

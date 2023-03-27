@@ -139,10 +139,10 @@ public class Autonomous{
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-                    new WaitCommand(2),
+                    new WaitCommand(1.5),
                     new InstantCommand(()-> stateManager.outtakeRoller()),
                 new SequentialCommandGroup(
-                   new WaitCommand(1),
+                   new WaitCommand(0.5),
                    new InstantCommand(()->stateManager.stopRoller()),
                     new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
                     );
@@ -334,17 +334,18 @@ public class Autonomous{
         );
     }
 
-    // Command UpAndOver(){
-    //     //drivetrain.zeroHeading();
-    //     return new SequentialCommandGroup(
-    //         new InstantCommand(()->drivetrain.zeroHeading()),
-    //         turn180Degree(),
-    //         new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
-    //         new RunCommand(()->drivetrain.setMotorsArcade(0.7, 0)).until(()->(drivetrain.getPitch() > -2 && 
-    //                 drivetrain.rotationsToMeters(((drivetrain.getLeftEncoder() + drivetrain.getRightEncoder())/2.0)) > 3.5)),
-    //         turn180Degree()
-    //     );
-    // }
+    Command UpAndOver(){
+        drivetrain.zeroHeading();
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            new InstantCommand(()->drivetrain.zeroHeading()),
+            turn180Degree(),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.3, 0), drivetrain).withTimeout(4),
+            turn180Degree(),
+            buildAutoBalanceSequence()
+        );
+    }
 
     Command TwoPieceBalance(){
         return new SequentialCommandGroup(
@@ -353,6 +354,8 @@ public class Autonomous{
             buildAutoBalanceSequence()
         );
     }
+
+    
 
 
 }
