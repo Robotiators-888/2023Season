@@ -188,7 +188,9 @@ public class RobotContainer {
 
     //Uses cubes or cones depending 
     c_bButton      
-      .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
+      //.onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
+      .onTrue(autos.buildScoringSequence());
+      
    c_yButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
