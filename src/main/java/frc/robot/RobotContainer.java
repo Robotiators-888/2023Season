@@ -108,6 +108,7 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
     AutoChooser.addOption("2 Game Piece", autos.DriveToGamePiece());
+    AutoChooser.addOption("2 Piece RUN", autos.TwoPieceRUN());
     AutoChooser.addOption("2 Cube Balance", autos.TwoPieceBalance());
     AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
     AutoChooser.addOption("Up and Over", autos.UpAndOver());
@@ -115,6 +116,7 @@ public class RobotContainer {
     AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
     AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
 
 
 
@@ -188,8 +190,8 @@ public class RobotContainer {
 
     //Uses cubes or cones depending 
     c_bButton      
-      //.onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
-      .onTrue(autos.buildScoringSequence());
+      .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
+      //.onTrue(autos.buildScoringSequence());
       
    c_yButton
       .onTrue(new ParallelCommandGroup(

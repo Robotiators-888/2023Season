@@ -163,7 +163,7 @@ public final class Constants {
     public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
     public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12/3.09577776, 0.0);
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
-    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
+    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(3.1, 5);
 
     public static final double kHomePosition = 0.0;
    

@@ -139,10 +139,10 @@ public class Autonomous{
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-                    new WaitCommand(1.5),
+                    new WaitCommand(2),
                     new InstantCommand(()-> stateManager.outtakeRoller()),
                 new SequentialCommandGroup(
-                   new WaitCommand(0.5),
+                   new WaitCommand(1),
                    new InstantCommand(()->stateManager.stopRoller()),
                     new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
                     );
@@ -169,9 +169,19 @@ public class Autonomous{
     
     Command turn180Degree() {
         
-        return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
-        .until(()->(drivetrain.getAngle() < -180 || drivetrain.getAngle() > 180))
-        .withTimeout(2.5).andThen(()->SmartDashboard.putBoolean("Is turning", false));
+        // return new RunCommand(()->drivetrain.turn180Degree(), drivetrain)
+        // .until(()->(drivetrain.getHeading() < -180 || drivetrain.getHeading() > 180))
+        // .withTimeout(2.5).andThen(()->SmartDashboard.putBoolean("Is turning", false));
+
+        return new RunCommand(()-> drivetrain.turnToTheta(180), drivetrain)
+            .until(()->(drivetrain.getHeading() < -175 || drivetrain.getHeading() > 175))
+            .withTimeout(2.5);
+    }
+
+    Command turnToZero(){
+        return new RunCommand(()-> drivetrain.turnToTheta(0), drivetrain)
+            .until(()->(drivetrain.getHeading() < -0.0 && drivetrain.getHeading() > 0))
+            .withTimeout(2.5);
     }
 
     
@@ -309,21 +319,29 @@ public class Autonomous{
         drivetrain.zeroHeading();
         return new SequentialCommandGroup(
             new InstantCommand(()->stateManager.setCube()),
-            buildScoringSequence(),
-            new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
-            new WaitCommand(1.5),
-            getRamsete(driveToGP_path),
+            new InstantCommand(()->drivetrain.zeroHeading()),
+            new SequentialCommandGroup(
+                    new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                    new WaitCommand(1.75),
+                    new InstantCommand(()-> stateManager.outtakeRoller()),
+                new SequentialCommandGroup(
+                   new WaitCommand(0.15),
+                   new InstantCommand(()->stateManager.stopRoller()))),
+                   new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
+            new ParallelCommandGroup(
+                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)),
+                getRamsete(driveToGP_path)),
             turn180Degree(),
-            new WaitCommand(1.5),
             new SequentialCommandGroup(
                 new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
                 new InstantCommand(()->stateManager.intakeRoller()),
-                new WaitCommand(2)),
+                new WaitCommand(1)),
             getRamsete(forward_GP_path),
             new SequentialCommandGroup(
-                new WaitCommand(1),
-                new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
-                new InstantCommand(()->stateManager.stopRoller())
+                new WaitCommand(.25),
+                //new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
+                new InstantCommand(()->tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                new InstantCommand(()->stateManager.stopRoller()))
         );
     }
 
@@ -352,6 +370,15 @@ public class Autonomous{
             DriveToGamePiece(),
             getRamsete(driveToBalance_path),
             buildAutoBalanceSequence()
+        );
+    }
+
+    Command TwoPieceRUN(){
+        return new SequentialCommandGroup(
+            DriveToGamePiece(),
+            turnToZero(),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.85, 0), drivetrain).until(()->DriverStation.getMatchTime() < 14),
+            new InstantCommand(()-> stateManager.outtakeRoller())
         );
     }
 

@@ -321,7 +321,8 @@ public double invertEncoderVal(double currentVal){
 
 
    public double getAngle(){
-     return navx.getAngle();
+     return //navx.getAngle();
+     navx.getRotation2d().getDegrees();
    }
 
    public void resetAngle(){
@@ -352,27 +353,24 @@ public double invertEncoderVal(double currentVal){
   // Switches it?
 
   public void turn180Degree(){
-    double degree = -getYaw();
-    //posative turn is left
-
-    // if (degree < 180) { // turn left
-    //   double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.365);
-    //   this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //   SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // } else if (degree > 180){ // turn right
-    //     double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.365);
-    //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // }
+    double degree = getHeading();
+    
     double speed = turnPID.calculate(degree, -180);
     
     
-    speed = Math.max(-0.5,Math.min(0.5,speed));
+    speed = Math.max(-0.6,Math.min(0.6,speed));
     this.driveArcade(0,speed);
     SmartDashboard.putNumber("180 turn speed", speed);
     SmartDashboard.putBoolean("Is turning", true);
 
 
+  }
+
+  public void turnToTheta(double theta){
+    double degree = getHeading();
+    double speed = turnPID.calculate(degree, theta);
+    speed = Math.max(-0.6,Math.min(0.6,speed));
+    this.driveArcade(0,speed);
   }
 
   public void toggleBrake(){
@@ -416,6 +414,7 @@ public double invertEncoderVal(double currentVal){
     //Odometry
     Logger.getInstance().recordOutput("Odometry", getPose());
     Logger.getInstance().recordOutput("Robot Pose", field2d.getRobotPose());
+    Logger.getInstance().recordOutput("Drivetrain/CurrentAngle", getHeading());
 
     //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
