@@ -360,8 +360,8 @@ public class Autonomous{
             new InstantCommand(()->drivetrain.zeroHeading()),
             turn180Degree(),
             new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.3, 0), drivetrain).withTimeout(4),
-            turn180Degree(),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).withTimeout(4),
+            turnToZero(),
             buildAutoBalanceSequence()
         );
     }
