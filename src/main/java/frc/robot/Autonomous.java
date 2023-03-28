@@ -12,6 +12,7 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -377,7 +378,7 @@ public class Autonomous{
         return new SequentialCommandGroup(
             DriveToGamePiece(),
             turnToZero(),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.85, 0), drivetrain).until(()->DriverStation.getMatchTime() < 14),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.85, 0), drivetrain).until(()->Timer.getMatchTime() < 1),
             new InstantCommand(()-> stateManager.outtakeRoller())
         );
     }
