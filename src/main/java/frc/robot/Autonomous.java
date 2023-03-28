@@ -356,13 +356,18 @@ public class Autonomous{
     Command UpAndOver(){
         drivetrain.zeroHeading();
         return new SequentialCommandGroup(
+            new InstantCommand(()->stateManager.setCube()),
             buildScoringSequence(),
+            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
             new InstantCommand(()->drivetrain.zeroHeading()),
             turn180Degree(),
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.5),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).withTimeout(4),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getAngle() > 10),//.withTimeout(1.5),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).withTimeout(3),
             turnToZero(),
-            buildAutoBalanceSequence()
+            new SequentialCommandGroup(
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.4, 0);}, drivetrain).withTimeout(.75),
+            new ReverseBalance(drivetrain)
+        )
         );
     }
 
@@ -374,12 +379,20 @@ public class Autonomous{
         );
     }
 
-    Command TwoPieceRUN(){
+    Command TwoPieceSPIT(){
         return new SequentialCommandGroup(
             DriveToGamePiece(),
             turnToZero(),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.85, 0), drivetrain).until(()->Timer.getMatchTime() < 1),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.855, 0), drivetrain).until(()->Timer.getMatchTime() < .15),
             new InstantCommand(()-> stateManager.outtakeRoller())
+        );
+    }
+
+    Command TwoPieceHOLD(){
+        return new SequentialCommandGroup(
+            DriveToGamePiece(),
+            turnToZero(),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.65, 0), drivetrain).until(()->Timer.getMatchTime() < .15)
         );
     }
 
