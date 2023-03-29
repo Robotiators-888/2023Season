@@ -79,10 +79,10 @@ public class Autonomous{
         Trajectory play1_forwad = getTrajectory("paths/output/play1_forwad.wpilib.json");
         Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
 
-        Trajectory driveToGP_path = getTrajectory("paths/output/DriveToGP.wpilib.json");
-        Trajectory curvy_DTP_path = getTrajectory("paths/output/Curvy_DTP.wpilib.json");
-        Trajectory forward_GP_path = getTrajectory("paths/output/Forward_GP.wpilib.json");
-        Trajectory driveToBalance_path = getTrajectory("paths/output/DriveToBalance.wpilib.json");
+        Trajectory RED_driveToGP_path = getTrajectory("paths/output/RED_DriveToGP.wpilib.json");
+        Trajectory RED_forward_GP_path = getTrajectory("paths/output/RED_Forward_GP.wpilib.json");
+        Trajectory RED_CABLE_TO_GP_path = getTrajectory("paths/output/RED_CABLE_TO_GP.wpilib.json");
+        Trajectory RED_CABLE_PICKUP_path = getTrajectory("paths/output/RED_CABLE_PICKUP.wpilib.json");
 
         //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
@@ -328,16 +328,16 @@ public class Autonomous{
                 new SequentialCommandGroup(
                    new WaitCommand(0.15),
                    new InstantCommand(()->stateManager.stopRoller()))),
-                   new InstantCommand(()->drivetrain.setPosition(driveToGP_path.getInitialPose())),
+                   new InstantCommand(()->drivetrain.setPosition(RED_driveToGP_path.getInitialPose())),
             new ParallelCommandGroup(
                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)),
-                getRamsete(driveToGP_path)),
+                getRamsete(RED_driveToGP_path)),
             turn180Degree(),
             new SequentialCommandGroup(
                 new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
                 new InstantCommand(()->stateManager.intakeRoller()),
-                new WaitCommand(1)),
-            getRamsete(forward_GP_path),
+                new WaitCommand(.5)),
+            getRamsete(RED_forward_GP_path),
             new SequentialCommandGroup(
                 new WaitCommand(.25),
                 //new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
@@ -346,12 +346,37 @@ public class Autonomous{
         );
     }
 
-    Command Curvy_DTP(){
+    Command DriveToGamePieceCable(){
+        stateManager.setCube();
+        drivetrain.zeroHeading();
         return new SequentialCommandGroup(
-            new InstantCommand(()->drivetrain.setPosition(curvy_DTP_path.getInitialPose())),
-            getRamsete(curvy_DTP_path)
+            new InstantCommand(()->stateManager.setCube()),
+            new InstantCommand(()->drivetrain.zeroHeading()),
+            new SequentialCommandGroup(
+                    new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                    new WaitCommand(1.75),
+                    new InstantCommand(()-> stateManager.outtakeRoller()),
+                new SequentialCommandGroup(
+                   new WaitCommand(0.15),
+                   new InstantCommand(()->stateManager.stopRoller()))),
+                   new InstantCommand(()->drivetrain.setPosition(RED_CABLE_TO_GP_path.getInitialPose())),
+            new ParallelCommandGroup(
+                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)),
+                getRamsete(RED_CABLE_TO_GP_path)),
+            turn180Degree(),
+            new SequentialCommandGroup(
+                new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
+                new InstantCommand(()->stateManager.intakeRoller()),
+                new WaitCommand(1)),
+            getRamsete(RED_CABLE_PICKUP_path),
+            new SequentialCommandGroup(
+                new WaitCommand(.25),
+                //new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
+                new InstantCommand(()->tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                new InstantCommand(()->stateManager.stopRoller()))
         );
     }
+
 
     Command UpAndOver(){
         drivetrain.zeroHeading();
@@ -371,15 +396,16 @@ public class Autonomous{
         );
     }
 
-    Command TwoPieceBalance(){
+    Command REDTwoCubeCable(){
         return new SequentialCommandGroup(
-            DriveToGamePiece(),
-            getRamsete(driveToBalance_path),
-            buildAutoBalanceSequence()
+                DriveToGamePiece(),
+                turnToZero(),
+                new RunCommand(()->drivetrain.setMotorsArcade(0.855, 0), drivetrain).until(()->Timer.getMatchTime() < .15),
+                new InstantCommand(()-> stateManager.outtakeRoller())
         );
     }
 
-    Command TwoPieceSPIT(){
+    Command REDTwoPieceSPIT(){
         return new SequentialCommandGroup(
             DriveToGamePiece(),
             turnToZero(),
@@ -388,7 +414,7 @@ public class Autonomous{
         );
     }
 
-    Command TwoPieceHOLD(){
+    Command REDTwoPieceHOLD(){
         return new SequentialCommandGroup(
             DriveToGamePiece(),
             turnToZero(),
