@@ -163,7 +163,9 @@ public class RobotContainer {
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
     
-    
+    d_aButton      
+    .onTrue(autos.buildScoringSequence());
+
     d_bButton
     .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));
@@ -189,7 +191,6 @@ public class RobotContainer {
     //Uses cubes or cones depending 
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
-      //.onTrue(autos.buildScoringSequence());
       
    c_yButton
       .onTrue(new ParallelCommandGroup(
