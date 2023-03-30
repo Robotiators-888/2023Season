@@ -107,11 +107,14 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
-    AutoChooser.addOption("2 Game Piece", autos.DriveToGamePiece());
-    AutoChooser.addOption("2 Piece SPIT", autos.REDTwoPieceSPIT());
+    AutoChooser.addOption("Red 2 Cube Hold", autos.REDTwoPieceHOLD());
+    AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
+    AutoChooser.addOption("Red 2 Cube Cable", autos.BLUETwoCubeCable());
+    AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
+    AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
+    AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
     AutoChooser.addOption("Up and Over", autos.UpAndOver());
     AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
-    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
     AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
     AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
