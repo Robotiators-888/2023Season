@@ -183,7 +183,7 @@ public class RobotContainer {
     d_rBumper
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
-    c_aButton
+    d_aButton
     .onTrue(new RunCommand(() -> limelight.score()));
 
   //  d_bButton

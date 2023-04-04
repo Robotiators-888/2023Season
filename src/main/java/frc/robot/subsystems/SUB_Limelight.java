@@ -59,7 +59,7 @@ public class SUB_Limelight extends SubsystemBase{
 
     // Finds distance from robot to target and returns distance
     public double getDistance() {
-        double h1 = 26.5;
+        double h1 = 24.25;
         double h2 = 42;
         // was -3.47935054
         double a1 = Math.toRadians(0); //mounting angle, radians
