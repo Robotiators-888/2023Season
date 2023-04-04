@@ -113,7 +113,8 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
     AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
     AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
-    AutoChooser.addOption("Up and Over", autos.UpAndOver());
+    AutoChooser.addOption("One Up and Over", autos.UpAndOver());
+    AutoChooser.addOption("Two Up and Over", autos.TwoGPUpAndOver());
     AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
     AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
