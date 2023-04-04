@@ -188,8 +188,8 @@ public class Autonomous{
 
     Command turnToZero(){
         return new RunCommand(()-> drivetrain.turnToTheta(0), drivetrain)
-            .until(()->(drivetrain.getHeading() < -0.0 && drivetrain.getHeading() > 0))
-            .withTimeout(2.5);
+            .until(()->(drivetrain.getHeading() < -0.01 && drivetrain.getHeading() > 0.01))
+            .withTimeout(1.25);
     }
 
     
@@ -342,13 +342,14 @@ public class Autonomous{
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
             new InstantCommand(()->drivetrain.zeroHeading()),
             turn180Degree(),
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getAngle() > 10),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).until(()->drivetrain.getAngle() > -10),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getPitch() > 10),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.45, 0), drivetrain).until(()->drivetrain.getPitch() < -7.5),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.5, 0);}, drivetrain).withTimeout(1.15),
             turnToZero(),
             new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.4, 0);}, drivetrain).withTimeout(.75),
-             new ReverseBalance(drivetrain)
-            )
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.35),
+            new ReverseBalance(drivetrain)
+        )
         );
     }
 
