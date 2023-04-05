@@ -108,10 +108,10 @@ public class RobotContainer {
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
     AutoChooser.addOption("Red 2 Cube Hold", autos.REDTwoPieceHOLD());
-    AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
+    //AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
     AutoChooser.addOption("Red 2 Cube Cable", autos.BLUETwoCubeCable());
     AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
-    AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
+   // AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
     AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
     AutoChooser.addOption("One Up and Over", autos.UpAndOver());
     AutoChooser.addOption("Two Up and Over", autos.TwoGPUpAndOver());
@@ -250,6 +250,7 @@ public class RobotContainer {
 
   public static void robotPeriodic() {
     logDriverData();
+    
   }
 
   /**

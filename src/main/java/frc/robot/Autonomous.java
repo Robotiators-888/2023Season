@@ -362,12 +362,14 @@ public class Autonomous{
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
             new InstantCommand(()->drivetrain.zeroHeading()),
             turn180Degree(),
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getAngle() > 10),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).until(()->drivetrain.getAngle() > -10),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getPitch() > 10),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.45, 0), drivetrain).until(()->drivetrain.getPitch() < -7.5),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.5, 0);}, drivetrain).withTimeout(1.15),
             new SequentialCommandGroup(
                 new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
                 new InstantCommand(()->stateManager.intakeRoller()),
                 new WaitCommand(.5)),
+            new InstantCommand(()->drivetrain.setPosition(RED_ChargeGP_path.getInitialPose())),
             getRamsete(RED_ChargeGP_path),
             new SequentialCommandGroup(
                 new InstantCommand(()->stateManager.stopRoller()),
