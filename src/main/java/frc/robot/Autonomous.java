@@ -462,9 +462,7 @@ public class Autonomous{
 
     Command REDTwoPieceHOLD(){
         return new SequentialCommandGroup(
-            RED_DriveToGamePiece(),
-            turnToZero(),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.65, 0), drivetrain).until(()->Timer.getMatchTime() < .15)
+            RED_DriveToGamePiece()
         );
     }
 
@@ -550,9 +548,7 @@ public class Autonomous{
 
     Command BLUETwoPieceHOLD(){
         return new SequentialCommandGroup(
-            BLUE_DriveToGamePiece(),
-            turnToZero(),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.65, 0), drivetrain).until(()->Timer.getMatchTime() < .15)
+            BLUE_DriveToGamePiece()
         );
     }
 
