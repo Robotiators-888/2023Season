@@ -60,6 +60,7 @@ public class RobotContainer {
   
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton d_backButton = new JoystickButton(controller, 7);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
@@ -158,6 +159,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // ur code sux #bad #atholtonbtr #staymad #dontgetmad #bye
 
     // Cube|Cone Setter
     c_lBumper
@@ -178,7 +180,7 @@ public class RobotContainer {
     .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller()))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));  
 
-    d_rBumper
+    d_backButton
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
   //  d_bButton

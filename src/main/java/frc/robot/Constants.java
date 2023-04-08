@@ -57,8 +57,11 @@ public final class Constants {
   //Drivetrain Constants
   public static final class Drivetrain {
     public static final int kFrontLeftCanId = 20;
-    public static final int kFrontRightCanId = 23;
+    public static final int kMiddleLeftCanId = 21;
     public static final int kRearLeftCanId = 22;
+
+    public static final int kFrontRightCanId = 23;
+    public static final int kMiddleRightCanId =24;
     public static final int kRearRightCanId = 25;
 
     public static final boolean kFrontLeftInverted = true;

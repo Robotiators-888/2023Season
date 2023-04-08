@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.ReverseBalance;
+import frc.robot.commands.UpAndOverBalance;
 import frc.robot.subsystems.*;
 
 
@@ -341,14 +342,16 @@ public class Autonomous{
             buildScoringSequence(),
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
             new InstantCommand(()->drivetrain.zeroHeading()),
-            turn180Degree(),
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getPitch() > 10),
-            new RunCommand(()->drivetrain.setMotorsArcade(0.45, 0), drivetrain).until(()->drivetrain.getPitch() < -7.5),
+            new RunCommand(()-> drivetrain.turnToTheta(180), drivetrain)
+            .until(()->(drivetrain.getHeading() < -173 || drivetrain.getHeading() > 173))
+            .withTimeout(2.5),
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).until(()->drivetrain.getPitch() > 10),
+            new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).until(()->drivetrain.getPitch() < -7.5),
             new RunCommand(()->{drivetrain.setMotorsArcade(0.5, 0);}, drivetrain).withTimeout(1.15),
             turnToZero(),
             new SequentialCommandGroup(
-            new RunCommand(()->{drivetrain.setMotorsArcade(0.7, 0);}, drivetrain).withTimeout(1.35),
-            new ReverseBalance(drivetrain)
+            new RunCommand(()->{drivetrain.setMotorsArcade(0.75, 0);}, drivetrain).withTimeout(1.35),
+            new UpAndOverBalance(drivetrain)
         )
         );
     }
@@ -445,9 +448,7 @@ public class Autonomous{
     Command REDTwoCubeCable(){
         return new SequentialCommandGroup(
                 RED_DriveToGamePiece(),
-                turnToZero(),
-                new RunCommand(()->drivetrain.setMotorsArcade(0.855, 0), drivetrain).until(()->Timer.getMatchTime() < .15),
-                new InstantCommand(()-> stateManager.outtakeRoller())
+                turnToZero()
         );
     }
 
@@ -491,9 +492,9 @@ public class Autonomous{
             getRamsete(BLUE_forward_GP_path),
             new SequentialCommandGroup(
                 new WaitCommand(.25),
-                //new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
-                new InstantCommand(()->tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-                new InstantCommand(()->stateManager.stopRoller()))
+                new InstantCommand(() -> tower.setTargetPosition(stateManager.kHomePosition(), tower))),
+                //new InstantCommand(()->tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                new InstantCommand(()->stateManager.stopRoller())
         );
     }
 
@@ -531,9 +532,7 @@ public class Autonomous{
     Command BLUETwoCubeCable(){
         return new SequentialCommandGroup(
                 BLUE_DriveToGamePiece(),
-                turnToZero(),
-                new RunCommand(()->drivetrain.setMotorsArcade(0.86, 0), drivetrain).until(()->Timer.getMatchTime() < .15),
-                new InstantCommand(()-> stateManager.outtakeRoller())
+                turnToZero()
         );
     }
 
