@@ -60,6 +60,7 @@ public class RobotContainer {
   
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton d_backButton = new JoystickButton(controller, 7);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
@@ -107,16 +108,18 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
-    AutoChooser.addOption("2 Game Piece", autos.DriveToGamePiece());
-    AutoChooser.addOption("2 Cube Balance", autos.TwoPieceBalance());
-    AutoChooser.addOption("Curvy Drive To GP", autos.Curvy_DTP());
-    //AutoChooser.addOption("Up and Over", autos.UpAndOver());
-
-   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
+    AutoChooser.addOption("Red 2 Cube Hold", autos.REDTwoPieceHOLD());
+    //AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
+    AutoChooser.addOption("Red 2 Cube Cable", autos.BLUETwoCubeCable());
+    AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
+   // AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
+    AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
+    AutoChooser.addOption("One Up and Over", autos.UpAndOver());
+    AutoChooser.addOption("Two Up and Over", autos.TwoGPUpAndOver());
     AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
-    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
     AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
 
 
 
@@ -156,6 +159,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // ur code sux #bad #atholtonbtr #staymad #dontgetmad #bye
 
     // Cube|Cone Setter
     c_lBumper
@@ -165,7 +169,9 @@ public class RobotContainer {
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
     
-    
+    d_aButton      
+    .onTrue(autos.buildScoringSequence());
+
     d_bButton
     .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));
@@ -174,7 +180,7 @@ public class RobotContainer {
     .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller()))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));  
 
-    d_rBumper
+    d_backButton
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
   //  d_bButton
@@ -191,6 +197,7 @@ public class RobotContainer {
     //Uses cubes or cones depending 
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
+      
    c_yButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
@@ -245,6 +252,7 @@ public class RobotContainer {
 
   public static void robotPeriodic() {
     logDriverData();
+    
   }
 
   /**

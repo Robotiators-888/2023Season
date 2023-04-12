@@ -1,10 +1,10 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.SUB_Blinkin;
 import frc.robot.subsystems.SUB_Drivetrain;
-import frc.robot.subsystems.SUB_Gripper;
 import frc.robot.subsystems.SUB_Roller;
 import frc.robot.subsystems.SUB_Tower;
 
@@ -36,6 +36,7 @@ public class StateManager extends SubsystemBase{
 
     public void setCube(){
         gp = Gamepiece.cube;
+        SmartDashboard.putBoolean("Robot State", true);
         blinkin.solidViolet();
     }
 
@@ -47,15 +48,19 @@ public class StateManager extends SubsystemBase{
 
     public void setCone(){
         gp = Gamepiece.cone;
+        SmartDashboard.putBoolean("Robot State", false);
         blinkin.solidOrange();
     }
 
     public void toggleGP(){
         if(gp.equals(Gamepiece.cone)){
             gp = Gamepiece.cube;
+            SmartDashboard.putBoolean("Robot State", true);
             blinkin.solidViolet();
         }else{
             gp = Gamepiece.cone;
+          
+            SmartDashboard.putBoolean("Robot State", false);
             blinkin.solidOrange();
         }
     }

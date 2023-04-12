@@ -34,9 +34,13 @@ public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
   public CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  //public CANSparkMax leftMiddle = new CANSparkMax(Constants.Drivetrain.kMiddleLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   public CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+
   public CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  //public CANSparkMax rightMiddle = new CANSparkMax(Constants.Drivetrain.kMiddleRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   public CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+
   public RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
   public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
@@ -93,6 +97,15 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightPrimary.setIdleMode(IdleMode.kBrake);
     rightPrimary.burnFlash();
   
+    // leftMiddle.setInverted(Constants.Drivetrain.kFrontLeftInverted);
+    // leftMiddle.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    // leftMiddle.setIdleMode(IdleMode.kBrake);
+    // leftMiddle.burnFlash();
+
+    // rightMiddle.setInverted(Constants.Drivetrain.kFrontRightInverted);
+    // rightMiddle.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    // rightMiddle.setIdleMode(IdleMode.kBrake);
+    // rightMiddle.burnFlash();
       
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
@@ -122,14 +135,18 @@ public class SUB_Drivetrain extends SubsystemBase {
     if(brake){
       
         leftPrimary.setIdleMode(IdleMode.kBrake);
+       // leftMiddle.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
         rightPrimary.setIdleMode(IdleMode.kBrake);
+        //rightMiddle.setIdleMode(IdleMode.kBrake);
         rightSecondary.setIdleMode(IdleMode.kBrake);
     }else{
       
         leftPrimary.setIdleMode(IdleMode.kCoast);
+        //leftMiddle.setIdleMode(IdleMode.kCoast);
         leftSecondary.setIdleMode(IdleMode.kCoast);
         rightPrimary.setIdleMode(IdleMode.kCoast);
+        //rightMiddle.setIdleMode(IdleMode.kCoast);
         rightSecondary.setIdleMode(IdleMode.kCoast);
     }
     
@@ -159,6 +176,8 @@ public double invertEncoderVal(double currentVal){
 
     leftPrimary.set(left);
     rightPrimary.set(right);
+    //leftMiddle.set(left);
+    //rightMiddle.set(right);
     leftSecondary.set(left);
     rightSecondary.set(right);
     driveTrain.feedWatchdog();
@@ -321,7 +340,8 @@ public double invertEncoderVal(double currentVal){
 
 
    public double getAngle(){
-     return navx.getAngle();
+     return //navx.getAngle();
+     navx.getRotation2d().getDegrees();
    }
 
    public void resetAngle(){
@@ -352,27 +372,24 @@ public double invertEncoderVal(double currentVal){
   // Switches it?
 
   public void turn180Degree(){
-    double degree = -getYaw();
-    //posative turn is left
-
-    // if (degree < 180) { // turn left
-    //   double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.365);
-    //   this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //   SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // } else if (degree > 180){ // turn right
-    //     double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.365);
-    //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // }
+    double degree = getHeading();
+    
     double speed = turnPID.calculate(degree, -180);
     
     
-    speed = Math.max(-0.5,Math.min(0.5,speed));
+    speed = Math.max(-0.6,Math.min(0.6,speed));
     this.driveArcade(0,speed);
     SmartDashboard.putNumber("180 turn speed", speed);
     SmartDashboard.putBoolean("Is turning", true);
 
 
+  }
+
+  public void turnToTheta(double theta){
+    double degree = getHeading();
+    double speed = turnPID.calculate(degree, theta);
+    speed = Math.max(-0.6,Math.min(0.6,speed));
+    this.driveArcade(0,speed);
   }
 
   public void toggleBrake(){
@@ -416,6 +433,7 @@ public double invertEncoderVal(double currentVal){
     //Odometry
     Logger.getInstance().recordOutput("Odometry", getPose());
     Logger.getInstance().recordOutput("Robot Pose", field2d.getRobotPose());
+    Logger.getInstance().recordOutput("Drivetrain/CurrentAngle", getHeading());
 
     //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
