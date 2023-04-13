@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.subsystems;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -8,27 +8,25 @@ import com.pathplanner.lib.commands.PPRamseteCommand;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import frc.robot.subsystems.*;
+import frc.robot.Constants;
+import frc.robot.RobotContainer;
+
 
 
 public class PathPlannerBase {
-    final Field2d field2d = RobotContainer.field2d;
-    final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
-    final SUB_Tower tower = RobotContainer.tower;
-    final SUB_Roller roller = RobotContainer.roller;
-    final StateManager stateManager = RobotContainer.stateManager;
+    final static SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
 
-    final PathConstraints constraints = new PathConstraints(8, 5);
+    final static PathConstraints constraints = new PathConstraints(8, 5);
 
     //  |------------------------------------------------------------------|
     //  |                          Trajectories                            |
     //  |__________________________________________________________________|
 
-    PathPlannerTrajectory ds3_driveback = getTrajectory("DS3_DriveBack", true); 
+    PathPlannerTrajectory ds3_driveback = getTrajectory("DS3_DriveBack.path", true); 
+    PathPlannerTrajectory dummyPath = getTrajectory("DummyPath.path", true);
 
 
-    public PathPlannerTrajectory getTrajectory(String plannerFile, boolean reversed) {
+    public static PathPlannerTrajectory getTrajectory(String plannerFile, boolean reversed) {
         PathPlannerTrajectory trajectoryPath;
             trajectoryPath = PathPlanner.loadPath(plannerFile, constraints, reversed); //Filesystem.getDeployDirectory().toPath().resolve(plannerFile);
         
@@ -36,7 +34,7 @@ public class PathPlannerBase {
         return trajectoryPath;
     }
     
-    public PPRamseteCommand getRamsete(PathPlannerTrajectory traj, boolean resetOdometry) {
+    public static PPRamseteCommand getRamsete(PathPlannerTrajectory traj, boolean resetOdometry) {
         
         if (resetOdometry) {
             drivetrain.resetOdometry(traj.getInitialPose());  
@@ -51,7 +49,9 @@ public class PathPlannerBase {
                 Constants.Autonomous.kDriveKinematics, drivetrain::getWheelSpeeds,
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
                 new PIDController(Constants.Autonomous.kpDriverVelocity, 0, 0),
-                drivetrain::tankDriveVolts, true,drivetrain);
+                drivetrain::tankDriveVolts, 
+                true, 
+                drivetrain);
     }
 
     

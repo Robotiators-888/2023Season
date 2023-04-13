@@ -56,22 +56,4 @@ public class RunningAverageQueue {
         
     }
 
-    //Unused as of yet, keeping this here until final check over
-    private double shrinkQueue(){
-        /* 
-        keep constrained to size var
-        Add to the total and que
-        pop last value and subtract from total
-        */
-
-        if(queue.size() > size){
-            while(queue.size()>size){
-                total -= queue.pop().doubleValue();
-            }
-        }
-
-        return (total / (double)(size));
-
-    }
-
 }

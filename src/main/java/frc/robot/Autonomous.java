@@ -2,7 +2,8 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
-import com.revrobotics.CANSparkMax.IdleMode;
+
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -30,11 +31,11 @@ import frc.robot.subsystems.*;
 public class Autonomous{
 
     final Field2d field2d = RobotContainer.field2d;
-    //final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
     final SUB_Roller roller = RobotContainer.roller;
     final StateManager stateManager = RobotContainer.stateManager;
+    
 
  // ====================================================================
  // Trajectory Config
@@ -70,16 +71,6 @@ public class Autonomous{
     // ====================================================================
     //                          Trajectories
     // ====================================================================
-        Trajectory red1_p1 = getTrajectory("paths/output/red1_p1.wpilib.json");
-        Trajectory red1_p2 = getTrajectory("paths/output/red1_p2.wpilib.json");
-        Trajectory dummyPath = getTrajectory("paths/output/Dummy.wpilib.json");
-        Trajectory red3_p3 = getTrajectory("paths/output/Red3_p3.wpilib.json");
-        Trajectory red3_p4 = getTrajectory("paths/output/Red3_p4.wpilib.json");
-        Trajectory drive_back = getTrajectory("paths/output/DriveBack.wpilib.json");
-        Trajectory play1 = getTrajectory("paths/output/play1.wpilib.json");
-        Trajectory play1_forwad = getTrajectory("paths/output/play1_forwad.wpilib.json");
-        Trajectory balance = getTrajectory("paths/output/Balancing.wpilib.json");
-
         Trajectory RED_driveToGP_path = getTrajectory("paths/output/RED_DriveToGP.wpilib.json");
         Trajectory RED_forward_GP_path = getTrajectory("paths/output/RED_Forward_GP.wpilib.json");
         Trajectory RED_CABLE_TO_GP_path = getTrajectory("paths/output/RED_CABLE_TO_GP.wpilib.json");
@@ -92,11 +83,12 @@ public class Autonomous{
 
         Trajectory RED_ChargeGP_path = getTrajectory("paths/output/RED_ChargeGP.wpilib.json");
 
-        //One Cone Reverse
         Trajectory red1_Backwards = getTrajectory("paths/output/Red1_DriveBack.wpilib.json");
         Trajectory red3_Backwards = getTrajectory("paths/output/Red3_DriveBack.wpilib.json");
         Trajectory blue1_Backwards = getTrajectory("paths/output/Blue1_DriveBack.wpilib.json");
         Trajectory blue3_Backwards = getTrajectory("paths/output/Blue3_DriveBack.wpilib.json");
+
+        PathPlannerTrajectory dummyPath = PathPlannerBase.getTrajectory("pathplanner/DummyPath.path", true);
         
 
     // ====================================================================
@@ -214,74 +206,12 @@ public class Autonomous{
         return buildScoringSequence();
     }
 
-    Command red1_Score1(){
-        field2d.getObject("trajectory").setTrajectory(red1_p1);   
-        return new SequentialCommandGroup(
-           new InstantCommand(()->drivetrain.setPosition(red1_p1.getInitialPose())),
-            buildScoringSequence(),
-            getRamsete(red1_p1),
-            //buildPickUpSequence(),
-            new InstantCommand(()->field2d.getObject("trajectory").setTrajectory(red1_p2)            ),
-            getRamsete(red1_p2),
-            buildScoringSequence()
-            );
-    } 
-
-    Command driveBack(){
-        field2d.getObject("trajectory").setTrajectory(drive_back);   
-        return new SequentialCommandGroup(
-            new InstantCommand(()->drivetrain.setPosition(drive_back.getInitialPose())),
-            getRamsete(drive_back));
-    }
-
-    Command scoreDriveBack(){
-        field2d.getObject("trajectory").setTrajectory(dummyPath);   
+    Command dummyCommand(){
+        stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),
-            new InstantCommand(()->drivetrain.setPosition(dummyPath.getInitialPose())),
-            getRamsete(dummyPath));
-    }
-    
-    Command forwardsScoreThenAutoBalance(){
-        drivetrain.resetAngle();
-        return new SequentialCommandGroup(
-            buildScoringSequence(),
-            new WaitCommand(1),
-            new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(0.2),
-            turn180Degree(),
-            buildAutoBalanceSequence()
+            PathPlannerBase.getRamsete(dummyPath, true)
         );
-    }
-    Command red3_Mid_2GP(){
-       // field2d.getObject("trajectory").setTrajectory(red3_p3);   
-        return new SequentialCommandGroup(
-            buildScoringSequence(),
-            new InstantCommand(()->drivetrain.setPosition(red3_p3.getInitialPose())),
-            getRamsete(red3_p3)
-        );
-    }
-
-    Command backwardsScoreThenAutoBalance(){
-        drivetrain.leftPrimary.setIdleMode(IdleMode.kBrake);
-        drivetrain.leftSecondary.setIdleMode(IdleMode.kBrake);
-        drivetrain.rightPrimary.setIdleMode(IdleMode.kBrake);
-        drivetrain.rightSecondary.setIdleMode(IdleMode.kBrake);
-        return new SequentialCommandGroup(
-            new ParallelCommandGroup(
-        new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-         new SequentialCommandGroup(
-          new WaitCommand(2.5), 
-          new SequentialCommandGroup(
-            new WaitCommand(1) 
-            //new InstantCommand(()->gripper.closeGripper()
-            )),
-        new SequentialCommandGroup(
-            //new RunCommand(()->drivetrain.setMotorsTank(0.4, 0.4))),
-           new InstantCommand(()->drivetrain.setPosition(balance.getInitialPose()))),
-           //buildAutoBalanceSequence()
-           buildReverseAutoBalanceSequence()
-        ));
-        
     }
 
     Command Red1_Cone_DB(){
@@ -336,18 +266,6 @@ public class Autonomous{
     Command UpAndOver(){
         drivetrain.zeroHeading();
         return new SequentialCommandGroup(
-        //     new InstantCommand(()->stateManager.setCube()),
-        //     buildScoringSequence(),
-        //     new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),
-        //     new InstantCommand(()->drivetrain.zeroHeading()),
-        //     turn180Degree(),
-        //     new RunCommand(()->{drivetrain.setMotorsArcade(0.6, 0);}, drivetrain).until(()->drivetrain.getAngle() > 10),//.withTimeout(1.5),
-        //     new RunCommand(()->drivetrain.setMotorsArcade(0.5, 0), drivetrain).withTimeout(3),
-        //     turnToZero(),
-        //     new SequentialCommandGroup(
-        //     new RunCommand(()->{drivetrain.setMotorsArcade(0.4, 0);}, drivetrain).withTimeout(.75),
-        //     new ReverseBalance(drivetrain)
-        // )
             new InstantCommand(()->stateManager.setCube()),
             buildScoringSequence(),
             new RunCommand(()->{drivetrain.setMotorsArcade(-0.3, 0);}, drivetrain).withTimeout(.5),

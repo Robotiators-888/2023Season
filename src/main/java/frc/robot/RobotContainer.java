@@ -54,10 +54,10 @@ public class RobotContainer {
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
   private static final Autonomous autos = new Autonomous();
+  
 
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
-  
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
   private JoystickButton d_backButton = new JoystickButton(controller, 7);
@@ -70,11 +70,6 @@ public class RobotContainer {
   private JoystickButton c_bButton = new JoystickButton(controller2, 2);
   private JoystickButton c_yButton = new JoystickButton(controller2, 4);
   private JoystickButton c_xButton = new JoystickButton(controller2, 3);
-
-  JoystickButton c0_yButton = new JoystickButton(controller, 4);
-  JoystickButton c0_bButton = new JoystickButton(controller, 2);
-  JoystickButton c0_xButton = new JoystickButton(controller, 3);
-  JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
  public static SendableChooser<Command> AutoChooser = new SendableChooser<>();
@@ -106,9 +101,10 @@ public class RobotContainer {
   //   AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
   //   AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
 
+      
+      AutoChooser.addOption("Dummy Path 5.24m", autos.dummyCommand());
       AutoChooser.addOption("Place One Cone", autos.placeOneCone());
-      AutoChooser.addOption("Place One Cube", autos.placeOneCube());
-
+      AutoChooser.setDefaultOption("Place One Cube", autos.placeOneCube());
 
 
 

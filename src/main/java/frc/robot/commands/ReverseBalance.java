@@ -13,19 +13,6 @@ public class ReverseBalance extends CommandBase {
   SUB_Drivetrain m_drivetrain;
 
     private double currentAngle;
-    private double lastAngle = 0;
-    private double drivePower;
-    private double ForwardMult = 1.5; // must have its own max speed
-    private double maxSpeed = 0.5;
-    private double diferenceInAngle;
-    double stopAngle = 10.0;
-    boolean driveBackwards;
-
-    //Limits when the robot should stop on the charge station going towards the drivers
-    private double forwardLimit = 10.5;
-
-    // Limits when the robot should stop on the charge station going away from the drivers
-    private double backwardLimit = -6;
 
   public ReverseBalance(SUB_Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -41,7 +28,7 @@ public class ReverseBalance extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
+  public void execute() {
 
 this.currentAngle = m_drivetrain.getPitch();
 if(currentAngle > 12.5 ){
@@ -54,17 +41,8 @@ if(currentAngle > 12.5 ){
   m_drivetrain.driveArcade(0.0, 0);
 
 }
- //m_drivetrain.driveArcade(0.3, 0);
 
- //System.out.println("drivePower*FM: "+(drivePower*ForwardMult)+"angle: "+currentAngle+" ForwardMult:"+ForwardMult+" difInAngle: "+diferenceInAngle+" maxSpeed: "+maxSpeed);
- SmartDashboard.putNumber("drivePower*FM", (drivePower*ForwardMult));
- SmartDashboard.putNumber("pitch balance angle",currentAngle);
- SmartDashboard.putNumber("ForwardMult",ForwardMult);
- SmartDashboard.putNumber("difInAngle", diferenceInAngle);
- SmartDashboard.putNumber("AutoBalance maxSpeed", maxSpeed);
- SmartDashboard.putBoolean("balancing", true);
  
- this.lastAngle = currentAngle;
 }
 
   // Called once the command ends or is interrupted.

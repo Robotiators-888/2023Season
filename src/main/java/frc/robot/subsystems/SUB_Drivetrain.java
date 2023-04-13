@@ -26,9 +26,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -48,8 +45,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
-  private Pose2d odometryPose = new Pose2d(); 
-   // The gyro sensor
+
+  // The gyro sensor
    private static AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 

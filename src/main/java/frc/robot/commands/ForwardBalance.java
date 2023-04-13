@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SUB_Drivetrain;
 
@@ -13,13 +12,7 @@ public class ForwardBalance extends CommandBase {
   SUB_Drivetrain m_drivetrain;
 
     private double currentAngle;
-    private double lastAngle = 0;
-    private double drivePower;
-    private double ForwardMult = 1.5; // must have its own max speed
-    private double maxSpeed = 0.5;
-    private double diferenceInAngle;
-    double stopAngle = 10.0;
-    boolean driveBackwards;
+
 
   public ForwardBalance(SUB_Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,8 +26,7 @@ public class ForwardBalance extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
-
+  public void execute() { 
   // sets angle to roll: angle the balence beam can rotate.
  this.currentAngle = m_drivetrain.getPitch();
 if(currentAngle > 12 ){
@@ -47,17 +39,7 @@ if(currentAngle > 12 ){
   m_drivetrain.driveArcade(0.0, 0);
 
 }
- //m_drivetrain.driveArcade(0.3, 0);
 
- //System.out.println("drivePower*FM: "+(drivePower*ForwardMult)+"angle: "+currentAngle+" ForwardMult:"+ForwardMult+" difInAngle: "+diferenceInAngle+" maxSpeed: "+maxSpeed);
- SmartDashboard.putNumber("drivePower*FM", (drivePower*ForwardMult));
- SmartDashboard.putNumber("pitch balance angle",currentAngle);
- SmartDashboard.putNumber("ForwardMult",ForwardMult);
- SmartDashboard.putNumber("difInAngle", diferenceInAngle);
- SmartDashboard.putNumber("AutoBalance maxSpeed", maxSpeed);
- SmartDashboard.putBoolean("balancing", true);
- 
- this.lastAngle = currentAngle;
 }
 
   // Called once the command ends or is interrupted.
