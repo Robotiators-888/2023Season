@@ -22,8 +22,8 @@ public class PathPlannerBase {
     //  |                          Trajectories                            |
     //  |__________________________________________________________________|
 
-    PathPlannerTrajectory ds3_driveback = getTrajectory("DS3_DriveBack.path", true); 
-    PathPlannerTrajectory dummyPath = getTrajectory("DummyPath.path", true);
+    PathPlannerTrajectory ds3_driveback = getTrajectory("DS3_DriveBack", true); 
+    PathPlannerTrajectory dummyPath = getTrajectory("DummyPath", true);
 
 
     public static PathPlannerTrajectory getTrajectory(String plannerFile, boolean reversed) {
@@ -37,7 +37,7 @@ public class PathPlannerBase {
     public static PPRamseteCommand getRamsete(PathPlannerTrajectory traj, boolean resetOdometry) {
         
         if (resetOdometry) {
-            drivetrain.resetOdometry(traj.getInitialPose());  
+            drivetrain.resetOdometry(traj.getInitialHolonomicPose());  
         }
 
         return new PPRamseteCommand(

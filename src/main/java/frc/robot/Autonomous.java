@@ -88,7 +88,7 @@ public class Autonomous{
         Trajectory blue1_Backwards = getTrajectory("paths/output/Blue1_DriveBack.wpilib.json");
         Trajectory blue3_Backwards = getTrajectory("paths/output/Blue3_DriveBack.wpilib.json");
 
-        PathPlannerTrajectory dummyPath = PathPlannerBase.getTrajectory("pathplanner/DummyPath.path", true);
+        PathPlannerTrajectory dummyPath = PathPlannerBase.getTrajectory("DummyPath", true);
         
 
     // ====================================================================
