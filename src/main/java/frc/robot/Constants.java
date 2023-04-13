@@ -57,8 +57,11 @@ public final class Constants {
   //Drivetrain Constants
   public static final class Drivetrain {
     public static final int kFrontLeftCanId = 20;
-    public static final int kFrontRightCanId = 23;
+    public static final int kMiddleLeftCanId = 21;
     public static final int kRearLeftCanId = 22;
+
+    public static final int kFrontRightCanId = 23;
+    public static final int kMiddleRightCanId =24;
     public static final int kRearRightCanId = 25;
 
     public static final boolean kFrontLeftInverted = true;
@@ -163,8 +166,27 @@ public final class Constants {
     public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
     public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12/3.09577776, 0.0);
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
-    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
+    /**
+     * 5800RPM maximum Rotational speed over the gear ratio of 192:1 which is unitless
+     * Ideal maximum units in Rads/Seconds,
+     * 
+     * 5800RPM/192 or 5800 rotations / 192 minutes,
+     * 
+     * (1 Rotation = 2Pi Rad),
+     * 
+     * 11600*Pi Rad / 192 minutes,
+     * 
+     * (1 minute / 60 seconds),
+     * 
+     * 11600 * Pi Rad / 11,520 seconds,
+     * 
+     * Solution: 3.16 Rad / Second
+     */
+    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(3.16, 5);
+
+
+    //Move the arm 9 3/4in up from the battery box
     public static final double kHomePosition = 0.0;
    
     public static final double kGroundCubePosition = 4.65;
@@ -172,7 +194,8 @@ public final class Constants {
     public static final double kScoreCubePosition = 2.88;
     public static final double kScoreConePosition = 3.00;
     public static final double kFeederCubePosition = 3.110;
-    public static final double kFeederConePosition = 3.005;
+    public static final double kFeederConePosition = 3.0275;
+    //0.019
 
     //cone feeder 2.965
     // 3.005

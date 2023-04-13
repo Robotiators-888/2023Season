@@ -157,6 +157,9 @@ public class SUB_Tower extends SubsystemBase {
         SmartDashboard.putNumber("encoder positiion", m_encoder.getPosition());
         SmartDashboard.putNumber("encoder velocity", m_encoder.getVelocity());
         SmartDashboard.putNumber("encoder counts/rev", m_encoder.getCountsPerRevolution());
+        Logger.getInstance().recordOutput("Arm/TowerSparkVelocity", m_encoder.getVelocity());
+        Logger.getInstance().recordOutput("Arm/TowerSparkApplied Output", armMotor.getAppliedOutput());
+
 
         Logger.getInstance().recordOutput("Arm/CurrentRotations: ", getRotations());
         Logger.getInstance().recordOutput("Arm/degreesRotation", calculateDegreesRotation());
