@@ -85,7 +85,7 @@ public class SUB_Limelight extends SubsystemBase{
     }
     public void limelightAlign(){
         if (this.getTv()){
-            if (getX() > 0.009) { // turn left
+            if (this.getX() > 0.009) { // turn left
                 double turnSpeed = -Math.min(Math.max(getX() * -0.03, -0.5),-0.265);
                 drivetrain.driveArcadeSquared(0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
@@ -119,22 +119,14 @@ public class SUB_Limelight extends SubsystemBase{
         return new SequentialCommandGroup(
         new RunCommand(() -> {this.switchapipeline(1);}, this),
         new RunCommand(() -> {this.setLed(3);}, this),
-        new WaitCommand(1),
-        new RunCommand(() -> {this.limelightAlign();}, this).until(() -> (this.getX() <= 0.05)),
+        new WaitCommand(0.25),
+        new RunCommand(() -> {this.limelightAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
         new RunCommand(() -> {this.limelightDrive();}, this).until(() -> (this.getDistance() <= 24.5)),
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {this.limelightAlign();}, this).until(() -> (this.getX() <= 0.05)),
+        new RunCommand(() -> {this.limelightAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
         new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
-        new RunCommand(() -> {this.setLed(1);}, this),
-        new SequentialCommandGroup(
-            new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-            new WaitCommand(2),
-            new InstantCommand(()-> stateManager.outtakeRoller()),
-            new SequentialCommandGroup(
-                new WaitCommand(1),
-                new InstantCommand(()->stateManager.stopRoller()),
-                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))));
+        new RunCommand(() -> {this.setLed(1);}, this));
     }
  
     public void periodic() {

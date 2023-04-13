@@ -1,13 +1,19 @@
 package frc.robot.subsystems;
 
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.littletonrobotics.junction.Logger;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
 
 public class SUB_AprilTag extends SubsystemBase{
     NetworkTable table;
@@ -66,7 +72,7 @@ public class SUB_AprilTag extends SubsystemBase{
     public void aprilDrive(){
         if(this.getTv()){
             // If we are more than a feet away, we will drive for
-            if(this.getDistance() > 12){
+            if(this.getDistance() > 1){
                 drive.driveArcadeSquared( 0.4, 0.0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
@@ -98,6 +104,18 @@ public class SUB_AprilTag extends SubsystemBase{
             }
             SmartDashboard.putBoolean("limeAlign", true);
         }
+    }
+
+    public Command score(){
+        return new SequentialCommandGroup(
+        new RunCommand(() -> {this.switchapipeline(0);}, this),
+        new WaitCommand(0.25),
+        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
+        new InstantCommand(() -> {drive.setBrakeMode(true);}, drive),
+        new RunCommand(() -> {this.aprilDrive();}, this).until(() -> (this.getDistance() <= 1)),
+        new InstantCommand(() -> {drive.setBrakeMode(true);}, drive),
+        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
+        new InstantCommand(() -> {drive.setBrakeMode(true);}, drive));
     }
 
     public void periodic() {
