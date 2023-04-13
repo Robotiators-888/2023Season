@@ -54,7 +54,7 @@ public class RobotContainer {
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
   private static final Autonomous autos = new Autonomous();
-  
+
 
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);

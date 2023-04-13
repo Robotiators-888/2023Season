@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 
@@ -23,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.libs.EventMap;
 import frc.robot.commands.ReverseBalance;
 import frc.robot.commands.UpAndOverBalance;
 import frc.robot.subsystems.*;
@@ -89,6 +91,7 @@ public class Autonomous{
         Trajectory blue3_Backwards = getTrajectory("paths/output/Blue3_DriveBack.wpilib.json");
 
         PathPlannerTrajectory dummyPath = PathPlannerBase.getTrajectory("DummyPath", true);
+        PathPlannerTrajectory dummyStop = PathPlannerBase.getTrajectory("DummyStop", true);
         
 
     // ====================================================================
@@ -196,25 +199,26 @@ public class Autonomous{
     // ====================================================================
     
 
-    Command placeOneCone(){
+    public Command placeOneCone(){
         stateManager.setCone();
         return buildScoringSequence();
     }
 
-    Command placeOneCube(){
+    public Command placeOneCube(){
         stateManager.setCube();
         return buildScoringSequence();
     }
 
-    Command dummyCommand(){
+    public Command dummyCommand(){
         stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),
-            PathPlannerBase.getRamsete(dummyPath, true)
+            //PathPlannerBase.getRamsete(dummyPath, true)
+            PathPlannerBase.generateAuto(new HashMap<String, Command>(), dummyPath)
         );
     }
 
-    Command Red1_Cone_DB(){
+    public Command Red1_Cone_DB(){
         stateManager.setCube();
         return new SequentialCommandGroup(
             buildScoringSequence(),

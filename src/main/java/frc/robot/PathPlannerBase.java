@@ -1,20 +1,25 @@
-package frc.robot.Autos;
+package frc.robot;
+
+import java.util.HashMap;
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.RamseteAutoBuilder;
 import com.pathplanner.lib.commands.PPRamseteCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SUB_Drivetrain;
 
 
 
 public class PathPlannerBase {
+
+    //TODO Make this generic for 888 Library 
+
     final static SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
 
     final static PathConstraints constraints = new PathConstraints(8, 5);
@@ -53,6 +58,16 @@ public class PathPlannerBase {
                 drivetrain::tankDriveVolts, 
                 true, 
                 drivetrain);
+    }
+
+
+    public static Command generateAuto(HashMap<String, Command> eventMap, PathPlannerTrajectory traj){
+
+        RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetOdometry, new RamseteController(), Constants.Autonomous.kDriveKinematics,
+         drivetrain::tankDriveVolts, eventMap, false, drivetrain);
+
+         return autoBuilder.fullAuto(traj);
+
     }
 
     
