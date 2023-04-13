@@ -204,6 +204,16 @@ public class Autonomous{
     // ====================================================================
     
 
+    Command placeOneCone(){
+        stateManager.setCone();
+        return buildScoringSequence();
+    }
+
+    Command placeOneCube(){
+        stateManager.setCube();
+        return buildScoringSequence();
+    }
+
     Command red1_Score1(){
         field2d.getObject("trajectory").setTrajectory(red1_p1);   
         return new SequentialCommandGroup(

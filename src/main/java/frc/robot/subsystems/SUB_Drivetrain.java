@@ -26,6 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -257,6 +260,14 @@ public double invertEncoderVal(double currentVal){
     return new DifferentialDriveWheelSpeeds(getRate(leftPrimaryEncoder.getVelocity()), getRate(rightPrimaryEncoder.getVelocity()));
   }
 
+    /**
+   * Returns the current wheel speeds of the robot.
+   *
+   * @return The current wheel speeds.
+   */
+  public  DifferentialDriveWheelSpeeds getWheelSpeedsSupplier() {
+    return new DifferentialDriveWheelSpeeds(getRate(leftPrimaryEncoder.getVelocity()), getRate(rightPrimaryEncoder.getVelocity()));
+  }
   
   /**
    * 

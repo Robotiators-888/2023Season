@@ -80,21 +80,6 @@ public class RobotContainer {
  public static SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
- /**
-   * The state of the buttons on the joystick.
-   *
-   * @param stick The joystick to read.
-   * @return The state of the buttons on the joystick.
-   */
-  public static int getStickButtons(final int stick) {
-    if (stick < 0 || stick >= 2) {
-      throw new IllegalArgumentException("Joystick index is out of range, should be 0-3");
-    }
-
-    return (int) logDS.getJoystickData(stick).buttonValues;
-  }
-
- 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -103,28 +88,30 @@ public class RobotContainer {
     CameraServer.startAutomaticCapture()
     .setVideoMode(new VideoMode(VideoMode.PixelFormat.kMJPEG, 416, 240, 60));
 
-    AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
-    AutoChooser.addOption("Red 1 - One Cone DriveBack", autos.Red1_Cone_DB());
-    AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
-    AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
-    AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
-    AutoChooser.addOption("Red 2 Cube Hold", autos.REDTwoPieceHOLD());
-    //AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
-    AutoChooser.addOption("Red 2 Cube Cable", autos.BLUETwoCubeCable());
-    AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
-   // AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
-    AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
-    AutoChooser.addOption("One Up and Over", autos.UpAndOver());
-    AutoChooser.addOption("Two Up and Over", autos.TwoGPUpAndOver());
-    AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
-    AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
-    AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
-    AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
+  //   AutoChooser.setDefaultOption("Place 1 Cone", autos.buildScoringSequence());
+  //   AutoChooser.addOption("Red 1 - One Cone DriveBack", autos.Red1_Cone_DB());
+  //   AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
+  //   AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
+  //   AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
+  //   AutoChooser.addOption("Red 2 Cube Hold", autos.REDTwoPieceHOLD());
+  //   //AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
+  //   AutoChooser.addOption("Red 2 Cube Cable", autos.BLUETwoCubeCable());
+  //   AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
+  //  // AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
+  //   AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
+  //   AutoChooser.addOption("One Up and Over", autos.UpAndOver());
+  //   AutoChooser.addOption("Two Up and Over", autos.TwoGPUpAndOver());
+  //   AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
+  //   AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
+  //   AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+  //   AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
+
+      AutoChooser.addOption("Place One Cone", autos.placeOneCone());
+      AutoChooser.addOption("Place One Cube", autos.placeOneCube());
 
 
 
 
-    DelayChooser.setDefaultOption("0 sec", 0);
     DelayChooser.addOption("1 sec", 1);
     DelayChooser.addOption("2 sec", 2);
     DelayChooser.addOption("3 sec", 3);
@@ -135,6 +122,7 @@ public class RobotContainer {
     DelayChooser.addOption("8 sec", 8);
     DelayChooser.addOption("9 sec", 9);
     DelayChooser.addOption("10 sec", 10);
+    DelayChooser.setDefaultOption("0 sec", 0);
 
 
     SmartDashboard.putData("Auto Chooser", AutoChooser);
@@ -264,7 +252,7 @@ public class RobotContainer {
     // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
-    return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
+    return new SequentialCommandGroup(new WaitCommand((double)delay), chosenAuto);
   }
 
 
