@@ -103,6 +103,7 @@ public class RobotContainer {
 
       
       AutoChooser.addOption("Dummy Path 5.24m", autos.dummyCommand());
+      AutoChooser.addOption("Dummy events", autos.dummyStop());
       AutoChooser.addOption("Place One Cone", autos.placeOneCone());
       AutoChooser.setDefaultOption("Place One Cube", autos.placeOneCube());
 

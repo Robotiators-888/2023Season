@@ -218,6 +218,18 @@ public class Autonomous{
         );
     }
 
+    public Command dummyStop(){
+        stateManager.setCube();
+        String[] strings = {"stop"};
+        Command[] commands = {new InstantCommand(()->stateManager.setCone())};
+        HashMap<String, Command> events = EventMap.buildEventMap(strings, commands);
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            //PathPlannerBase.getRamsete(dummyPath, true)
+            PathPlannerBase.generateAuto(events, dummyPath)
+        );
+    }
+
     public Command Red1_Cone_DB(){
         stateManager.setCube();
         return new SequentialCommandGroup(
