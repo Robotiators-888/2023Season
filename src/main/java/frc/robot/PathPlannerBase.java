@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.StopEvent;
 import com.pathplanner.lib.auto.RamseteAutoBuilder;
 import com.pathplanner.lib.commands.PPRamseteCommand;
 
@@ -62,14 +63,20 @@ public class PathPlannerBase {
 
 
     public static Command generateAuto(HashMap<String, Command> eventMap, PathPlannerTrajectory traj){
-
+        
         RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetOdometry, new RamseteController(), Constants.Autonomous.kDriveKinematics,
          drivetrain::tankDriveVolts, eventMap, false, drivetrain);
-
          return autoBuilder.fullAuto(traj);
 
     }
 
-    
+    public static Command generateAuto(HashMap<String, Command> eventMap, PathPlannerTrajectory traj, StopEvent stopEvent){
+        
+        RamseteAutoBuilder autoBuilder = new RamseteAutoBuilder(drivetrain::getPose, drivetrain::resetOdometry, new RamseteController(), Constants.Autonomous.kDriveKinematics,
+         drivetrain::tankDriveVolts, eventMap, false, drivetrain);
+            autoBuilder.stopEventGroup(stopEvent);
+         return autoBuilder.fullAuto(traj);
+
+    }
 
 }

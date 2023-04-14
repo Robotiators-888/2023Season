@@ -2,9 +2,11 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.StopEvent;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
@@ -92,6 +94,7 @@ public class Autonomous{
 
         PathPlannerTrajectory dummyPath = PathPlannerBase.getTrajectory("DummyPath", true);
         PathPlannerTrajectory dummyStop = PathPlannerBase.getTrajectory("DummyStop", true);
+        PathPlannerTrajectory dummy2gp = PathPlannerBase.getTrajectory("DummyTwoGP", true);
         
 
     // ====================================================================
@@ -220,14 +223,33 @@ public class Autonomous{
 
     public Command dummyStop(){
         stateManager.setCube();
-        String[] strings = {"stop"};
-        Command[] commands = {new InstantCommand(()->stateManager.setCone())};
+        String[] strings = {"stop", "ground"};      
+        Command[] commands = {new InstantCommand(()->stateManager.setCone()), new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower))};
         HashMap<String, Command> events = EventMap.buildEventMap(strings, commands);
+        StopEvent stops = new StopEvent();
+        //stops.names
         return new SequentialCommandGroup(
             buildScoringSequence(),
             //PathPlannerBase.getRamsete(dummyPath, true)
             PathPlannerBase.generateAuto(events, dummyPath)
         );
+    }
+
+    public Command dummy2GP(){
+        stateManager.setCube();
+        String[] strings = {"cone", "cube", "ground", "stow", "inake", "hold", "score"};      
+        Command[] commands = {new InstantCommand(()->stateManager.setCone()), 
+            new InstantCommand(()->stateManager.setCube()), 
+            new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
+            new InstantCommand(()-> tower.setTargetPosition(stateManager.kHomePosition(), tower)),
+            new InstantCommand(()-> stateManager.intakeRoller()),
+            new InstantCommand(()-> stateManager.stopRoller()),
+            buildScoringSequence()};
+        HashMap<String, Command> events = EventMap.buildEventMap(strings, commands);
+
+        return new SequentialCommandGroup(
+            buildScoringSequence(),
+            PathPlannerBase.generateAuto(events, dummy2gp));
     }
 
     public Command Red1_Cone_DB(){
