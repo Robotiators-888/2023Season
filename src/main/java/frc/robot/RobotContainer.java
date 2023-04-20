@@ -64,11 +64,12 @@ public class RobotContainer {
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
   
-
+  private JoystickButton d_lBumper = new JoystickButton(controller, 6); //Just a hunch that it is 6
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
   private JoystickButton d_backButton = new JoystickButton(controller, 7);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
+  private JoystickButton d_xButton = new JoystickButton(controller2, 3);
 
   private JoystickButton c_rBumper = new JoystickButton(controller2, 6);
   private JoystickButton c_lBumper = new JoystickButton(controller2, 5);
@@ -166,6 +167,36 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // ur code sux #bad #atholtonbtr #staymad #dontgetmad #bye
+    
+    // Right bumper on driver controller
+    d_rBumper
+    // When it is pressed
+    .onTrue(new SequentialCommandGroup(
+      // Puts the arm to the target postion, which is the ground position
+      new InstantCommand(() -> {tower.setTargetPosition(stateManager.kGroundPosition(), tower);}, tower),
+      //  Starts rolling the intake for 3 second
+      new RunCommand(() -> {stateManager.intakeRoller();}).withTimeout(3),
+      // Waits for 0.15 seconds
+      new WaitCommand(0.15),
+      // Puts the arm to the target position, which is back to the original position
+      new InstantCommand(() -> {tower.setTargetPosition(stateManager.kHomePosition(), tower);}, tower)
+    ));
+
+    // Left bumper on driver controller
+    d_lBumper
+    // When it is pressed
+    .onTrue(new SequentialCommandGroup(
+      // Puts the arm to the target postion, which is the position that reaches the feeder
+      new InstantCommand(() -> {tower.setTargetPosition(stateManager.kFeederPosition(), tower);}, tower),
+      // Moves forward for 4 seconds at 0.8 speed to reach the feeder
+      new RunCommand(() -> {drivetrain.driveArcade(0.8, 0);}, drivetrain).withTimeout(4),
+      //  Starts rolling the intake for 3 second
+      new RunCommand(() -> {stateManager.intakeRoller();}).withTimeout(3),
+      // Waits for 0.15 seconds
+      new WaitCommand(0.15),
+      // Puts the arm to the target position, which is back to the original position
+      new InstantCommand(() -> {tower.setTargetPosition(stateManager.kHomePosition(), tower);}, tower)
+    ));
 
     // Cube|Cone Setter
     c_lBumper
@@ -189,8 +220,13 @@ public class RobotContainer {
     d_backButton
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
+    // Runs the limelight(cone) score when the driver a button is pressed
     d_aButton
     .onTrue(new RunCommand(() -> limelight.score()));
+
+    // Runs the apriltag(cube) score when the driver x button is pressed
+    d_xButton
+    .onTrue(new RunCommand(() -> apriltag.score()));
 
   //  d_bButton
   //    // .onTrue(new InstantCommand(() -> {gripper.openGripper();SmartDashboard.putNumber("Gripper Status", gripper.getSetPosition());}));
