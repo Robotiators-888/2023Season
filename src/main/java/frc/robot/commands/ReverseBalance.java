@@ -12,16 +12,20 @@ public class ReverseBalance extends CommandBase {
   /** Creates a new ReverseBalance. */
   SUB_Drivetrain m_drivetrain;
 
-    private double error;
     private double currentAngle;
     private double lastAngle = 0;
     private double drivePower;
-    private long balanceTimeMili = 0;
     private double ForwardMult = 1.5; // must have its own max speed
     private double maxSpeed = 0.5;
     private double diferenceInAngle;
     double stopAngle = 10.0;
     boolean driveBackwards;
+
+    //Limits when the robot should stop on the charge station going towards the drivers
+    private double forwardLimit = 10.5;
+
+    // Limits when the robot should stop on the charge station going away from the drivers
+    private double backwardLimit = -6;
 
   public ReverseBalance(SUB_Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -39,15 +43,14 @@ public class ReverseBalance extends CommandBase {
   @Override
   public void execute() { SmartDashboard.putNumber("AutoBalanceStopAngle", stopAngle);
 
-  // sets angle to roll: angle the balence beam can rotate.
- this.currentAngle = m_drivetrain.getPitch();
+this.currentAngle = m_drivetrain.getPitch();
 if(currentAngle > 12.5 ){
-  m_drivetrain.driveArcade(0.3, 0);
+  m_drivetrain.driveArcade(0.25, 0);
 
-}else if(currentAngle < -6){
-  m_drivetrain.driveArcade(-0.4, 0);
+}else if(currentAngle < -7){
+  m_drivetrain.driveArcade(-0.35, 0);
 
-}else if(currentAngle <= 12.5 && currentAngle >= -6){
+}else if(currentAngle <= 12.5 && currentAngle >= -7){
   m_drivetrain.driveArcade(0.0, 0);
 
 }

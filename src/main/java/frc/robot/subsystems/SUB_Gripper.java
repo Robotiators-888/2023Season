@@ -19,11 +19,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.libs.PIDGains;
 import frc.robot.Constants;
 import org.littletonrobotics.junction.Logger;
-import frc.robot.StateManager;
 
 public class SUB_Gripper extends SubsystemBase {
 
-  private StateManager sm = new StateManager();
   private CANSparkMax GripperSparkMax;
   private RelativeEncoder m_encoder;
   private SparkMaxPIDController m_controller;

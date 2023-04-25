@@ -35,24 +35,28 @@ public class SUB_Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   // Gets the motors
   public CANSparkMax leftPrimary = new CANSparkMax(Constants.Drivetrain.kFrontLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  //public CANSparkMax leftMiddle = new CANSparkMax(Constants.Drivetrain.kMiddleLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   public CANSparkMax leftSecondary = new CANSparkMax(Constants.Drivetrain.kRearLeftCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+
   public CANSparkMax rightPrimary = new CANSparkMax(Constants.Drivetrain.kFrontRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+  //public CANSparkMax rightMiddle = new CANSparkMax(Constants.Drivetrain.kMiddleRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
   public CANSparkMax rightSecondary  = new CANSparkMax(Constants.Drivetrain.kRearRightCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
+
   public RelativeEncoder leftPrimaryEncoder = leftPrimary.getEncoder();
   public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
   final SUB_AprilTag aprilTag = RobotContainer.apriltag; 
    // The gyro sensor
-   private AHRS navx = new AHRS(SerialPort.Port.kMXP);
+   private static AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
 
    //Field Map
    Field2d field2d;
 
+   
    // Odometry class for tracking robot pose
-   DifferentialDriveOdometry driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
-   new Pose2d(0, 0, new Rotation2d()));
+   DifferentialDriveOdometry driveOdometry;
 
   // create a speed controller group for each side
   private MotorControllerGroup groupLeft = new MotorControllerGroup(leftPrimary, leftSecondary);
@@ -75,14 +79,18 @@ public class SUB_Drivetrain extends SubsystemBase {
     navx.resetDisplacement();
     navx.reset();
     this.field2d = input;
-    SmartDashboard.putData(field2d);
     zeroHeading();
     navx.setAngleAdjustment(0.0);
+    zeroEncoders();
+    driveOdometry = new DifferentialDriveOdometry(getGyroHeading(), leftPrimaryEncoder.getPosition(), 
+    rightSecondaryEncoder.getPosition(),
+    new Pose2d());
 
     leftPrimary.setInverted(Constants.Drivetrain.kFrontLeftInverted);
     leftPrimary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
     leftPrimary.setIdleMode(IdleMode.kBrake);
     leftPrimary.burnFlash();
+    //leftPrimaryEncoder.setInverted(true);
   
     
     rightPrimary.setInverted(Constants.Drivetrain.kFrontRightInverted);
@@ -90,12 +98,21 @@ public class SUB_Drivetrain extends SubsystemBase {
     rightPrimary.setIdleMode(IdleMode.kBrake);
     rightPrimary.burnFlash();
   
+    // leftMiddle.setInverted(Constants.Drivetrain.kFrontLeftInverted);
+    // leftMiddle.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    // leftMiddle.setIdleMode(IdleMode.kBrake);
+    // leftMiddle.burnFlash();
+
+    // rightMiddle.setInverted(Constants.Drivetrain.kFrontRightInverted);
+    // rightMiddle.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
+    // rightMiddle.setIdleMode(IdleMode.kBrake);
+    // rightMiddle.burnFlash();
       
       leftSecondary.setInverted(Constants.Drivetrain.kRearLeftInverted);
       leftSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
       leftSecondary.setIdleMode(IdleMode.kBrake);
       leftSecondary.burnFlash();
-  
+      //rightPrimaryEncoder.setInverted(true);
       
       rightSecondary.setInverted(Constants.Drivetrain.kRearRightInverted);
       rightSecondary.setSmartCurrentLimit(Constants.Drivetrain.kCurrentLimit);
@@ -119,18 +136,28 @@ public class SUB_Drivetrain extends SubsystemBase {
     if(brake){
       
         leftPrimary.setIdleMode(IdleMode.kBrake);
+       // leftMiddle.setIdleMode(IdleMode.kBrake);
         leftSecondary.setIdleMode(IdleMode.kBrake);
         rightPrimary.setIdleMode(IdleMode.kBrake);
+        //rightMiddle.setIdleMode(IdleMode.kBrake);
         rightSecondary.setIdleMode(IdleMode.kBrake);
     }else{
       
         leftPrimary.setIdleMode(IdleMode.kCoast);
+        //leftMiddle.setIdleMode(IdleMode.kCoast);
         leftSecondary.setIdleMode(IdleMode.kCoast);
         rightPrimary.setIdleMode(IdleMode.kCoast);
+        //rightMiddle.setIdleMode(IdleMode.kCoast);
         rightSecondary.setIdleMode(IdleMode.kCoast);
     }
     
   }
+
+public double invertEncoderVal(double currentVal){
+  return -currentVal;
+}
+
+  
 
   // public void putNumber(int num) {
   //   // This method will be called once per scheduler run
@@ -150,6 +177,8 @@ public class SUB_Drivetrain extends SubsystemBase {
 
     leftPrimary.set(left);
     rightPrimary.set(right);
+    //leftMiddle.set(left);
+    //rightMiddle.set(right);
     leftSecondary.set(left);
     rightSecondary.set(right);
     driveTrain.feedWatchdog();
@@ -163,8 +192,8 @@ public class SUB_Drivetrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    groupLeft.setVoltage(leftVolts);
-    groupRight.setVoltage(rightVolts);
+    groupLeft.setVoltage(rightVolts);
+    groupRight.setVoltage(leftVolts);
     driveTrain.feedWatchdog();
 
   }
@@ -202,14 +231,6 @@ public class SUB_Drivetrain extends SubsystemBase {
     //driveTrain.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
-  /* Encoders getting position
-  public double getLeftEncoder(){
-    return leftPrimary.getEncoder().getPosition();
-  }
-  public double getRightEncoder(){
-    return rightPrimary.getEncoder().getPosition();
-  }
-*/
 
  /**
    * Returns the currently-estimated pose of the robot.
@@ -268,7 +289,7 @@ public class SUB_Drivetrain extends SubsystemBase {
    */
   public Rotation2d getGyroHeading() {
     
-    return new Rotation2d(Math.toRadians(-1 * navx.getYaw()));
+    return new Rotation2d(-1*Math.toRadians(navx.getYaw()));
   }
 
    /**
@@ -292,30 +313,36 @@ public class SUB_Drivetrain extends SubsystemBase {
   public void setPosition(Pose2d position) {
     //driveOdometry.resetPosition(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()), this.rotationsToMeters(rightSecondaryEncoder.getPosition()),
     //new Pose2d(0, 0, new Rotation2d()));
-    zeroEncoders();
-    zeroHeading();
+    //zeroEncoders();
     driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(), position);
 
   }
 
+  public void resetOdometry(Pose2d pose) {
+    //zeroEncoders();
+    driveOdometry.resetPosition(navx.getRotation2d(), leftPrimaryEncoder.getPosition(), rightPrimaryEncoder.getPosition(),
+        pose);
+  }
   /**
    * sets current heading to zero
    */
   public void zeroHeading() {
-    navx.zeroYaw();
+    navx.calibrate();
+    navx.reset();
   }
 
   /**
    * zeros the encoder rotations
    */
   public void zeroEncoders() {
-    leftPrimaryEncoder.setPosition(0);
-    rightPrimaryEncoder.setPosition(0);
+    leftPrimaryEncoder.setPosition(0.0);
+    rightPrimaryEncoder.setPosition(0.0);
   }
 
 
    public double getAngle(){
-     return navx.getAngle();
+     return //navx.getAngle();
+     navx.getRotation2d().getDegrees();
    }
 
    public void resetAngle(){
@@ -334,6 +361,10 @@ public class SUB_Drivetrain extends SubsystemBase {
      return navx.getRoll();
   }
 
+  public double getHeading(){
+    return getGyroHeading().getDegrees();
+  }
+
   // Gets the number from the smart dashboard to change drive
   // public int driveMode(){
   //   return (int) SmartDashboard.getNumber("Drive Mode", 0);
@@ -342,18 +373,8 @@ public class SUB_Drivetrain extends SubsystemBase {
   // Switches it?
 
   public void turn180Degree(){
-    double degree = -getYaw();
-    //posative turn is left
-
-    // if (degree < 180) { // turn left
-    //   double turnSpeed = -Math.min(Math.max(degree * -0.03, -0.3),-0.365);
-    //   this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //   SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // } else if (degree > 180){ // turn right
-    //     double turnSpeed = -Math.max(Math.min(degree * -0.03, 0.3),0.365);
-    //     this.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-    //     SmartDashboard.putNumber("Turn180 TurnSpeed: ", turnSpeed);
-    // }
+    double degree = getHeading();
+    
     double speed = turnPID.calculate(degree, -180);
     
     
@@ -363,6 +384,13 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putBoolean("Is turning", true);
 
 
+  }
+
+  public void turnToTheta(double theta){
+    double degree = getHeading();
+    double speed = turnPID.calculate(degree, theta);
+    speed = Math.max(-0.6,Math.min(0.6,speed));
+    this.driveArcade(0,speed);
   }
 
   public void toggleBrake(){
@@ -379,7 +407,14 @@ public class SUB_Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
+    this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
+
+    field2d.setRobotPose(driveOdometry.getPoseMeters());
+
     // This method will be called once per scheduler run
+    SmartDashboard.putData("Field",field2d);
     SmartDashboard.putBoolean("BREAK MODE", brake);
     SmartDashboard.putNumber("Left Primary Encoder", leftPrimaryEncoder.getPosition());
     SmartDashboard.putNumber("Left Secondary Encoder", leftSecondaryEncoder.getPosition());
@@ -391,12 +426,15 @@ public class SUB_Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pose X", driveOdometry.getPoseMeters().getX());
     SmartDashboard.putNumber("Pose Y", driveOdometry.getPoseMeters().getY());
     SmartDashboard.putNumber("Pose Theta", driveOdometry.getPoseMeters().getRotation().getDegrees());
+    SmartDashboard.putNumber("Heading", getGyroHeading().getDegrees());
     SmartDashboard.putNumber("NavX Y Displacement", navx.getDisplacementY());
     SmartDashboard.putData(field2d);
     //Advantage Kit
 
     //Odometry
-    Logger.getInstance().recordOutput("Odometry/Pose", getPose());
+    Logger.getInstance().recordOutput("Odometry", getPose());
+    Logger.getInstance().recordOutput("Robot Pose", field2d.getRobotPose());
+    Logger.getInstance().recordOutput("Drivetrain/CurrentAngle", getHeading());
 
     //Positions
     Logger.getInstance().recordOutput("Drivetrain/Encoders", leftPrimaryEncoder.getPosition());
@@ -423,15 +461,9 @@ public class SUB_Drivetrain extends SubsystemBase {
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightPrimaryEncoder.getVelocity());
     Logger.getInstance().recordOutput("Drivetrain/Encoders", rightSecondaryEncoder.getVelocity());
 
-
-    if(!aprilTag.getTv()){
-      driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
-      this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
-
-      field2d.setRobotPose(driveOdometry.getPoseMeters());
-      // setBrakeMode(brake);
-      SmartDashboard.putData(field2d);
-    }
+    
+   
+    //setBrakeMode(brake);
 
   }
 

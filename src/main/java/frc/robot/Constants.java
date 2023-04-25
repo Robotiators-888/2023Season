@@ -24,19 +24,20 @@ public final class Constants {
     public static final double kmaxVelocity = 5.0;
     public static final double kmaxAcceleration = 2.0;
     
-    public static final double TRACKWIDTH = 35.5; // This is in inches 
+    public static final double TRACKWIDTH = 25; // This is in inches 
     //1.399in in width per wheel
     public static final double WHEEL_RADIUS = 3; // wheel radius in inches
     public static final double GEARRATIO = 10.86; //gear ratio from output shaft of motor to wheel axle
-   
+    
 
     public static final DifferentialDriveKinematics kDriveKinematics = 
          new DifferentialDriveKinematics(Units.inchesToMeters(TRACKWIDTH));
 
-    public static final double ksVolts = 0.15437;
-    public static final double kvVoltsSecondsPerMeter = 0.86449;
-    public static final double kaVoltsSecondsSquaredPerMeter = 0.083814;
-    public static final double kpDriverVelocity = 1.028;
+     //  UNITS PER ROTATION ~0.4900 Meters
+     public static final double ksVolts = 0.096164;
+     public static final double kvVoltsSecondsPerMeter = 2.8131;
+     public static final double kaVoltsSecondsSquaredPerMeter = 0.27983;
+     public static final double kpDriverVelocity = 0.97592;
 
     public static final double kMaxSpeedMetersPerSecond = 0.0;
     public static final double kMaxAccelerationMetersPerSecondSquared = 0.0;
@@ -56,8 +57,11 @@ public final class Constants {
   //Drivetrain Constants
   public static final class Drivetrain {
     public static final int kFrontLeftCanId = 20;
-    public static final int kFrontRightCanId = 23;
+    public static final int kMiddleLeftCanId = 21;
     public static final int kRearLeftCanId = 22;
+
+    public static final int kFrontRightCanId = 23;
+    public static final int kMiddleRightCanId =24;
     public static final int kRearRightCanId = 25;
 
     public static final boolean kFrontLeftInverted = true;
@@ -67,7 +71,7 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
 
-    public static final double kTurningScale = -0.5;
+    public static final double kTurningScale = -0.65;
   }
 
 //Joystick Constants
@@ -156,22 +160,48 @@ public final class Constants {
     public static final int kCurrentLimit = 40;
 
     public static final double kSoftLimitReverse = 0.0;
-    public static final double kSoftLimitForward = 4.6;
+    public static final double kSoftLimitForward = 4.7;
 
     public static final double kArmGearRatio = 1.0 / (48.0 * 4.0) * 2.0 * Math.PI; //multiply SM value by this number and get arm position in radians
     public static final double kArmZeroCosineOffset = - Math.PI / 6; //radians to add to converted arm position to get real-world arm position (starts at ~30deg angle)
     public static final ArmFeedforward kArmFeedforward = new ArmFeedforward(0.0, 0.4, 12/3.09577776, 0.0);
     public static final PIDGains kArmPositionGains = new PIDGains(0.6, 0.0, 0.0);
-    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(2.0, 2.0);
 
+    /**
+     * 5800RPM maximum Rotational speed over the gear ratio of 192:1 which is unitless
+     * Ideal maximum units in Rads/Seconds,
+     * 
+     * 5800RPM/192 or 5800 rotations / 192 minutes,
+     * 
+     * (1 Rotation = 2Pi Rad),
+     * 
+     * 11600*Pi Rad / 192 minutes,
+     * 
+     * (1 minute / 60 seconds),
+     * 
+     * 11600 * Pi Rad / 11,520 seconds,
+     * 
+     * Solution: 3.16 Rad / Second
+     */
+    public static final TrapezoidProfile.Constraints kArmMotionConstraint = new TrapezoidProfile.Constraints(3.16, 5);
+
+
+    //Move the arm 9 3/4in up from the battery box
     public static final double kHomePosition = 0.0;
    
-    public static final double kGroundCubePosition = 4.58;
-    public static final double kGroundConePosition = 4.55;
+    public static final double kGroundCubePosition = 4.65;
+    public static final double kGroundConePosition = 4.65;
     public static final double kScoreCubePosition = 2.88;
-    public static final double kScoreConePosition = 3.07;
-    public static final double kFeederCubePosition = 3.12;
-    public static final double kFeederConePosition = 3.11;
+    public static final double kScoreConePosition = 3.00;
+    public static final double kFeederCubePosition = 3.110;
+    public static final double kFeederConePosition = 3.0275;
+    //0.019
+
+    //cone feeder 2.965
+    // 3.005
+    //cube feeder 3.090
+
+
 
 }
 

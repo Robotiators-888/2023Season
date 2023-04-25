@@ -4,11 +4,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.PowerDistribution;
 
@@ -63,7 +61,7 @@ public class Robot extends LoggedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    
+    m_robotContainer.limelight.setLed(1);
    //m_robotContainer.blinkin.allianceColor();
   }
 
@@ -110,11 +108,12 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     RobotContainer.drivetrain.setBrakeMode(true);
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
+    
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    RobotContainer.blinkin.allianceColor();
   }
 
   /** This function is called periodically during autonomous. */
@@ -128,12 +127,14 @@ public class Robot extends LoggedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    RobotContainer.blinkin.allianceColor();
+    
+    RobotContainer.stateManager.getState();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
 
     RobotContainer.drivetrain.setBrakeMode(false);
+    RobotContainer.stateManager.setCone();
   }     
 
   /** This function is called periodically during operator control. */

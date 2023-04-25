@@ -22,12 +22,10 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.*;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import org.littletonrobotics.junction.inputs.LoggedDriverStation;
 import org.littletonrobotics.junction.Logger;
 
 /**
@@ -50,19 +48,19 @@ public class RobotContainer {
   public static final SUB_Tower tower = new SUB_Tower();
   public static SUB_Limelight limelight = new SUB_Limelight();
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
-  public static CMD_LimeSequential LimeSequential = new CMD_LimeSequential();
-  public static CMD_AprilSequential AprilSequential = new CMD_AprilSequential();
-  private static final Autonomous autos = new Autonomous();
   public static final SUB_Roller roller = new SUB_Roller();
+  public static final SUB_Ultrasonic ultrasonic = new SUB_Ultrasonic();
   private static LoggedDriverStation logDS = LoggedDriverStation.getInstance();
   public final static SUB_Blinkin blinkin = new SUB_Blinkin(Constants.KBLINKIN);
   public static StateManager stateManager = new StateManager();
+  private static final Autonomous autos = new Autonomous();
 
   private final static Joystick controller = new Joystick(Constants.JOYSTICK_PORT);
   private final static Joystick controller2 = new Joystick(Constants.JOYSTICK_PORT2);
   
 
   private JoystickButton d_rBumper = new JoystickButton(controller, 5);
+  private JoystickButton d_backButton = new JoystickButton(controller, 7);
   private JoystickButton d_aButton = new JoystickButton(controller, 1);
   private JoystickButton d_bButton = new JoystickButton(controller, 2);
 
@@ -79,7 +77,7 @@ public class RobotContainer {
   JoystickButton c0_aButton = new JoystickButton(controller, 1);
 
  // Auto objects
- SendableChooser<Command> AutoChooser = new SendableChooser<>();
+ public static SendableChooser<Command> AutoChooser = new SendableChooser<>();
  SendableChooser<Integer> DelayChooser = new SendableChooser<>();
 
  /**
@@ -110,12 +108,18 @@ public class RobotContainer {
     AutoChooser.addOption("Red 3 - One Cone DriveBack", autos.Red3_Cone_DB());
     AutoChooser.addOption("Blue 1 - One Cone DriveBack", autos.Blue1_Cone_DB());
     AutoChooser.addOption("Blue 3 - One Cone DriveBack", autos.Blue3_Cone_DB());
-
-   // AutoChooser.addOption("Auto Balance Only", autos.autoBalanceSequence);
-    AutoChooser.addOption("1 Cone Auto Balance", autos.Cone_AutoBalance());
-    AutoChooser.addOption("score Then AutoBalance Backwards", autos.backwardsScoreThenAutoBalance());
+    AutoChooser.addOption("Red 2 Cube Hold", autos.REDTwoPieceHOLD());
+    //AutoChooser.addOption("Red 2 Cube SPIT", autos.REDTwoPieceSPIT());
+    AutoChooser.addOption("Red 2 Cube Cable", autos.BLUETwoCubeCable());
+    AutoChooser.addOption("Blue 2 Cube Hold", autos.BLUETwoPieceHOLD());
+   // AutoChooser.addOption("Blue 2 Cube SPIT", autos.BLUETwoPieceSPIT());
+    AutoChooser.addOption("Blue 2 Cube Cable", autos.BLUETwoCubeCable());
+    AutoChooser.addOption("One Up and Over", autos.UpAndOver());
+    AutoChooser.addOption("Two Up and Over", autos.TwoGPUpAndOver());
+    AutoChooser.addOption("Cube Auto Balance", autos.Cube_AutoBalance());
     AutoChooser.addOption("Test Auto Balance", autos.buildAutoBalanceSequence()); 
-    //AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn 180", autos.turn180Degree());
+    AutoChooser.addOption("Test Turn Zero", autos.turnToZero());
 
 
 
@@ -141,7 +145,7 @@ public class RobotContainer {
 
     configureBindings();
     blinkin.allianceColor();
-    limelight.setLed(1);
+  
 
   }
 
@@ -155,6 +159,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // ur code sux #bad #atholtonbtr #staymad #dontgetmad #bye
 
     d_aButton.whileTrue(new RunCommand(() -> {apriltag.aprilAlign();}, apriltag).until(() -> (apriltag.getX() <= 0.05)));
 
@@ -165,10 +170,10 @@ public class RobotContainer {
     limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
-    c0_yButton.onTrue(LimeSequential);
-    c0_bButton.onTrue(AprilSequential);
     
-    
+    d_aButton      
+    .onTrue(autos.buildScoringSequence());
+
     d_bButton
     .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));
@@ -177,7 +182,7 @@ public class RobotContainer {
     .toggleOnTrue(new InstantCommand(()->stateManager.intakeRoller()))
     .toggleOnFalse(new InstantCommand(()->stateManager.stopRoller()));  
 
-    d_rBumper
+    d_backButton
     .onTrue(new InstantCommand(()->drivetrain.toggleBrake()));
 
   //  d_bButton
@@ -194,6 +199,7 @@ public class RobotContainer {
     //Uses cubes or cones depending 
     c_bButton      
       .onTrue(new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)));
+      
    c_yButton
       .onTrue(new ParallelCommandGroup(
         new InstantCommand(() -> tower.setTargetPosition(stateManager.kGroundPosition(), tower)),
@@ -219,6 +225,8 @@ public class RobotContainer {
         () ->
         tower.runManual((Math.pow(controller2.getRawAxis(3), 2) - Math.pow(controller2.getRawAxis(2), 2)) * Constants.OperatorConstants.kArmManualScale)
         , tower));
+  
+ 
   
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
@@ -246,6 +254,7 @@ public class RobotContainer {
 
   public static void robotPeriodic() {
     logDriverData();
+    
   }
 
   /**
@@ -257,8 +266,6 @@ public class RobotContainer {
     // An example command will be run in autonomous
     Command chosenAuto = AutoChooser.getSelected();
     int delay = DelayChooser.getSelected();
-    drivetrain.zeroEncoders();
-    drivetrain.zeroHeading();
     return new SequentialCommandGroup(new WaitCommand(delay), chosenAuto);
   }
 
@@ -271,6 +278,7 @@ public static void logDriverController() {
   Logger.getInstance().recordOutput("Driver1Controller/leftAxis", controller.getRawAxis(Constants.LEFT_AXIS));
   Logger.getInstance().recordOutput("Driver1Controller/RightYAxis", controller.getRawAxis(Constants.RIGHT_Y_AXIS));
   Logger.getInstance().recordOutput("Driver1Controller/RightXAxis", controller.getRawAxis(Constants.RIGHT_X_AXIS));
+  Logger.getInstance().recordOutput("Driver1Controller/BButton", controller.getRawButtonPressed(2));
 
 }
 
@@ -279,6 +287,7 @@ public static void logOperatorController() {
   Logger.getInstance().recordOutput("Driver2Controller/BButton", controller2.getRawButtonPressed(2));
   Logger.getInstance().recordOutput("Driver2Controller/YButton", controller2.getRawButtonPressed(3));
   Logger.getInstance().recordOutput("Driver2Controller/XButton", controller2.getRawButtonPressed(4));
+  Logger.getInstance().recordOutput("Driver2Controller/LeftShoulderButton", controller2.getRawButtonPressed(5));
   Logger.getInstance().recordOutput("Driver2Controller/RightShoulderButton", controller2.getRawButtonPressed(6));
 }
 

@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -15,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotContainer;
+import frc.robot.StateManager;
 
 public class SUB_Blinkin extends SubsystemBase {
 
@@ -25,6 +25,7 @@ public class SUB_Blinkin extends SubsystemBase {
    *  +1  corresponds to 2000us
    */
   private static Spark m_blinkin = null;
+  //private StateManager stateManager = RobotContainer.stateManager;
 
   /**
    * Creates a new Blinkin LED controller.
@@ -97,6 +98,8 @@ public Command allianceColorCommand(){
   @Override
   public void periodic(){
     //System.out.println("LED: " + m_blinkin.get());
+
+    
 
   }
 
