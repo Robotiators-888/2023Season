@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import java.util.function.Supplier;
 
 import com.kauailabs.navx.frc.*;
+import frc.robot.subsystems.SUB_AprilTag;
 import com.revrobotics.CANSparkMax;
 import frc.robot.RobotContainer; 
 import com.revrobotics.CANSparkMaxLowLevel;
@@ -20,6 +21,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
@@ -46,7 +48,7 @@ public class SUB_Drivetrain extends SubsystemBase {
   public RelativeEncoder rightPrimaryEncoder = rightPrimary.getEncoder();
   public RelativeEncoder leftSecondaryEncoder = leftSecondary.getEncoder();
   public RelativeEncoder rightSecondaryEncoder = rightSecondary.getEncoder();  
-  final SUB_AprilTag aprilTag = RobotContainer.apriltag; 
+  public static SUB_AprilTag aprilTag = new SUB_AprilTag();
    // The gyro sensor
    private static AHRS navx = new AHRS(SerialPort.Port.kMXP);
    //private BuiltInAccelerometer roboRioAccelerometer = new BuiltInAccelerometer();
@@ -408,6 +410,17 @@ public double invertEncoderVal(double currentVal){
   @Override
   public void periodic() {
 
+    if(aprilTag.getTv()){
+      SmartDashboard.putNumberArray("pose", aprilTag.getPoseAT());
+      double x = aprilTag.getPoseAT()[0];
+      double y = aprilTag.getPoseAT()[1];
+      Rotation2d rotationAT = new Rotation2d(aprilTag.getPoseAT()[5]);
+      Pose2d PoseAT = new Pose2d(x, y, rotationAT);
+      this.field2d.setRobotPose(PoseAT);
+      SmartDashboard.putData("field2d",this.field2d);
+      Logger.getInstance().recordOutput("Odometry/Pose", PoseAT);
+    }
+
     driveOdometry.update(getGyroHeading(), this.rotationsToMeters(leftPrimaryEncoder.getPosition()),
     this.rotationsToMeters(rightPrimaryEncoder.getPosition()));
 
@@ -463,7 +476,7 @@ public double invertEncoderVal(double currentVal){
 
     
    
-    //setBrakeMode(brake);
+    setBrakeMode(brake);
 
   }
 
