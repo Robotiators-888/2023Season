@@ -71,9 +71,10 @@ public class SUB_AprilTag extends SubsystemBase{
 
     public void aprilDrive(){
         if(this.getTv()){
-            // If we are more than a feet away, we will drive for
-            if(this.getDistance() > 1){
-                drive.driveArcadeSquared( 0.4, 0.0);
+            // If we are more than a inch away, we will drive for
+            if(this.getDistance() > 6){
+                double movespeed = Math.min(Math.max(this.getDistance() * -0.03, -0.5),-0.265);
+                drive.driveArcadeSquared(movespeed, 0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
             }
@@ -108,11 +109,11 @@ public class SUB_AprilTag extends SubsystemBase{
 
     public Command score(){
         return new SequentialCommandGroup(
-        new RunCommand(() -> {this.switchapipeline(0);}, this),
+        new InstantCommand(() -> {this.switchapipeline(0);}, this),
         new WaitCommand(0.25),
         new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
         new InstantCommand(() -> {drive.setBrakeMode(true);}, drive),
-        new RunCommand(() -> {this.aprilDrive();}, this).until(() -> (this.getDistance() <= 1)),
+        new RunCommand(() -> {this.aprilDrive();}, this).until(() -> (this.getDistance() <= 6)),
         new InstantCommand(() -> {drive.setBrakeMode(true);}, drive),
         new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
         new InstantCommand(() -> {drive.setBrakeMode(true);}, drive));
