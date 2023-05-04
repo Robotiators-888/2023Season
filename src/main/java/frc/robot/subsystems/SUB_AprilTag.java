@@ -77,6 +77,7 @@ public class SUB_AprilTag extends SubsystemBase{
                 drive.driveArcadeSquared(movespeed, 0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
+                System.out.println(movespeed);
             }
         }
     }
@@ -90,6 +91,7 @@ public class SUB_AprilTag extends SubsystemBase{
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+                System.out.println(turnSpeed);
             } else if (this.getX() < -0.009){ // turn right
                 double turnSpeed = -Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
                 drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
@@ -97,6 +99,7 @@ public class SUB_AprilTag extends SubsystemBase{
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+                System.out.println(turnSpeed);
             }
             else{
                 SmartDashboard.putBoolean("aligning", false);
@@ -109,14 +112,9 @@ public class SUB_AprilTag extends SubsystemBase{
 
     public Command score(){
         return new SequentialCommandGroup(
-        new InstantCommand(() -> {this.switchapipeline(0);}, this),
-        new WaitCommand(0.25),
         new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
-        new InstantCommand(() -> {drive.setBrakeMode(true);}, drive),
         new RunCommand(() -> {this.aprilDrive();}, this).until(() -> (this.getDistance() <= 6)),
-        new InstantCommand(() -> {drive.setBrakeMode(true);}, drive),
-        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
-        new InstantCommand(() -> {drive.setBrakeMode(true);}, drive));
+        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)));
     }
 
     public void periodic() {
@@ -127,6 +125,7 @@ public class SUB_AprilTag extends SubsystemBase{
         SmartDashboard.putNumber("ATDistance", this.getDistance());
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
+        SmartDashboard.putBoolean("IS IT THERE", this.getTv());
 
         Logger.getInstance().recordOutput("AprilTag/ATY", this.getY());
         Logger.getInstance().recordOutput("AprilTag/ATTarget", this.getTv());
