@@ -54,19 +54,32 @@ public class SUB_AprilTag extends SubsystemBase{
         double a1 = Math.toRadians(0); //mounting angle, radians
         double a2 = Math.toRadians(this.getY());
 
-        double distance = (h2 - h1)/Math.tan(a1 + a2);
-
-        return distance;
+        if(this.getTv()){
+            double distance = (h2 - h1)/Math.tan(a1 + a2);
+            return distance;
+        }else{
+            return 0.0;
+        }
+        
     }
 
     // Gets the angle offset on the x plane to know how far to align
     public double getX() {
-        return table.getEntry("tx").getDouble(0.0);
+        if(this.getTv()){
+            return table.getEntry("tx").getDouble(0.0);
+        }else{
+            return 0.0;
+        }
+        
     }
 
     // Gets the angle offset on the y plane to know how close you have to get
     public double getY() {
-        return table.getEntry("ty").getDouble(0.0);
+        if(this.getTv()){
+            return table.getEntry("ty").getDouble(0.0);
+        }else{
+            return 0.0;
+        }
     }
 
     public void aprilDrive(){
@@ -74,10 +87,10 @@ public class SUB_AprilTag extends SubsystemBase{
             // If we are more than a inch away, we will drive for
             if(this.getDistance() > 6){
                 double movespeed = Math.min(Math.max(this.getDistance() * -0.03, -0.5),-0.265);
-                drive.driveArcadeSquared(movespeed, 0);
+                drive.driveArcade(movespeed, 0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
-                System.out.println(movespeed);
+                SmartDashboard.putNumber("movespeed", movespeed);
             }
         }
     }
@@ -86,16 +99,16 @@ public class SUB_AprilTag extends SubsystemBase{
         if (this.getTv()){
             if (this.getX() > 0.009) { // turn left
                 double turnSpeed = -Math.min(Math.max(this.getX() * -0.03, -0.5),-0.265);
-                drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
-                SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
+                drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                SmartDashboard.putNumber("Limelightturnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
                 System.out.println(turnSpeed);
             } else if (this.getX() < -0.009){ // turn right
                 double turnSpeed = -Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
-                drive.driveArcadeSquared(0.0, turnSpeed); // If we are further away, we will turn faster
-                SmartDashboard.putNumber("Limelight turnspeed: ", turnSpeed);
+                drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                SmartDashboard.putNumber("Limelightturnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
@@ -113,8 +126,11 @@ public class SUB_AprilTag extends SubsystemBase{
     public Command score(){
         return new SequentialCommandGroup(
         new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
+        new RunCommand(() -> {SmartDashboard.putNumber("Limelightturnspeed", 0);}, this),
         new RunCommand(() -> {this.aprilDrive();}, this).until(() -> (this.getDistance() <= 6)),
-        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)));
+        new RunCommand(() -> {SmartDashboard.putNumber("movespeed", 0);}, this),
+        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05)),
+        new RunCommand(() -> {SmartDashboard.putNumber("Limelightturnspeed", 0);}, this));
     }
 
     public void periodic() {
