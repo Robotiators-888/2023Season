@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.SUB_AprilTag;
 import frc.robot.subsystems.SUB_Blinkin;
 import frc.robot.subsystems.SUB_Drivetrain;
-import frc.robot.subsystems.SUB_Limelight;
 import frc.robot.subsystems.SUB_Roller;
 import frc.robot.subsystems.SUB_Tower;
 import frc.robot.subsystems.SUB_Ultrasonic;
@@ -52,7 +51,6 @@ public class RobotContainer {
   //public static final SUB_Gripper gripper = new SUB_Gripper();
   public static final SUB_Drivetrain drivetrain = new SUB_Drivetrain(field2d);
   public static final SUB_Tower tower = new SUB_Tower();
-  public static SUB_Limelight limelight = new SUB_Limelight();
   public static SUB_AprilTag apriltag = new SUB_AprilTag();
   public static final SUB_Roller roller = new SUB_Roller();
   public static final SUB_Ultrasonic ultrasonic = new SUB_Ultrasonic();
@@ -197,7 +195,6 @@ public class RobotContainer {
     c_lBumper
     .onTrue(new InstantCommand(() -> {stateManager.toggleGP();}, stateManager));
 
-    limelight.setDefaultCommand(new InstantCommand(() -> limelight.setLed(1), limelight));
     // Press the Y button once, then we will start the sequence and press it again we stop
     // Press the B button once, then the april tag sequence will start
     

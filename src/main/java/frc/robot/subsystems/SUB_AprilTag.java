@@ -9,6 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -85,39 +86,32 @@ public class SUB_AprilTag extends SubsystemBase{
     public void aprilDrive(){
         if(this.getTv()){
             // If we are more than a inch away, we will drive for
-            if(this.getDistance() > 6){
-                double movespeed = Math.min(Math.max(this.getDistance() * -0.03, -0.5),-0.265);
+                double movespeed = -Math.min(Math.max(this.getDistance() * -0.03, -0.5),-0.265);
                 drive.driveArcade(movespeed, 0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
                 SmartDashboard.putNumber("movespeed", movespeed);
-            }
         }
     }
 
     public void aprilAlign(){
         if (this.getTv()){
-            if (this.getX() > 0.009) { // turn left
-                double turnSpeed = -Math.min(Math.max(this.getX() * -0.03, -0.5),-0.265);
+            if (this.getX() > 0.05) { // turn left
+                double turnSpeed = Math.min(Math.max(this.getX() * -0.03, -0.5),-0.265);
                 drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
                 System.out.println(turnSpeed);
-            } else if (this.getX() < -0.009){ // turn right
-                double turnSpeed = -Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
+            } else if (this.getX() < -0.05){ // turn right
+                double turnSpeed = Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
                 drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("turnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
                 System.out.println(turnSpeed);
-            }
-            else{
-                SmartDashboard.putBoolean("aligning", false);
-                Logger.getInstance().recordOutput("AprilTag/AlignBool", false);
-                drive.setBrakeMode(true);
             }
             SmartDashboard.putBoolean("limeAlign", true);
         }
@@ -125,12 +119,12 @@ public class SUB_AprilTag extends SubsystemBase{
 
     public Command score(){
         return new SequentialCommandGroup(
-        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05 || !this.getTv())),
+        new RepeatCommand(new InstantCommand(() -> {this.aprilAlign();}, this)).withTimeout(3),
         new InstantCommand(() -> {SmartDashboard.putNumber("turnspeed", 0);}, this),
-        new RunCommand(() -> {this.aprilDrive();}, this).until(() -> (this.getDistance() <= 6 || !this.getTv())),
-        new InstantCommand(() -> {SmartDashboard.putNumber("movespeed", 0);}, this),
-        new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05 || !this.getTv())),
-        new InstantCommand(() -> {SmartDashboard.putNumber("turnspeed", 0);}, this));
+        new RepeatCommand(new InstantCommand(() -> {this.aprilDrive();}, this)).withTimeout(3),
+        new InstantCommand(() -> {SmartDashboard.putNumber("movespeed", 0);}, this));
+        // new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05 || !this.getTv())),
+        // new InstantCommand(() -> {SmartDashboard.putNumber("turnspeed", 0);}, this));
     }
 
     public void periodic() {
