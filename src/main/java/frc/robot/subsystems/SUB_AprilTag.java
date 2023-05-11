@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 
 import org.littletonrobotics.junction.Logger;
-
+import java.time.*; 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -90,39 +90,58 @@ public class SUB_AprilTag extends SubsystemBase{
                 drive.driveArcade(movespeed, 0);
                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
-                SmartDashboard.putNumber("movespeed", movespeed);
+                SmartDashboard.putNumber("ATmovespeed", movespeed);
         }
     }
 
     public void aprilAlign(){
         if (this.getTv()){
-            if (this.getX() > 0.05) { // turn left
-                double turnSpeed = Math.min(Math.max(this.getX() * -0.03, -0.5),-0.265);
-                drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-                SmartDashboard.putNumber("turnspeed: ", turnSpeed);
-                SmartDashboard.putBoolean("aligning", true);
-                Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-                System.out.println(turnSpeed);
-            } else if (this.getX() < -0.05){ // turn right
-                double turnSpeed = Math.max(Math.min(this.getX() * -0.03, 0.5),0.265);
-                drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-                SmartDashboard.putNumber("turnspeed: ", turnSpeed);
-                SmartDashboard.putBoolean("aligning", true);
-                Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-                System.out.println(turnSpeed);
-            }
-            SmartDashboard.putBoolean("limeAlign", true);
-        }
+                if (this.getX() > 0.05) { // turn left
+                    double turnSpeed = 0;
+                    if (this.getX() > 5.5){
+                        turnSpeed =  -0.5;
+                    }else{
+                        turnSpeed = -0.3;
+                    }
+                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+                    SmartDashboard.putBoolean("aligning", true);
+                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+                    System.out.println(turnSpeed);
+                    System.out.println(this.getX());
+                } else if (this.getX() < -0.05){ // turn right
+                    double turnSpeed = 0;
+                    if (this.getX() < -5.5){
+                        turnSpeed =  0.5;
+                    }else{
+                        turnSpeed = 0.3;
+                    }
+                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+                    SmartDashboard.putBoolean("aligning", true);
+                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+                    System.out.println(turnSpeed);
+                    System.out.println(this.getX());
+                } else {
+                    System.out.println(0);
+                    System.out.println(this.getX());
+                    drive.setBrakeMode(true);
+                }
+
+                SmartDashboard.putBoolean("limeAlign", true);
+            } else {
+                drive.setBrakeMode(true);
+            }    
     }
 
     public Command score(){
-        return new SequentialCommandGroup(
-        new RepeatCommand(new InstantCommand(() -> {this.aprilAlign();}, this)).withTimeout(3),
-        new InstantCommand(() -> {SmartDashboard.putNumber("turnspeed", 0);}, this),
-        new RepeatCommand(new InstantCommand(() -> {this.aprilDrive();}, this)).withTimeout(3),
-        new InstantCommand(() -> {SmartDashboard.putNumber("movespeed", 0);}, this));
+        // return new SequentialCommandGroup(
+        return new RepeatCommand(new RunCommand(() -> {this.aprilAlign();}, this)).until(() -> (Math.abs(this.getX()) <= 0.05));
+        // new InstantCommand(() -> {SmartDashboard.putNumber("ATturnspeed", 0);}, this));
+        // new RepeatCommand(new RunCommand(() -> {this.aprilDrive();}, this)).withTimeout(3),
+        // new InstantCommand(() -> {SmartDashboard.putNumber("ATmovespeed", 0);}, this));
         // new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05 || !this.getTv())),
         // new InstantCommand(() -> {SmartDashboard.putNumber("turnspeed", 0);}, this));
     }
