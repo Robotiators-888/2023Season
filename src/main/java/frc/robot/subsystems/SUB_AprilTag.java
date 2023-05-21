@@ -2,25 +2,31 @@ package frc.robot.subsystems;
 
 
 import org.littletonrobotics.junction.Logger;
-import java.time.*; 
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RepeatCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.StateManager;
 
 public class SUB_AprilTag extends SubsystemBase{
     NetworkTable table;
     final SUB_Drivetrain drive = RobotContainer.drivetrain;
+    final SUB_Tower tower = RobotContainer.tower;
+    final StateManager stateManager = RobotContainer.stateManager;
+    public PIDController turnPID = new PIDController(0.02,0,0); 
+    
     public SUB_AprilTag() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
+        turnPID.enableContinuousInput(-180, 180);
     }
     
     public void switchapipeline(int pipelineNumber){
@@ -84,85 +90,95 @@ public class SUB_AprilTag extends SubsystemBase{
     }
 
     public void aprilDrive(){
-        while(this.getDistance() > 12)   
-            if(this.getTv()){
-                // If we are more than a inch away, we will drive for
-                    double movespeed;
-                        if (this.getDistance() > 24){
-                            movespeed =  0.45;
-                        }else if(this.getX() > 14){
-                            movespeed = 0.3;
-                        }else{
-                            movespeed = 0.3;
-                        }
-                    drive.driveArcade(movespeed, 0);
-                    System.out.println(movespeed);
-                    System.out.println(this.getDistance());
-                    SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
-                    Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
-                    SmartDashboard.putNumber("ATmovespeed", movespeed);
-        }
+        // while(this.getDistance() > 12)   
+        //     if(this.getTv()){
+        //         // If we are more than a inch away, we will drive for
+        //             double movespeed;
+        //                 if (this.getDistance() > 24){
+        //                     movespeed =  0.45;
+        //                 }else if(this.getX() > 14){
+        //                     movespeed = 0.3;
+        //                 }else{
+        //                     movespeed = 0.3;
+        //                 }
+        //             drive.driveArcade(movespeed, 0);
+        //             System.out.println(movespeed);
+        //             System.out.println(this.getDistance());
+        //             SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
+        //             Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
+        //             SmartDashboard.putNumber("ATmovespeed", movespeed);
+        // }
+        double speed = turnPID.calculate(0, this.getDistance()-12);
+        speed = Math.max(-0.5,Math.min(0.5,speed));
+        drive.driveArcade(speed,0);
     }
 
     public void aprilAlign(){
-        while(Math.abs(this.getX()) >= 0.1 && this.getTv()){    
-            if (this.getTv()){
-                if (this.getX() > 0.1) { // turn left
-                    double turnSpeed;
-                    if (this.getX() > 10){
-                        turnSpeed =  -0.35;
-                    }else if(this.getX() > 4.5){
-                        turnSpeed = -0.26;
-                    }else{
-                        turnSpeed = -0.21;
-                    }
-                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
-                    SmartDashboard.putBoolean("aligning", true);
-                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-                    System.out.println(turnSpeed);
-                    System.out.println(this.getX());
-                } else if (this.getX() < -0.1){ // turn right
-                    double turnSpeed = 0;
-                    if (this.getX() < -10){
-                        turnSpeed =  0.35;
-                    }else if(this.getX() < -4.5){
-                        turnSpeed = 0.26;
-                    }else{
-                        turnSpeed = 0.21;
-                    }
-                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
-                    SmartDashboard.putBoolean("aligning", true);
-                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-                    System.out.println(turnSpeed);
-                    System.out.println(this.getX());
-                } else {
-                    System.out.println(0);
-                    System.out.println(this.getX());
-                    drive.setBrakeMode(true);
-                }
-                SmartDashboard.putBoolean("limeAlign", true);
-            } else {
-                drive.setBrakeMode(true);
-                break;
-            }  
-         }  
-        drive.setBrakeMode(true);
-
+        // while(Math.abs(this.getX()) >= 0.1 && this.getTv()){    
+        //     if (this.getTv()){
+        //         if (this.getX() > 0.1) { // turn left
+        //             double turnSpeed;
+        //             if (this.getX() > 10){
+        //                 turnSpeed =  -0.35;
+        //             }else if(this.getX() > 4.5){
+        //                 turnSpeed = -0.26;
+        //             }else{
+        //                 turnSpeed = -0.21;
+        //             }
+        //             drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+        //             SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+        //             SmartDashboard.putBoolean("aligning", true);
+        //             Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+        //             Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+        //             System.out.println(turnSpeed);
+        //             System.out.println(this.getX());
+        //         } else if (this.getX() < -0.1){ // turn right
+        //             double turnSpeed = 0;
+        //             if (this.getX() < -10){
+        //                 turnSpeed =  0.35;
+        //             }else if(this.getX() < -4.5){
+        //                 turnSpeed = 0.26;
+        //             }else{
+        //                 turnSpeed = 0.21;
+        //             }
+        //             drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+        //             SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+        //             SmartDashboard.putBoolean("aligning", true);
+        //             Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+        //             Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+        //             System.out.println(turnSpeed);
+        //             System.out.println(this.getX());
+        //         } else {
+        //             System.out.println(0);
+        //             System.out.println(this.getX());
+        //             drive.setBrakeMode(true);
+        //         }
+        //         SmartDashboard.putBoolean("limeAlign", true);
+        //     } else {
+        //         drive.setBrakeMode(true);
+        //         break;
+        //     }  
+        //  }  
+        // drive.setBrakeMode(true);
+        double speed = turnPID.calculate(0, this.getX());
+        speed = Math.max(-0.5,Math.min(0.5,speed));
+        drive.driveArcade(0,speed);
     }
 
     public Command score(){
         return new SequentialCommandGroup(
-            new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3),
-            new InstantCommand(() -> {drive.setBrakeMode(true);},drive),
-            new InstantCommand(() -> {this.aprilDrive();}, this).withTimeout(3),
-            new InstantCommand(() -> {drive.setBrakeMode(true);}, drive).withTimeout(3));
-        // new InstantCommand(() -> {SmartDashboard.putNumber("ATmovespeed", 0);}, this));
-        // new RunCommand(() -> {this.aprilAlign();}, this).until(() -> (Math.abs(this.getX()) <= 0.05 || !this.getTv())),
-        // new InstantCommand(() -> {SmartDashboard.putNumber("turnspeed", 0);}, this));
+            new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
+            new InstantCommand(() -> {this.aprilDrive();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
+            new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
+            new SequentialCommandGroup(
+                new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+                new WaitCommand(2),
+                new InstantCommand(()-> stateManager.outtakeRoller()),
+            new SequentialCommandGroup(
+                new WaitCommand(1),
+                new InstantCommand(()->stateManager.stopRoller()),
+                new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
+                ));
     }
     public void periodic() {
         //Sets all the method calls to the SmartDashboard
