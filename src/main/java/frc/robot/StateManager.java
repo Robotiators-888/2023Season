@@ -20,7 +20,7 @@ public class StateManager extends SubsystemBase{
     final SUB_Roller roller = RobotContainer.roller;
 
     public StateManager(){
-        gp = Gamepiece.cone;
+        gp = Gamepiece.cube;
     }
 
     enum Gamepiece {

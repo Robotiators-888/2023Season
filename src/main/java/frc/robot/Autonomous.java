@@ -35,6 +35,7 @@ public class Autonomous{
     final SUB_Tower tower = RobotContainer.tower;
     final SUB_Roller roller = RobotContainer.roller;
     final StateManager stateManager = RobotContainer.stateManager;
+    final SUB_AprilTag aprilTag = RobotContainer.apriltag;
 
  // ====================================================================
  // Trajectory Config
