@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 
 import org.littletonrobotics.junction.Logger;
-
+import frc.robot.subsystems.SUB_Blinkin;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -91,7 +91,7 @@ public class SUB_AprilTag extends SubsystemBase{
     }
 
     public void aprilDrive(){
-        while(this.getDistance() > 32){
+        while(this.getDistance() > 36){
             if(this.getTv()){
                 // If we are more than a inch away, we will drive for
                     double movespeed;
@@ -114,7 +114,8 @@ public class SUB_AprilTag extends SubsystemBase{
     }
 
     public void aprilAlign(){
-        while(Math.abs(this.getX()) >= 0.1 && this.getTv()){    
+        while(Math.abs(this.getX()) >= 0.1 && this.getTv()){
+        
             if (this.getTv()){
                 if (this.getX() > 0.1) { // turn left
                     double turnSpeed;
@@ -149,6 +150,7 @@ public class SUB_AprilTag extends SubsystemBase{
                     System.out.println(turnSpeed);
                     System.out.println(this.getX());
                 } else {
+                    new InstantCommand( rainbow());
                     System.out.println(0);
                     System.out.println(this.getX());
                     drive.setBrakeMode(true);
@@ -161,6 +163,10 @@ public class SUB_AprilTag extends SubsystemBase{
          }  
         drive.setBrakeMode(true);
     }
+    private Runnable rainbow() {
+        return null;
+    }
+
     public Command score(){
         return new SequentialCommandGroup(
             new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),

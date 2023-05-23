@@ -148,6 +148,9 @@ public class Autonomous{
 
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
+            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(1.5).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
                     new InstantCommand(()-> stateManager.outtakeRoller()),
