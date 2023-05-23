@@ -159,7 +159,9 @@ public class Autonomous{
                 new SequentialCommandGroup(
                    new WaitCommand(1),
                    new InstantCommand(()->stateManager.stopRoller()),
-                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))),
+            new InstantCommand(() -> {stateManager.toggleGP();}),
+            new InstantCommand(() -> {stateManager.toggleGP();})
                     );
 
         
