@@ -36,6 +36,7 @@ public class Autonomous{
     final SUB_Roller roller = RobotContainer.roller;
     final StateManager stateManager = RobotContainer.stateManager;
     final SUB_AprilTag aprilTag = RobotContainer.apriltag;
+    final SUB_Blinkin blinkin = RobotContainer.blinkin;
 
  // ====================================================================
  // Trajectory Config
@@ -148,9 +149,10 @@ public class Autonomous{
 
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
+            blinkin.rainbowCommand(),
             new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(1.5).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(2).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
                     new InstantCommand(()-> stateManager.outtakeRoller()),

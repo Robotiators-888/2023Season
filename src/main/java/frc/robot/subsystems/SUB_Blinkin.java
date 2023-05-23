@@ -77,6 +77,7 @@ public class SUB_Blinkin extends SubsystemBase {
     }
   }
 
+
 public Command solidVioletCommand(){
   return new InstantCommand(
     ()->{solidViolet();});
@@ -92,6 +93,10 @@ public Command solidOrangeCommand(){
 public Command allianceColorCommand(){
   return new InstantCommand(
 ()-> {allianceColor();}); 
+}
+public Command rainbowCommand(){
+  return new InstantCommand(
+()-> {rainbow();});
 }
 
 

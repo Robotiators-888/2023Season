@@ -2,18 +2,13 @@ package frc.robot.subsystems;
 
 
 import org.littletonrobotics.junction.Logger;
-import frc.robot.subsystems.SUB_Blinkin;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Autonomous;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.StateManager;
@@ -23,7 +18,7 @@ public class SUB_AprilTag extends SubsystemBase{
     final SUB_Drivetrain drive = RobotContainer.drivetrain;
     final SUB_Tower tower = RobotContainer.tower;
     final StateManager stateManager = RobotContainer.stateManager;
-    public PIDController turnPID = new PIDController(0.02,0,0); 
+    final PIDController turnPID = new PIDController(0.02,0,0); 
     
     public SUB_AprilTag() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -150,7 +145,6 @@ public class SUB_AprilTag extends SubsystemBase{
                     System.out.println(turnSpeed);
                     System.out.println(this.getX());
                 } else {
-                    new InstantCommand( rainbow());
                     System.out.println(0);
                     System.out.println(this.getX());
                     drive.setBrakeMode(true);
@@ -163,24 +157,23 @@ public class SUB_AprilTag extends SubsystemBase{
          }  
         drive.setBrakeMode(true);
     }
-    private Runnable rainbow() {
-        return null;
-    }
 
-    public Command score(){
-        return new SequentialCommandGroup(
-            new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
-            new InstantCommand(() -> {this.aprilDrive();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
-            new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
-                    new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
-                    new WaitCommand(2),
-                    new InstantCommand(()-> stateManager.outtakeRoller()),
-                new SequentialCommandGroup(
-                   new WaitCommand(1),
-                   new InstantCommand(()->stateManager.stopRoller()),
-                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
-                    );
-    }
+
+    // public Command score(){
+    //     return new SequentialCommandGroup(
+    //         blinkin.rainbowCommand(),
+    //         new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
+    //         new InstantCommand(() -> {this.aprilDrive();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
+    //         new InstantCommand(() -> {this.aprilAlign();}, this).withTimeout(3).andThen(() -> {drive.setBrakeMode(true);},drive),
+    //                 new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
+    //                 new WaitCommand(2),
+    //                 new InstantCommand(()-> stateManager.outtakeRoller()),
+    //             new SequentialCommandGroup(
+    //                new WaitCommand(1),
+    //                new InstantCommand(()->stateManager.stopRoller()),
+    //                 new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
+    //                 );
+    // }
     public void periodic() {
         //Sets all the method calls to the SmartDashboard
         SmartDashboard.putNumber("ATY", this.getY());
