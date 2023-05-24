@@ -3,7 +3,7 @@ package frc.robot;
 import java.io.IOException;
 import java.nio.file.Path;
 import com.revrobotics.CANSparkMax.IdleMode;
-
+import frc.robot.StateManager;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -150,18 +150,18 @@ public class Autonomous{
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
             blinkin.rainbowCommand(),
+            new InstantCommand(() -> {stateManager.toggleGP();}),
             new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(2).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            // new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(1).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            // new InstantCommand(() -> {aprilTag.aprilDrive2();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
                     new InstantCommand(()-> stateManager.outtakeRoller()),
                 new SequentialCommandGroup(
                    new WaitCommand(1),
                    new InstantCommand(()->stateManager.stopRoller()),
-                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))),
-            new InstantCommand(() -> {stateManager.toggleGP();}),
-            new InstantCommand(() -> {stateManager.toggleGP();})
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
                     );
 
         

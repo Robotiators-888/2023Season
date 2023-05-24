@@ -39,7 +39,6 @@ public class StateManager extends SubsystemBase{
         SmartDashboard.putBoolean("Robot State", true);
         blinkin.solidViolet();
     }
-
    /**
     * Sets state to Cone
     * 

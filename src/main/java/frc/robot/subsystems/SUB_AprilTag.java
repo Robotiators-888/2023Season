@@ -86,16 +86,16 @@ public class SUB_AprilTag extends SubsystemBase{
     }
 
     public void aprilDrive(){
-        while(this.getDistance() > 36){
+        while(this.getDistance() > 45){
             if(this.getTv()){
                 // If we are more than a inch away, we will drive for
                     double movespeed;
-                        if (this.getDistance() > 24){
+                        if (this.getDistance() > 54){
                             movespeed =  0.45;
-                        }else if(this.getX() > 14){
-                            movespeed = 0.3;
+                        }else if(this.getX() > 50){
+                            movespeed = 0.25;
                         }else{
-                            movespeed = 0.3;
+                            movespeed = 0.24;
                         }
                     drive.driveArcade(movespeed, 0);
                     System.out.println(movespeed);
@@ -107,7 +107,27 @@ public class SUB_AprilTag extends SubsystemBase{
         } 
             
     }
-
+    // public void aprilDrive2(){
+    //     while(this.getDistance() > 25){
+    //         if(this.getTv()){
+    //             // If we are more than a inch away, we will drive for
+    //                 double movespeed;
+    //                     if (this.getDistance() > 35){
+    //                         movespeed =  0.25;
+    //                     }else if(this.getX() > 30){
+    //                         movespeed = 0.20;
+    //                     }else{
+    //                         movespeed = 0.15;
+    //                     }
+    //                 drive.driveArcade(movespeed, 0);
+    //                 System.out.println(movespeed);
+    //                 System.out.println(this.getDistance());
+    //                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
+    //                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
+    //                 SmartDashboard.putNumber("ATmovespeed", movespeed);
+    //         }
+    //     }
+    //     } 
     public void aprilAlign(){
         while(Math.abs(this.getX()) >= 0.1 && this.getTv()){
         
