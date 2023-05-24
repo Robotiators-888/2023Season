@@ -127,53 +127,54 @@ public class SUB_AprilTag extends SubsystemBase{
         }
         } 
     public void aprilAlign(){
-        while(Math.abs(this.getX()) >= 1 && this.getTv()){
+        // while(Math.abs(this.getX()) >= 1 && this.getTv()){
         
-            if (this.getTv()){
-                if (this.getX() > 1) { // turn left
-                    double turnSpeed;
-                    if (this.getX() > 10){
-                        turnSpeed =  -0.32;
-                    }else if(this.getX() > 4.5){
-                        turnSpeed = -0.255;
-                    }else{
-                        turnSpeed = -0.25;
-                    }
-                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
-                    SmartDashboard.putBoolean("aligning", true);
-                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-                    System.out.println(turnSpeed);
-                    System.out.println(this.getX());
-                } else if (this.getX() < -1){ // turn right
-                    double turnSpeed = 0;
-                    if (this.getX() < -10){
-                        turnSpeed =  0.32;
-                    }else if(this.getX() < -4.5){
-                        turnSpeed = 0.255;
-                    }else{
-                        turnSpeed = 0.25;
-                    }
-                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
-                    SmartDashboard.putBoolean("aligning", true);
-                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-                    System.out.println(turnSpeed);
-                    System.out.println(this.getX());
-                } else {
-                    System.out.println(0);
-                    System.out.println(this.getX());
-                    drive.setBrakeMode(true);
-                }
-                SmartDashboard.putBoolean("limeAlign", true);
-            } else {
-                drive.setBrakeMode(true);
-                break;
-            }  
-         }  
-        drive.setBrakeMode(true);
+        //     if (this.getTv()){
+        //         if (this.getX() > 1) { // turn left
+        //             double turnSpeed;
+        //             if (this.getX() > 10){
+        //                 turnSpeed =  -0.32;
+        //             }else if(this.getX() > 4.5){
+        //                 turnSpeed = -0.255;
+        //             }else{
+        //                 turnSpeed = -0.25;
+        //             }
+        //             drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+        //             SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+        //             SmartDashboard.putBoolean("aligning", true);
+        //             Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+        //             Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+        //             System.out.println(turnSpeed);
+        //             System.out.println(this.getX());
+        //         } else if (this.getX() < -1){ // turn right
+        //             double turnSpeed = 0;
+        //             if (this.getX() < -10){
+        //                 turnSpeed =  0.32;
+        //             }else if(this.getX() < -4.5){
+        //                 turnSpeed = 0.255;
+        //             }else{
+        //                 turnSpeed = 0.25;
+        //             }
+        //             drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+        //             SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+        //             SmartDashboard.putBoolean("aligning", true);
+        //             Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+        //             Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+        //             System.out.println(turnSpeed);
+        //             System.out.println(this.getX());
+        //         } else {
+        //             System.out.println(0);
+        //             System.out.println(this.getX());
+        //             drive.setBrakeMode(true);
+        //         }
+        //         SmartDashboard.putBoolean("limeAlign", true);
+        //     } else {
+        //         drive.setBrakeMode(true);
+        //         break;
+        //     }  
+        //  }  
+        // drive.setBrakeMode(true);
+        drive.turnToTheta(getX());
     }
 
     // public Command score(){
