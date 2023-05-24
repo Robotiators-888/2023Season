@@ -54,6 +54,11 @@ public class SUB_Blinkin extends SubsystemBase {
   public void rainbow() {
     set(-0.99);
   }
+
+  public void heartbeatBlue() {
+    set(0.27);
+  }
+
   public void solidRed(){
     set(0.17);
   }
@@ -97,6 +102,12 @@ public Command allianceColorCommand(){
 public Command rainbowCommand(){
   return new InstantCommand(
 ()-> {rainbow();});
+}
+
+public Command heartCommand(){
+  return new InstantCommand(
+()-> {heartbeatBlue();}
+  );
 }
 
 
