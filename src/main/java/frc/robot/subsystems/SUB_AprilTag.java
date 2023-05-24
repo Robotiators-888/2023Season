@@ -126,8 +126,10 @@ public class SUB_AprilTag extends SubsystemBase{
             }
         }
         } 
-   
-    public void aprilAlign(){
+    
+
+    
+    public void aprilAlignChapin(){
         boolean Init;
         if (this.getX()>0) {
             Init = false;

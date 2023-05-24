@@ -151,9 +151,11 @@ public class Autonomous{
         return new SequentialCommandGroup(
             blinkin.heartCommand(),
             new InstantCommand(() -> {stateManager.toggleGP();}),
-            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlignChapin();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            // new InstantCommand(() -> {drivetrain.turnToTheta(aprilTag.getX());}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlignChapin();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            // new InstantCommand(() -> {drivetrain.turnToTheta(aprilTag.getX());}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive2();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
