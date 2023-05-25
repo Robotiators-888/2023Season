@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.Instant;
+
 import com.revrobotics.CANSparkMax.IdleMode;
 import frc.robot.StateManager;
 import edu.wpi.first.math.controller.PIDController;
@@ -149,11 +151,17 @@ public class Autonomous{
 
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
-            blinkin.rainbowCommand(),
-            new InstantCommand(() -> {stateManager.toggleGP();}),
-            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(1).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(()-> {blinkin.rainbow();}, blinkin),
+            new InstantCommand(() -> {stateManager.setCube();}),
+            new InstantCommand(() -> {aprilTag.isAlign = true;}),
+            new WaitCommand(1.5),
+            new InstantCommand(() -> {aprilTag.isAlign = false;}),
+            new InstantCommand(() -> {aprilTag.isDrive = true;}, aprilTag),
+            new WaitCommand(1.5),
+            new InstantCommand(() -> {aprilTag.isDrive = false;}, aprilTag),
+            new InstantCommand(() -> {aprilTag.isAlign = true;}, aprilTag),
+            new WaitCommand(1),
+            new InstantCommand(() -> {aprilTag.isAlign = false;}),
             // new InstantCommand(() -> {aprilTag.aprilDrive2();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
@@ -161,7 +169,9 @@ public class Autonomous{
                 new SequentialCommandGroup(
                    new WaitCommand(1),
                    new InstantCommand(()->stateManager.stopRoller()),
-                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower)))
+                    new InstantCommand(()-> tower.setTargetPosition(Constants.Arm.kHomePosition, tower))),
+                    new InstantCommand(() -> {stateManager.setCube();})
+
                     );
 
         

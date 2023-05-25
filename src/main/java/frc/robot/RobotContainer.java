@@ -199,7 +199,7 @@ public class RobotContainer {
     // Press the B button once, then the april tag sequence will start
     
     d_aButton      
-    .onTrue(autos.buildScoringSequence());
+    .toggleOnTrue(autos.buildScoringSequence());
 
     d_bButton
     .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))
