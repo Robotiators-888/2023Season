@@ -86,18 +86,16 @@ public class SUB_AprilTag extends SubsystemBase{
     }
 
     public void aprilDrive(){
-        while(this.getDistance() > 25){
+        while(this.getDistance() > 35){
             if(this.getTv()){
                 // If we are more than a inch away, we will drive for
                     double movespeed;
-                        if (this.getDistance() > 40){
-                            movespeed =  0.4;
-                        }else if(this.getDistance() > 35){
-                            movespeed = 0.35;
-                        }else if(this.getDistance() > 30){
-                            movespeed = 0.3;
-                        } else{
+                        if (this.getDistance() > 100){
+                            movespeed =  0.45;
+                        }else if(this.getX() > 80){
                             movespeed = 0.25;
+                        }else{
+                            movespeed = 0.24;
                         }
                     drive.driveArcade(movespeed, 0);
                     System.out.println(movespeed);
@@ -109,94 +107,83 @@ public class SUB_AprilTag extends SubsystemBase{
         } 
             
     }
-    
-    public void aprilAlignChen(){
-        double turnspeed = 0;
-        while(Math.abs(getX()) <= 1){
-            if(getTv()){
-                if(getX() > 0){
-                    if(getX() < 2){
-                        turnspeed = -0.245;
-                    } else if(getX() < 6){
-                        turnspeed = -0.28;
-                    } else {
-                        turnspeed = -0.3;
-                    }
+    // public void aprilDrive2(){
+    //     while(this.getDistance() > 25){
+    //         if(this.getTv()){
+    //             // If we are more than a inch away, we will drive for
+    //                 double movespeed;
+    //                     if (this.getDistance() > 35){
+    //                         movespeed =  0.25;
+    //                     }else if(this.getX() > 30){
+    //                         movespeed = 0.20;
+    //                     }else{
+    //                         movespeed = 0.15;
+    //                     }
+    //                 drive.driveArcade(movespeed, 0);
+    //                 System.out.println(movespeed);
+    //                 System.out.println(this.getDistance());
+    //                 SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
+    //                 Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
+    //                 SmartDashboard.putNumber("ATmovespeed", movespeed);
+    //         }
+    //     }
+    //     } 
+    public void aprilAlign(){
+
+        while(Math.abs(this.getX()) >= .5 && this.getTv()){
+        
+            if (this.getTv()){
+                if (this.getX() < .5){
+                    break;
                 }
-                if(getX() < 0){
-                    if(getX() > -2){
-                        turnspeed = 0.245;
-                    } else if(getX() > -6){
-                        turnspeed = 0.28;
-                    } else {
-                        turnspeed = 0.3;
+                if (this.getX() < -.5){
+                    break;
+                }
+                if (this.getX() > .5) { // turn left
+                    double turnSpeed;
+                    if (this.getX() > 10){
+                        turnSpeed =  -0.24;
+                    }else if(this.getX() > 4.5){
+                        turnSpeed = -0.17;
+                    }else{
+                        turnSpeed = -0.12;
                     }
-                } 
-                drive.driveArcade(0, turnspeed);
-            }
-        }
+                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+                    SmartDashboard.putBoolean("aligning", true);
+                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+                    System.out.println(turnSpeed);
+                    System.out.println(this.getX());
+                } else if (this.getX() < -.5){ // turn right
+                    double turnSpeed = 0;
+                    if (this.getX() < -10){
+                        turnSpeed =  0.24;
+                    }else if(this.getX() < -4.5){
+                        turnSpeed = 0.17;
+                    }else{
+                        turnSpeed = 0.12;
+                    }
+                    drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                    SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
+                    SmartDashboard.putBoolean("aligning", true);
+                    Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
+                    Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
+                    System.out.println(turnSpeed);
+                    System.out.println(this.getX());
+                } else {
+                    System.out.println(0);
+                    System.out.println(this.getX());
+                    drive.setBrakeMode(true);
+                }
+                SmartDashboard.putBoolean("limeAlign", true);
+            } else {
+                drive.setBrakeMode(true);
+                break;
+            }  
+         }  
         drive.setBrakeMode(true);
     }
-
-    
-    public void aprilAlignChapin(){
-        boolean Init;
-        if (this.getX()>0) {
-            Init = false;
-        }
-        if (this.getX()<0) {
-            Init = true;
-        }
-        drive.setBrakeMode(true);
-        double turnSpeed = 0;
-
-        while(this.getTv() == true){
-
-            if(this.getTv() == false){
-                turnSpeed = 0;
-                drive.setBrakeMode(true);
-                drive.driveArcade(0.0, turnSpeed);
-            }
-                if (Init = false) { 
-                    if (this.getX() > 3){
-                        turnSpeed =  .2;
-                    }
-                    else{
-                        turnSpeed = 0;
-                    }
-                        
-                }
-             else if (Init = true){ 
-                if (this.getX() > -3){
-                    turnSpeed =  -.2;
-                }
-                else{
-                    turnSpeed = 0;
-                }
-             }
-             if (this.getX() < 1 && this.getX() > -1)
-            {
-                break; 
-            }
-            } 
-            
-            drive.driveArcade(0.0, turnSpeed);
-            SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
-            SmartDashboard.putBoolean("aligning", true);
-            Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-            Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-            System.out.println(turnSpeed);
-            System.out.println(this.getX());
-        
-            drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
-            SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
-            SmartDashboard.putBoolean("aligning", true);
-            Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
-            Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
-            System.out.println(turnSpeed);
-            System.out.println(this.getX());
-            
-        }
 
 
     // public Command score(){

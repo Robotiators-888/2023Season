@@ -149,16 +149,12 @@ public class Autonomous{
 
     public Command buildScoringSequence(){
         return new SequentialCommandGroup(
-            blinkin.heartCommand(),
+            blinkin.rainbowCommand(),
             new InstantCommand(() -> {stateManager.toggleGP();}),
-            // new InstantCommand(() -> {aprilTag.aprilAlignChapin();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlignChen();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            // new InstantCommand(() -> {drivetrain.turnToTheta(aprilTag.getX());}, drivetrain).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            // new InstantCommand(() -> {aprilTag.aprilAlignChapin();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlignChen();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            // new InstantCommand(() -> {drivetrain.turnToTheta(aprilTag.getX());}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlign();}, aprilTag).withTimeout(1).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            // new InstantCommand(() -> {aprilTag.aprilDrive2();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
                     new WaitCommand(2),
                     new InstantCommand(()-> stateManager.outtakeRoller()),
