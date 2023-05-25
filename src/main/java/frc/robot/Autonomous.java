@@ -156,7 +156,7 @@ public class Autonomous{
             // new InstantCommand(() -> {drivetrain.turnToTheta(aprilTag.getX());}, drivetrain).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             // new InstantCommand(() -> {aprilTag.aprilAlignChapin();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
-            new InstantCommand(() -> {aprilTag.aprilAlignChen();}, drivetrain).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
+            new InstantCommand(() -> {aprilTag.aprilAlignChen();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             // new InstantCommand(() -> {drivetrain.turnToTheta(aprilTag.getX());}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
             new InstantCommand(() -> {aprilTag.aprilDrive2();}, aprilTag).withTimeout(3).andThen(() -> {drivetrain.setBrakeMode(true);},drivetrain),
                     new InstantCommand(() -> tower.setTargetPosition(stateManager.kScoringPosition(), tower)),
