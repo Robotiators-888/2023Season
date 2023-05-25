@@ -127,6 +127,33 @@ public class SUB_AprilTag extends SubsystemBase{
         }
         } 
     
+    public void aprilAlignChen(){
+        double turnspeed = 0;
+        while(Math.abs(getX()) <= 1){
+            if(getTv()){
+                if(getX() > 0){
+                    if(getX() < 2){
+                        turnspeed = -0.245;
+                    } else if(getX() < 6){
+                        turnspeed = -0.28;
+                    } else {
+                        turnspeed = -0.3;
+                    }
+                }
+                if(getX() < 0){
+                    if(getX() > -2){
+                        turnspeed = 0.245;
+                    } else if(getX() > -6){
+                        turnspeed = 0.28;
+                    } else {
+                        turnspeed = 0.3;
+                    }
+                } 
+                drive.driveArcade(0, turnspeed);
+            }
+        }
+        drive.setBrakeMode(true);
+    }
 
     
     public void aprilAlignChapin(){
