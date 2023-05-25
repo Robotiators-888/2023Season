@@ -86,16 +86,18 @@ public class SUB_AprilTag extends SubsystemBase{
     }
 
     public void aprilDrive(){
-        while(this.getDistance() > 45){
+        while(this.getDistance() > 25){
             if(this.getTv()){
                 // If we are more than a inch away, we will drive for
                     double movespeed;
                         if (this.getDistance() > 40){
-                            movespeed =  0.45;
-                        }else if(this.getX() > 35){
+                            movespeed =  0.4;
+                        }else if(this.getDistance() > 35){
                             movespeed = 0.35;
-                        }else{
+                        }else if(this.getDistance() > 30){
                             movespeed = 0.3;
+                        } else{
+                            movespeed = 0.25;
                         }
                     drive.driveArcade(movespeed, 0);
                     System.out.println(movespeed);
@@ -107,25 +109,6 @@ public class SUB_AprilTag extends SubsystemBase{
         } 
             
     }
-    public void aprilDrive2(){
-        while(this.getDistance() > 25){
-            if(this.getTv()){
-                // If we are more than a inch away, we will drive for
-                    double movespeed;
-                        if (this.getDistance() > 30){
-                            movespeed =  0.275;
-                        }else{
-                            movespeed = 0.25;
-                        }
-                    drive.driveArcade(movespeed, 0);
-                    System.out.println(movespeed);
-                    System.out.println(this.getDistance());
-                    SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
-                    Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
-                    SmartDashboard.putNumber("ATmovespeed", movespeed);
-            }
-        }
-        } 
     
     public void aprilAlignChen(){
         double turnspeed = 0;
