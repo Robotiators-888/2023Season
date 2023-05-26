@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 
 import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -215,7 +217,7 @@ public class SUB_AprilTag extends SubsystemBase{
         Logger.getInstance().recordOutput("AprilTag/a2", Math.toRadians(this.getY()));
 
         if(Math.abs(this.getX()) >= .5 && this.getTv() && isAlign == true){
-        
+            NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
 
             if (this.getX() > .5) { // turn left
                 double turnSpeed;
@@ -261,6 +263,7 @@ public class SUB_AprilTag extends SubsystemBase{
 
     if(this.getDistance() >= 25 && this.getTv() && isDrive == true){
         // If we are more than a inch away, we will drive for
+        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
         double movespeed;
         if (this.getDistance() < 30){
             movespeed =  0.26;
