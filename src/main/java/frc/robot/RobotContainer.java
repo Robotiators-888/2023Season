@@ -200,6 +200,10 @@ public class RobotContainer {
     
     d_aButton      
     .toggleOnTrue(autos.buildScoringSequence());
+    d_aButton
+    .toggleOnFalse(new InstantCommand(() -> {apriltag.isAlign = false;}));
+    d_aButton
+    .toggleOnFalse(new InstantCommand(() -> {apriltag.isDrive = false;}));
 
     d_bButton
     .toggleOnTrue(new InstantCommand(() -> {stateManager.outtakeRoller();}))

@@ -22,8 +22,10 @@ public class SUB_AprilTag extends SubsystemBase{
     final SUB_Tower tower = RobotContainer.tower;
     final StateManager stateManager = RobotContainer.stateManager;
     final PIDController turnPID = new PIDController(0.02,0,0); 
-    public boolean isAlign;
+    public boolean isAlign = false;
     public boolean isDrive = false;
+    public double turnSpeed = 0;
+    public double movespeed = 0;
     public SUB_AprilTag() {
         table = NetworkTableInstance.getDefault().getTable("limelight");
         turnPID.enableContinuousInput(-180, 180);
@@ -208,6 +210,8 @@ public class SUB_AprilTag extends SubsystemBase{
         SmartDashboard.putNumber("a1", Math.toRadians(0));
         SmartDashboard.putNumber("a2", Math.toRadians(this.getY()));
         SmartDashboard.putBoolean("IS IT THERE", this.getTv());
+        SmartDashboard.putBoolean("isAlign", isAlign);
+        SmartDashboard.putBoolean("isDrive", isDrive);
 
         Logger.getInstance().recordOutput("AprilTag/ATY", this.getY());
         Logger.getInstance().recordOutput("AprilTag/ATTarget", this.getTv());
@@ -216,11 +220,10 @@ public class SUB_AprilTag extends SubsystemBase{
         Logger.getInstance().recordOutput("AprilTag/a1", Math.toRadians(0));
         Logger.getInstance().recordOutput("AprilTag/a2", Math.toRadians(this.getY()));
 
-        if(Math.abs(this.getX()) >= .5 && this.getTv() && isAlign == true){
-            NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-
-            if (this.getX() > .5) { // turn left
-                double turnSpeed;
+        if(Math.abs(this.getX()) >= .3 && this.getTv() && isAlign == true){
+            // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+            drive.setBrakeMode(false);
+            if (this.getX() > .3) { // turn left
                 if (this.getX() > 10){
                     turnSpeed =  -0.24;
                 }else if(this.getX() > 4.5){
@@ -228,15 +231,14 @@ public class SUB_AprilTag extends SubsystemBase{
                 }else{
                     turnSpeed = -0.12;
                 }
-                drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
+                // drive.driveArcade(0.0, turnSpeed); // If we are further away, we will turn faster
                 SmartDashboard.putNumber("ATturnspeed: ", turnSpeed);
                 SmartDashboard.putBoolean("aligning", true);
                 Logger.getInstance().recordOutput("AprilTag/TurnSpeed", turnSpeed);
                 Logger.getInstance().recordOutput("AprilTag/AlignBool", true);
                 System.out.println(turnSpeed);
                 System.out.println(this.getX());
-            } else if (this.getX() < -.5){ // turn right
-                double turnSpeed = 0;
+            } else if (this.getX() < -.3){ // turn right
                 if (this.getX() < -10){
                     turnSpeed =  0.24;
                 }else if(this.getX() < -4.5){
@@ -254,17 +256,17 @@ public class SUB_AprilTag extends SubsystemBase{
             } else {
                 System.out.println(0);
                 System.out.println(this.getX());
-                drive.setBrakeMode(true);
+                // drive.setBrakeMode(true);
             }
             SmartDashboard.putBoolean("limeAlign", true);
-            drive.setBrakeMode(true);
+            // drive.setBrakeMode(true);
      }  
     
 
     if(this.getDistance() >= 25 && this.getTv() && isDrive == true){
         // If we are more than a inch away, we will drive for
-        NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
-        double movespeed;
+        // NetworkTableInstance.getDefault().getTable("limelight").getEntry("ledMode").setNumber(3);
+        drive.setBrakeMode(false);
         if (this.getDistance() < 30){
             movespeed =  0.26;
         }else if(this.getDistance() < 35){
@@ -274,13 +276,13 @@ public class SUB_AprilTag extends SubsystemBase{
         } else {
             movespeed = 0.35;
         }
-        drive.driveArcade(movespeed, 0);
+        // drive.driveArcade(movespeed, 0);
         System.out.println(movespeed);
         System.out.println(this.getDistance());
         SmartDashboard.putNumber("ATDISTANCE", this.getDistance());
         Logger.getInstance().recordOutput("AprilTag/Distance", this.getDistance());
         SmartDashboard.putNumber("ATmovespeed", movespeed);
-        drive.setBrakeMode(true);
+        // drive.setBrakeMode(true);
     }
     }
 

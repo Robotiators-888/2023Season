@@ -52,7 +52,7 @@ public class SUB_Blinkin extends SubsystemBase {
   }
 
   public void rainbow() {
-    set(0.77);
+    set(0.98);
   }
   public void solidRed(){
     set(0.17);
