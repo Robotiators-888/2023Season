@@ -154,7 +154,7 @@ public class Autonomous{
             new InstantCommand(()-> {blinkin.rainbow();}, blinkin),
             new InstantCommand(() -> {stateManager.setCube();}),
             new InstantCommand(() -> {aprilTag.isAlign = true;}, aprilTag),
-            new RunCommand(() -> {drivetrain.driveArcade(0, aprilTag.turnSpeed);}, drivetrain).withTimeout(2),
+            new RunCommand(() -> {drivetrain.driveArcade(0, aprilTag.turnSpeed);}, drivetrain).withTimeout(1),
             new InstantCommand(() -> {aprilTag.isAlign = false;}, aprilTag),
             new InstantCommand(() -> {drivetrain.setBrakeMode(true);}, drivetrain),
             new InstantCommand(() -> {aprilTag.isDrive = true;}, aprilTag),
