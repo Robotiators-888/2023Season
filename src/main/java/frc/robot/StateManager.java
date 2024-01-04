@@ -15,9 +15,9 @@ public class StateManager extends SubsystemBase{
     final Field2d field2d = RobotContainer.field2d;
     //final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
-    final SUB_Tower tower = RobotContainer.tower;
-    final SUB_Blinkin blinkin = RobotContainer.blinkin;
-    final SUB_Roller roller = RobotContainer.roller;
+    final SUB_Tower tower = null;
+    final SUB_Blinkin blinkin = null;
+    final SUB_Roller roller = null;
 
     public StateManager(){
         gp = Gamepiece.cone;

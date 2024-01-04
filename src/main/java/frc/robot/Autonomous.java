@@ -32,9 +32,10 @@ public class Autonomous{
     final Field2d field2d = RobotContainer.field2d;
     //final SUB_Gripper gripper = RobotContainer.gripper;
     final SUB_Drivetrain drivetrain = RobotContainer.drivetrain;
-    final SUB_Tower tower = RobotContainer.tower;
-    final SUB_Roller roller = RobotContainer.roller;
-    final StateManager stateManager = RobotContainer.stateManager;
+    final SUB_Tower tower = null;
+    final SUB_Roller roller = null;
+      
+    final StateManager stateManager = null;
 
  // ====================================================================
  // Trajectory Config
